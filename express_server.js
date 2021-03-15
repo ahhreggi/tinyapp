@@ -17,6 +17,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // UTILITY FUNCTIONS ///////////////////////////////
 
+/**
+ * Returns a random alphanumeric string.
+ * @param  {number} length
+ *         The desired length of the generated string.
+ * @return {string}
+ *         A string containing random alphanumeric characters.
+ */
 const generateRandomString = (length = 6) => {
   const alpha = "abcdefghijklmnopqrstuvwxyz";
   const num = "1234567890";
