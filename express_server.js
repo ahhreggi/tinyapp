@@ -18,6 +18,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 // UTILITY FUNCTIONS ///////////////////////////////
 
 /**
+ * Returns a url with an added scheme if it doesn't already have one.
+ * @param  {string} url
+ *         A url which may or may not include http:// or https://.
+ * @return {string}
+ *         The resulting url string after adding a scheme (if needed).
+ */
+const addHttp = (url) => {
+  let result = url;
+  if (!result.startsWith("http://") && !result.startsWith("https://")) {
+    result = "http://" + result;
+  }
+  return result;
+};
+
+/**
  * Returns a random alphanumeric string.
  * @param  {number} length
  *         The desired length of the generated string.
@@ -50,11 +65,8 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  let longURL = req.body.longURL;
   // Add "http://" to the URL if it doesn't already have it
-  if (!longURL.startsWith("http://") && !longURL.startsWith("https://")) {
-    longURL = "http://" + longURL;
-  }
+  const longURL = addHttp(req.body.longURL);
   // Generate a unique shortURL to be added to the database
   let shortURL = generateRandomString(6);
   while (shortURL in urlDatabase) {
@@ -75,11 +87,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 // Updates a URL
 app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  let newURL = req.body.newURL;
   // Add "http://" to the new URL if it doesn't already have it
-  if (!newURL.startsWith("http://") && !newURL.startsWith("https://")) {
-    newURL = "http://" + newURL;
-  }
+  const newURL = addHttp(req.body.newURL);
   // Update entry in database
   urlDatabase[shortURL] = newURL;
   // Redirect to index page
