@@ -44,8 +44,15 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  res.send("OK"); // Respond with "OK" (replace later!)
+  const longURL = req.body.longURL;
+  // Generate a unique shortURL to be added to the database
+  let shortURL = generateRandomString(6);
+  while (shortURL in urlDatabase) {
+    shortURL = generateRandomString(6);
+  }
+  urlDatabase[shortURL] = longURL;
+  // Redirect to the newly created URL's show page
+  res.redirect(`/urls/${shortURL}`);
 });
 
 // Display a URL from the database
