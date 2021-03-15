@@ -72,6 +72,20 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
+// Updates a URL
+app.post("/urls/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  let newURL = req.body.newURL;
+  // Add "http://" to the new URL if it doesn't already have it
+  if (!newURL.startsWith("http://") && !newURL.startsWith("https://")) {
+    newURL = "http://" + newURL;
+  }
+  // Update entry in database
+  urlDatabase[shortURL] = newURL;
+  // Redirect to index page
+  res.redirect(`/urls`);
+});
+
 // Display a URL from the database
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
