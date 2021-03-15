@@ -50,7 +50,11 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  const longURL = req.body.longURL;
+  let longURL = req.body.longURL;
+  // Add "http://" to the URL if it doesn't already have it
+  if (!longURL.startsWith("http://") && !longURL.startsWith("https://")) {
+    longURL = "http://" + longURL;
+  }
   // Generate a unique shortURL to be added to the database
   let shortURL = generateRandomString(6);
   while (shortURL in urlDatabase) {
