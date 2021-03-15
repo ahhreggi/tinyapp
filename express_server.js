@@ -37,6 +37,12 @@ const generateRandomString = (length = 6) => {
 
 // ROUTES //////////////////////////////////////////
 
+// Redirect valid /u/shortURL requests to its longURL
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
+});
+
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
