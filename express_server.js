@@ -103,7 +103,7 @@ app.post("/urls", (req, res) => {
 });
 
 // Delete a URL
-app.post("/urls/:shortURL/delete", (req, res) => {
+app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   delete urlDatabase[shortURL];
   res.redirect("/urls");
