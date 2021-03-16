@@ -59,7 +59,15 @@ const generateRandomString = (length = 6) => {
 // Log the user in
 app.post("/login", (req, res) => {
   const username = req.body.username;
-  res.cookie("username", username);
+  if (username) {
+    res.cookie("username", username);
+  }
+  res.redirect("/urls");
+});
+
+// Log the user out
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
   res.redirect("/urls");
 });
 
@@ -119,8 +127,6 @@ app.get("/urls/:shortURL", (req, res) => {
 // Display all URLs in the database
 app.get("/urls", (req, res) => {
   const cookieUsername = req.cookies["username"];
-  console.log("hey look!");
-  console.log(cookieUsername);
   const templateVars = { username: cookieUsername, urls: urlDatabase };
   res.render("urls_index", templateVars);
 });

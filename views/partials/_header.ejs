@@ -25,7 +25,10 @@
 
     <% } else { %>
 
-      <span class="navbar-brand">Welcome, <%= username %>!</span>
+        <span class="navbar-brand">Welcome, <%= username %>!</span>
+        <form class="form-inline" action="/logout" method="POST">
+        <button type="submit" class="btn btn-primary">Logout</button>
+      </form>
     
     <% } %> 
 
