@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const methodOverride = require("method-override");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -13,11 +14,14 @@ const urlDatabase = {
 // Set the view engine to EJS
 app.set("view engine", "ejs");
 
+// MIDDLEWARE //////////////////////////////////////
+
 // Convert the request body from a Buffer into a readable string (req.body)
 app.use(bodyParser.urlencoded({extended: true}));
-
 // Parse cookies
 app.use(cookieParser());
+// Override POST requests with PUT/DELETE
+app.use(methodOverride("_method"));
 
 // UTILITY FUNCTIONS ///////////////////////////////
 
@@ -106,7 +110,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 // Updates a URL
-app.post("/urls/:shortURL", (req, res) => {
+app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // Add "http://" to the new URL if it doesn't already have it
   const newURL = addHttp(req.body.newURL);
