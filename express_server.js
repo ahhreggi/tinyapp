@@ -133,7 +133,7 @@ app.get("/urls", (req, res) => {
 
 // Home page
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  res.redirect("/urls");
 });
 
 ////////////////////////////////////////////////////
