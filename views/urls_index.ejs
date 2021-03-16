@@ -10,9 +10,10 @@
 </head>
 <body>
 
-  <%- include("partials/_header.ejs") %>
+  <%- include("partials/_header.ejs", {username}) %>
   
   <main style="margin: 1em;">
+    <%= username %> 
     <h3>My URLs</h3>
     <table class="table">
       <thead>
