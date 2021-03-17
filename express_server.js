@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const methodOverride = require("method-override");
+const path = require("path");
 
 // Helper functions
 const {
@@ -61,6 +62,8 @@ app.use(cookieSession({
 }));
 // Override POST requests with PUT/DELETE
 app.use(methodOverride("_method"));
+// Serve public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ENDPOINTS & ROUTES //////////////////////////////
 

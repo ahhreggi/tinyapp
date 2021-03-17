@@ -1,22 +1,23 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="/urls">TinyApp</a>
+  <nav class="navbar navbar-expand-md navbar-light bg-transparent">
+    <a class="navbar-brand mb-0 h1 nav-item" href="/">tinyapp.</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/urls">My URLs</a>
-        <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <a class="navbar-brand nav-item nav-link" href="/urls">my links</a>
+        <a class="navbar-brand nav-item nav-link" href="/urls/new">create</a>
       </div>
     </div>
+
 
     <!-- Login form -->
 
     <% if (!userData) { %>
 
       <a href="/login">
-        <button type="button" class="btn btn-outline-light mx-1" style="width: 100px">Login</button>
+        <button type="button" class="btn btn-outline-dark mx-1" style="width: 100px">Login</button>
       </a>
       <a href="/register">
         <button type="button" class="btn btn-primary mx-1" style="width: 100px">Sign Up</button>

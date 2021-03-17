@@ -1,0 +1,16 @@
+body {
+  background-color: rgb(255, 255, 255);
+  color: white;
+}
+
+.jumbotron {
+  background-image: linear-gradient(rgb(10, 10, 10), rgb(70, 70, 70));
+}
+
+.nav-item {
+  color: rgb(33, 36, 65) !important;
+}
+
+hr {
+  background-color: rgb(255, 255, 255);
+}
