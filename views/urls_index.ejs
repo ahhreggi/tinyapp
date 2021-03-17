@@ -17,52 +17,49 @@
 
     <div class="container">
     
-      <main style="margin: 1em;">
-        <% if (!userData) { %>
+      <% if (!userData) { %>
 
-          Log in or sign up to start creating your own URLs!
+        Log in or sign up to start creating your own URLs!
 
-        <% } else { %> 
+      <% } else { %> 
 
-          <h3>My URLs</h3>
-          <table class="table">
-            <thead>
+        <h3>My URLs</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Short URL</th>
+              <th scope="col">Long URL</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let shortURL in urlDB) { %>
               <tr>
-                <th scope="col">Short URL</th>
-                <th scope="col">Long URL</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                <td>
+                  <a class="tinyapp-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
+                </td>
+                <td>
+                  <a class="tinyapp-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
+                </td>
+                <td>
+                  <a href="/urls/<%= shortURL %>">
+                    <button type="button" class="btn btn-outline-primary">Edit</button>
+                  </a>
+                </td>
+                <td>
+                  <form method="POST" action="/urls/<%= shortURL %>/delete?_method=DELETE">
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                  </form>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <% for(let shortURL in urlDB) { %>
-                <tr>
-                  <td>
-                    <a class="tinyapp-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
-                  </td>
-                  <td>
-                    <a class="tinyapp-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
-                  </td>
-                  <td>
-                    <a href="/urls/<%= shortURL %>">
-                      <button type="button" class="btn btn-outline-primary">Edit</button>
-                    </a>
-                  </td>
-                  <td>
-                    <form method="POST" action="/urls/<%= shortURL %>/delete?_method=DELETE">
-                      <button type="submit" class="btn btn-outline-danger">Delete</button>
-                    </form>
-                  </td>
-                </tr>
 
-              <% } %>
+            <% } %>
 
-            </tbody>
-          </table>
+          </tbody>
+        </table>
 
-        <% } %> 
-        
-      </main>
+      <% } %> 
     
     </div>
 
