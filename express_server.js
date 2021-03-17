@@ -172,16 +172,25 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 // Updates a URL
 app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  // Check that the user is logged in and owns the short URL before editing
+  // Check if the user is logged in
   const cookieUserID = req.session.userID;
-  if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
-    // Add "http://" to the new URL if it doesn"t already have it
-    const newURL = addHttp(req.body.newURL);
-    // Update entry in database
-    urlDatabase[shortURL].longURL = newURL;
+  if (cookieUserID) {
+    // Check if the user owns the URL
+    if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
+      // Add "http://" to the new URL if it doesn"t already have it
+      const newURL = addHttp(req.body.newURL);
+      // Update entry in database
+      urlDatabase[shortURL].longURL = newURL;
+      // Redirect to index page
+      res.redirect(`/urls`);
+    } else {
+      // If the user doesn't own the URL, render an error page
+      res.send("You are logged in but you don't own that URL!");
+    }
+  } else {
+    // If the user is not logged in, render an error page
+    res.send("You need to log in before editing a URL!");
   }
-  // Redirect to index page
-  res.redirect(`/urls`);
 });
 
 // Display a URL from the database
