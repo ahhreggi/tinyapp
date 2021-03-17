@@ -100,6 +100,14 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+// Form to login to an existing account
+app.get("/login", (req, res) => {
+  const cookieUserID = req.cookies["user_id"];
+  const userData = users[cookieUserID];
+  const templateVars = { userData: userData };
+  res.render("login", templateVars);
+});
+
 // Form to register a new account
 app.get("/register", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
