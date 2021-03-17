@@ -120,9 +120,12 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If an email/password is not provided or an email already exists, respond with a 400 status code
-  if (!email || !password || isExistingUser(email, users)) {
+  // If an email/password is not provided, respond with a 400 status code
+  if (!email || !password) {
     res.status(400).send("You didn't enter an email/password!");
+    // If the email already exists, respond with an error --> add flash message
+  } else if (isExistingUser(email, users)) {
+    res.send("E-mail is already in use.");
   } else {
     // Add data to the database
     const id = generateRandomString(6);
