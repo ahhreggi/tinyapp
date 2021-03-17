@@ -9,28 +9,26 @@
         <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
         <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
       </div>
-    </div>
-
-    <!-- Login form -->
-
-    <% if (!userData) { %>
-
-      <a href="/login">
-        <button type="button" class="btn btn-outline-dark mx-1" style="width: 100px">Login</button>
-      </a>
-      <a href="/register">
-        <button type="button" class="btn btn-primary mx-1" style="width: 100px">Sign Up</button>
-      </a>
-
-    <% } else { %>
-
-      <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
-
-      <form class="form-inline" action="/logout" method="POST">
-        <button type="submit" class="btn btn-dark" style="width: 100px">Logout</button>
-      </form>
     
-    <% } %>
+      <div class="navbar-nav ml-auto">
+        <!-- Login form -->
+
+        <% if (!userData) { %>
+
+          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/login">login</a>
+          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/register">sign up</a>
+
+        <% } else { %>
+
+          <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
+
+          <form class="form-inline" action="/logout" method="POST">
+            <button type="submit" class="btn btn-dark" style="width: 100px">Logout</button>
+          </form>
+        
+        <% } %>
+      </div>
+    </div>
 
   </nav>
 </header>
