@@ -232,7 +232,7 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
-  const templateVars = { userData: userData, urls: urlDatabase };
+  const templateVars = { userData: userData, urlDB: urlDatabase };
   res.render("urls_index", templateVars);
 });
 

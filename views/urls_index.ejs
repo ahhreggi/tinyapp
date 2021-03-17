@@ -24,16 +24,16 @@
         </tr>
       </thead>
       <tbody>
-        <% for(let url in urls) { %>
+        <% for(let shortURL in urlDB) { %>
           <tr>
             <td>
-              <a href="/urls/<%= url %>"><%= url %></a>
+              <a href="/urls/<%= shortURL %>"><%= shortURL %></a>
             </td>
             <td>
-              <a href="<%= urls[url] %>" target="_blank"><%= urls[url] %></a>
+              <a href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
             </td>
             <td>
-              <a href="/urls/<%= url %>">
+              <a href="/urls/<%= shortURL %>">
                 <button type="button" class="btn btn-outline-primary">Edit</button>
               </a>
             </td>
