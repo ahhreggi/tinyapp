@@ -14,12 +14,13 @@
     <!-- Login form -->
 
     <% if (!userData) { %>
-    
-      <form class="form-inline" action="/login" method="POST">
-          <label for="username"><span class="navbar-brand mr-1">Sign in:</span></label>
-          <input class="form-control mx-2" type="text" name="username" placeholder="username" style="width: 150px" required>
-          <button type="submit" class="btn btn-outline-light" style="width: 80px">Login</button>
-      </form>
+
+      <a href="/login">
+        <button type="button" class="btn btn-outline-light mx-1" style="width: 100px">Login</button>
+      </a>
+      <a href="/register">
+        <button type="button" class="btn btn-primary mx-1" style="width: 100px">Sign Up</button>
+      </a>
 
     <% } else { %>
 
