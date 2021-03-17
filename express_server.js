@@ -145,7 +145,7 @@ app.get("/urls/new", (req, res) => {
   const userData = users[cookieUserID];
   // If the user is not logged in, redirect to the login page
   if (!userData) {
-    res.redirect("/login");
+    res.redirect("/login"); // --> add flash message
   } else {
     const templateVars = { userData: userData };
     res.render("urls_new", templateVars);
@@ -250,7 +250,7 @@ app.get("/urls", (req, res) => {
     const templateVars = { userData: userData, urlDB: userDB };
     res.render("urls_index", templateVars);
   } else {
-    res.redirect("/login"); // --> add flash "you need to log in first"
+    res.redirect("/login"); // --> add flash message
   }
 });
 
