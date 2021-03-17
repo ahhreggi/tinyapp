@@ -214,7 +214,7 @@ app.put("/urls/:shortURL", (req, res) => {
   // Add "http://" to the new URL if it doesn't already have it
   const newURL = addHttp(req.body.newURL);
   // Update entry in database
-  urlDatabase[shortURL] = newURL;
+  urlDatabase[shortURL].longURL = newURL;
   // Redirect to index page
   res.redirect(`/urls`);
 });
@@ -224,7 +224,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
   const shortURL = req.params.shortURL;
-  const templateVars = { userData: userData, shortURL, longURL: urlDatabase[shortURL]};
+  const templateVars = { userData: userData, shortURL, longURL: urlDatabase[shortURL].longURL};
   res.render("urls_show", templateVars);
 });
 
