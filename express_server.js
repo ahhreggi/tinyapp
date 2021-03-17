@@ -14,7 +14,6 @@ const {
 } = require("./helpers");
 
 const bcrypt = require("bcrypt");
-const e = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -89,8 +88,13 @@ app.post("/logout", (req, res) => {
 app.get("/login", (req, res) => {
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  const templateVars = { userData: userData };
-  res.render("login", templateVars);
+  // If the user is already logged in, redirect to /urls
+  if (userData) {
+    res.redirect("/urls");
+  } else {
+    const templateVars = { userData: userData };
+    res.render("login", templateVars);
+  }
 });
 
 // Form to register a new account
@@ -173,8 +177,8 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
       res.send("You are logged in but you can't delete that URL because you don't own it!");
     }
   } else {
-      // If the user is not logged in, render an error page
-      res.send("You need to log in before editing a URL!");
+    // If the user is not logged in, render an error page
+    res.send("You need to log in before editing a URL!");
   }
   res.redirect("/urls");
 });
