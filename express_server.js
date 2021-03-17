@@ -232,7 +232,16 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
-  const templateVars = { userData: userData, urlDB: urlDatabase };
+  // If a user is logged in, retrieve their URLs, otherwise pass an empty database
+  let userDB = {};
+  if (userData) {
+    // Filter the database for entries belonging to the user ID and populate userDB
+    const userShortURLs = Object.keys(urlDatabase).filter(shortURL => urlDatabase[shortURL].userID === userData.id);
+    for (const shortURL of userShortURLs) {
+      userDB[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  const templateVars = { userData: userData, urlDB: userDB };
   res.render("urls_index", templateVars);
 });
 
