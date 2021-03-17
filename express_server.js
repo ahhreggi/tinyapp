@@ -250,7 +250,7 @@ app.get("/urls", (req, res) => {
     const templateVars = { userData: userData, urlDB: userDB };
     res.render("urls_index", templateVars);
   } else {
-    res.send("You need to log in first!"); // -----> replace with error page
+    res.redirect("/login"); // --> add flash "you need to log in first"
   }
 });
 
