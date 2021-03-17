@@ -84,9 +84,9 @@ app.get("/register", (req, res) => {
 
 // Create a new account, log the user in, then redirect to home page
 app.post("/register", (req, res) => {
-  const newUsername = req.body.newUsername;
-  const newPassword = req.body.newPassword;
-  res.cookie("username", newUsername);
+  const email = req.body.email;
+  const password = req.body.password;
+  res.cookie("username", email);
   res.redirect("/urls");
 });
 
