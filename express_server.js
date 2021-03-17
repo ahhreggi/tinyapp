@@ -70,6 +70,19 @@ const generateRandomString = (length = 6) => {
   return randomStr;
 };
 
+/**
+ * Returns true if an email exists in the database, false otherwise.
+ * @param  {string} email
+ *         An email to look up in the database.
+ * @return {boolean}
+ *         A boolean determining whether or not the email exists.
+ */
+const isExistingUser = (email) => {
+  // Get an array of all emails in the user database
+  const allEmails = Object.keys(users).map((id) => users[id].email);
+  return allEmails.includes(email);
+}
+
 // ROUTES //////////////////////////////////////////
 
 // Log the user in
@@ -100,14 +113,17 @@ app.post("/register", (req, res) => {
   // Retrieve email and password from request body
   const email = req.body.email;
   const password = req.body.password;
-  // Add data to the database
-  const id = generateRandomString(6);
-  users[id] = { id, email, password };
-  // Set cookies with new user info
-  res.cookie("user_id", id);
-  res.cookie("username", email);
-  console.log(users);
-  res.redirect("/urls");
+  // If an email/password is not provided or an email already exists, respond with a 400 status code
+  if (!email || !password || isExistingUser(email)) {
+    res.status(400).send("Something went wrong!");
+  } else {
+    // Add data to the database
+    const id = generateRandomString(6);
+    users[id] = { id, email, password };
+    // Set cookies with new user info
+    res.cookie("user_id", id);
+    res.redirect("/urls");
+  };
 });
 
 // Redirect valid /u/shortURL requests to its longURL
