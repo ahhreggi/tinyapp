@@ -162,8 +162,13 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls/new", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
-  const templateVars = { userData: userData };
-  res.render("urls_new", templateVars);
+  // If the user is not logged in, redirect to the login page
+  if (!userData) {
+    res.redirect("/login");
+  } else {
+    const templateVars = { userData: userData };
+    res.render("urls_new", templateVars);
+  }
 });
 
 // Create a new URL
