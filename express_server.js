@@ -62,7 +62,7 @@ app.use(cookieSession({
 // Override POST requests with PUT/DELETE
 app.use(methodOverride("_method"));
 
-// ROUTES //////////////////////////////////////////
+// ENDPOINTS & ROUTES //////////////////////////////
 
 // Log the user in
 app.post("/login", (req, res) => {
@@ -101,8 +101,13 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  const templateVars = { userData: userData };
-  res.render("register", templateVars);
+  // If the user is already logged in, redirect to /urls
+  if (userData) {
+    res.redirect("/urls");
+  } else {
+    const templateVars = { userData: userData };
+    res.render("register", templateVars);
+  }
 });
 
 // Create a new account, log the user in, then redirect to home page
