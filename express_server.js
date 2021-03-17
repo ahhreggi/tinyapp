@@ -100,16 +100,39 @@ const isExistingUser = (email) => {
 };
 
 /**
- * Returns an object containing a user object from the user database given an email and password.
+ * Returns an object containing a user object from the user database given an email.
+ * @param  {string} email
+ *         A string containing a user's email.
+ * @param  {{Object.<id: string, email: string, password: string}} database
+ *         An object containing user IDs and the corresponding user credentials.
+ * @return {{id: string, email: string, password: string}|false}
+ *         An object containing a single user's credentials or false if none exist.
+ */
+const getUserByEmail = (email, database) => {
+  // Find and return the user object in the user database that has the given email
+  const userData = Object.values(database).find((user) => user.email === email);
+  // If an account was found, return the user data, false otherwise
+  return userData ? userData : false;
+};
+
+/**
+ * Returns true if the given email/password combination exists in the database.
  * @param  {string} email
  *         A string containing a user's email.
  * @param  {string} password
  *         A string containing a user's password.
- * @return {{id: string, email: string, password: string}}
+ * @param  {{Object.<id: string, email: string, password: string}} database
+ *         An object containing user IDs and the corresponding user credentials.
+ * @return {{id: string, email: string, password: string}|boolean}
+ *         An object containing a single user's credentials or false if none exist.
  */
-const getUser = (email, password) => {
-  // Return the user object in the user database that has the given email and password
-  return Object.values(users).find((user) => user.email === email && bcrypt.compareSync(password, user.password));
+const authenticateUser = (email, password, database) => {
+  // Retrieve user info from the database by email
+  const userData = getUserByEmail(email, database);
+  // If a user with the email exists, check if the credentials are valid
+  const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
+  // If the credentials are valid, return the user data, false otherwise
+  return valid ? userData : false;
 };
 
 /**
@@ -149,8 +172,8 @@ const userOwnsURL = (userID, shortURL) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  // Check if the email/password combination exists
-  const userData = getUser(email, password);
+  // Retrieve the account that matches the credentials if one exists
+  const userData = authenticateUser(email, password, users);
   if (userData) {
     req.session.userID = userData.id;
     res.redirect("/urls");
