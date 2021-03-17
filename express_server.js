@@ -14,6 +14,7 @@ const {
 } = require("./helpers");
 
 const bcrypt = require("bcrypt");
+const e = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -163,8 +164,17 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before deleting
   const cookieUserID = req.session.userID;
-  if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
-    delete urlDatabase[shortURL];
+  const userData = users[cookieUserID];
+  if (userData) {
+    if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
+      delete urlDatabase[shortURL];
+    } else {
+      // If the user doesn't own the URL, render an error page
+      res.send("You are logged in but you can't delete that URL because you don't own it!");
+    }
+  } else {
+      // If the user is not logged in, render an error page
+      res.send("You need to log in before editing a URL!");
   }
   res.redirect("/urls");
 });
@@ -174,7 +184,8 @@ app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check if the user is logged in
   const cookieUserID = req.session.userID;
-  if (cookieUserID) {
+  const userData = users[cookieUserID];
+  if (userData) {
     // Check if the user owns the URL
     if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
       // Add "http://" to the new URL if it doesn"t already have it
