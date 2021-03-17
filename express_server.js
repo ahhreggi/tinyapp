@@ -7,19 +7,29 @@ const PORT = 8080; // default port 8080
 
 // Databases in memory --> will be stored in a real database later!
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    userID: "user01",
+    longURL: "http://www.lighthouselabs.ca"
+  },
+  "g93mnV": {
+    userID: "user01",
+    longURL: "http://www.reddit.com"
+  },
+  "9sm5xK": {
+    userID: "user02",
+    longURL: "http://www.google.com"
+  }
 };
 const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+  "user01": {
+    id: "user01",
+    email: "user1@example.com",
+    password: "password1"
   },
-  "user2RandomID": {
-    id: "user2RandomID",
+  "user02": {
+    id: "user02",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: "password2"
   }
 };
 
