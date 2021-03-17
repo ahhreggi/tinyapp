@@ -193,9 +193,9 @@ app.post("/urls", (req, res) => {
   // Retrieve the user's ID
   const cookieUserID = req.cookies["user_id"];
   const newURL = {
-      userID: cookieUserID,
-      longURL: longURL
-  }
+    userID: cookieUserID,
+    longURL: longURL
+  };
   urlDatabase[shortURL] = newURL;
   // Redirect to the newly created URL's show page
   res.redirect(`/urls/${shortURL}`);
@@ -223,8 +223,8 @@ app.put("/urls/:shortURL", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
-  const shortURL = req.params.shortURL;
-  const templateVars = { userData: userData, shortURL, longURL: urlDatabase[shortURL].longURL};
+  const url = req.params.shortURL;
+  const templateVars = { userData: userData, shortURL: url, longURL: urlDatabase[url].longURL};
   res.render("urls_show", templateVars);
 });
 
