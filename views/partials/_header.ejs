@@ -13,7 +13,7 @@
 
     <!-- Login form -->
 
-    <% if (!username) { %>
+    <% if (!userData) { %>
     
       <form class="form-inline" action="/login" method="POST">
           <label for="username"><span class="navbar-brand mr-1">Sign in:</span></label>
@@ -23,7 +23,7 @@
 
     <% } else { %>
 
-      <span class="navbar-brand">Welcome, <b><%= username %></b>!</span>
+      <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
 
       <form class="form-inline" action="/logout" method="POST">
         <button type="submit" class="btn btn-light" style="width: 80px">Logout</button>
