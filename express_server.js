@@ -5,10 +5,22 @@ const methodOverride = require("method-override");
 const app = express();
 const PORT = 8080; // default port 8080
 
-// Database in memory --> will be stored in a real database later!
+// Databases in memory --> will be stored in a real database later!
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
+};
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+  "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
 };
 
 // Set the view engine to EJS
