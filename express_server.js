@@ -104,7 +104,7 @@ const isExistingUser = (email) => {
  */
 const getUser = (email, password) => {
   // Return the user object in the user database that has the given email and password
-  return Object.values(users).find((user) => user.email === email && user.password === password);
+  return Object.values(users).find((user) => user.email === email && bcrypt.compareSync(password, user.password));
 };
 
 /**
