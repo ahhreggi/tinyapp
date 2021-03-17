@@ -85,7 +85,7 @@ app.post("/login", (req, res) => {
 // Log the user out
 app.post("/logout", (req, res) => {
   req.session.userID = null;
-  res.redirect("/urls");
+  res.redirect("/");
 });
 
 // Form to login to an existing account
