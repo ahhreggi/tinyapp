@@ -222,7 +222,11 @@ app.post("/urls", (req, res) => {
 // Delete a URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
-  delete urlDatabase[shortURL];
+  // Check that the user is logged in and owns the short URL before deleting
+  const cookieUserID = req.cookies["user_id"];
+  if (urlDatabase[shortURL].userID === cookieUserID) {
+    delete urlDatabase[shortURL];
+  }
   res.redirect("/urls");
 });
 
