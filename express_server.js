@@ -33,15 +33,15 @@ const urlDatabase = {
   }
 };
 const users = {
-  'aUA4CE': {
-    id: 'aUA4CE',
-    email: 'user1@example.com',
-    password: '$2b$10$Ohnf9u6HTv13.FnN5DPDs.xetN927Id./C90YXXOgREKq/hIQesiq'
+  "aUA4CE": {
+    id: "aUA4CE",
+    email: "user1@example.com",
+    password: "$2b$10$Ohnf9u6HTv13.FnN5DPDs.xetN927Id./C90YXXOgREKq/hIQesiq"
   },
   ccLPCa: {
-    id: 'ccLPCa',
-    email: 'user2@example.com',
-    password: '$2b$10$yI6TVKpNSgqGK3eaAPZDu.2YIewoUuFs82bYLiYwfCUuam6cLZIHy'
+    id: "ccLPCa",
+    email: "user2@example.com",
+    password: "$2b$10$yI6TVKpNSgqGK3eaAPZDu.2YIewoUuFs82bYLiYwfCUuam6cLZIHy"
   }
 };
 
@@ -140,21 +140,21 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  // Add "http://" to the URL if it doesn't already have it
+  // Add "http://" to the URL if it doesn"t already have it
   const longURL = addHttp(req.body.longURL);
   // Generate a unique shortURL to be added to the database
   let shortURL = generateRandomString(6);
   while (shortURL in urlDatabase) {
     shortURL = generateRandomString(6);
   }
-  // Retrieve the user's ID
+  // Retrieve the user"s ID
   const cookieUserID = req.session.userID;
   const newURL = {
     userID: cookieUserID,
     longURL: longURL
   };
   urlDatabase[shortURL] = newURL;
-  // Redirect to the newly created URL's show page
+  // Redirect to the newly created URL"s show page
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -175,7 +175,7 @@ app.put("/urls/:shortURL", (req, res) => {
   // Check that the user is logged in and owns the short URL before editing
   const cookieUserID = req.session.userID;
   if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
-    // Add "http://" to the new URL if it doesn't already have it
+    // Add "http://" to the new URL if it doesn"t already have it
     const newURL = addHttp(req.body.newURL);
     // Update entry in database
     urlDatabase[shortURL].longURL = newURL;
@@ -188,9 +188,22 @@ app.put("/urls/:shortURL", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  const url = req.params.shortURL;
-  const templateVars = { userData: userData, shortURL: url, longURL: urlDatabase[url].longURL};
-  res.render("urls_show", templateVars);
+  const targetURL = req.params.shortURL;
+  // Check if the URL is in the database
+  const longURL = urlDatabase[targetURL].longURL;
+  // If the URL does not exist, render an error page
+  if (!longURL) {
+    res.send("That URL doesn't exist!");
+  } else {
+    // If the user is logged in and owns the URL, display the page
+    if (userData && urlDatabase[targetURL].userID === userData.id) {
+      const templateVars = { userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL};
+      res.render("urls_show", templateVars);
+    } else {
+      // Otherwise if the user is logged out or does not own the URL, render an error page
+      res.send("Either you are not logged in or that URL doesn't belong to you!");
+    }
+  }
 });
 
 // Display all URLs in the database
@@ -204,7 +217,7 @@ app.get("/urls", (req, res) => {
     const templateVars = { userData: userData, urlDB: userDB };
     res.render("urls_index", templateVars);
   } else {
-    res.send("You need to log in first!") // -----> replace with error page
+    res.send("You need to log in first!"); // -----> replace with error page
   }
 });
 
