@@ -4,6 +4,10 @@
   --primary-color-lighter: rgb(144, 147, 179);
 }
 
+.card {
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.24);
+}
+
 body {
   background-color: rgb(255, 255, 255);
   color: rgb(33, 36, 65);
@@ -12,6 +16,7 @@ body {
 .jumbotron {
   background-image: linear-gradient(rgb(10, 10, 10), rgb(70, 70, 70));
   color: white;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .nav-tinyapp-link {

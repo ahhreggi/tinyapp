@@ -17,19 +17,26 @@
     
       <%- include("partials/_header.ejs", {userData}) %>
 
-      <main class="container">
+      <main class="d-flex justify-content-center">
 
-        <h3>Login</h3>
+        <div class="card" style="max-width: 500px">
+          <img class="card-img-top" src="https://images.unsplash.com/photo-1586527155314-1d25428324ff?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="puzzle pieces">
+          <div class="card-body">
 
-        Log in to an existing account or <a href="/register">sign up</a> to start creating your own URLs!
+            <h5 class="card-title">Login</h5>
 
-        <form class="form-inline" action="/login" method="POST">
-          <div class="form-group mb-2">
-            <input class="form-control" type="email" name="email" placeholder="email" style="width: 300px; margin: 1em" required>
-            <input class="form-control" type="password" name="password" placeholder="password" style="width: 300px; margin: 1em" required>
-            <button type="submit" class="btn btn-primary">Log in</button>
+            <form class="form" action="/login" method="POST">
+              <div class="form-group mb-2">
+                <label for="email" class="form-label">Email</label>
+                <input class="form-control" type="email" name="email" required>
+                <label for="password" class="form-label">Password</label>
+                <input class="form-control" type="password" name="password" pl required>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
+              </div>
+            </form>
+            
           </div>
-        </form>
+        </div>
 
       </main>
 
