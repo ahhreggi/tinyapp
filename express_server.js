@@ -20,15 +20,15 @@ const PORT = 8080; // default port 8080
 // Databases in memory --> will be stored in a real database later!
 const urlDatabase = {
   "b2xVn2": {
-    userID: "user01",
+    userID: "aUA4CE",
     longURL: "http://www.lighthouselabs.ca"
   },
   "sgq3y6": {
-    userID: "user01",
+    userID: "aUA4CE",
     longURL: "http://www.reddit.com"
   },
   "9sm5xK": {
-    userID: "user02",
+    userID: "ccLPCa",
     longURL: "http://www.google.com"
   }
 };
@@ -197,13 +197,15 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  // If a user is logged in, retrieve their URLs, otherwise pass the empty database
+  // If a user is logged in, retrieve their URLs, otherwise render an error page
   let userDB = {};
   if (userData) {
     userDB = urlsForUser(userData.id, urlDatabase);
+    const templateVars = { userData: userData, urlDB: userDB };
+    res.render("urls_index", templateVars);
+  } else {
+    res.send("You need to log in first!") // -----> replace with error page
   }
-  const templateVars = { userData: userData, urlDB: userDB };
-  res.render("urls_index", templateVars);
 });
 
 // Home page
