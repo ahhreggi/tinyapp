@@ -81,7 +81,7 @@ const isExistingUser = (email) => {
   // Get an array of all emails in the user database
   const allEmails = Object.keys(users).map((id) => users[id].email);
   return allEmails.includes(email);
-}
+};
 
 // ROUTES //////////////////////////////////////////
 
@@ -123,7 +123,7 @@ app.post("/register", (req, res) => {
     // Set cookies with new user info
     res.cookie("user_id", id);
     res.redirect("/urls");
-  };
+  }
 });
 
 // Redirect valid /u/shortURL requests to its longURL
