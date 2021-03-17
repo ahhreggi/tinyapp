@@ -87,13 +87,13 @@ const isExistingUser = (email) => {
  * Returns an object containing a user object from the user database given an email and password.
  * @param  {string} email
  *         A string containing a user's email.
- * @param  {string} password 
+ * @param  {string} password
  *         A string containing a user's password.
  * @return {{id: string, email: string, password: string}}
  */
 const getUser = (email, password) => {
   // Return the user object in the user database that has the given email and password
-  return Object.values(users).find((user) => user.email === email && user.password === password)
+  return Object.values(users).find((user) => user.email === email && user.password === password);
 };
 
 // ROUTES //////////////////////////////////////////
@@ -105,10 +105,10 @@ app.post("/login", (req, res) => {
   // Check if the email/password combination exists
   const userData = getUser(email, password);
   if (userData) {
-    res.cookie("user_id", userData.id)
+    res.cookie("user_id", userData.id);
     res.redirect("/urls");
   } else {
-    res.status(403).send("Invalid email/password!")
+    res.status(403).send("Invalid email/password!");
   }
 });
 
