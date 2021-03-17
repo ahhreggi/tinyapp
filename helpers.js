@@ -123,6 +123,7 @@ module.exports = {
   addHttp,
   generateRandomString,
   isExistingUser,
+  getUserByEmail,
   authenticateUser,
   urlsForUser,
   userOwnsURL
