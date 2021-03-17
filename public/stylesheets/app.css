@@ -1,3 +1,9 @@
+:root {
+  --primary-color: rgb(33, 36, 65);
+  --primary-color-light: rgb(82, 86, 117);
+  --primary-color-lighter: rgb(144, 147, 179);
+}
+
 body {
   background-color: rgb(255, 255, 255);
   color: rgb(33, 36, 65);
@@ -8,16 +14,14 @@ body {
   color: white;
 }
 
-.nav-tinyapp {
-  color: rgb(33, 36, 65) !important;
+.nav-tinyapp-link {
+  color: var(--primary-color) !important;
 }
 
-.nav-tinyapp:hover {
-  color: rgb(33, 36, 65, 0.7) !important;
-}
-
-.nav-tinyapp:active {
-  color: rgb(33, 36, 65, 0.4) !important;
+.nav-tinyapp-link:hover,
+.tinyapp-link:hover {
+  color: var(--primary-color-lighter) !important;
+  text-decoration: none;
 }
 
 hr {
