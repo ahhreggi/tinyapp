@@ -106,6 +106,24 @@ const getUser = (email, password) => {
   return Object.values(users).find((user) => user.email === email && user.password === password);
 };
 
+/**
+ * Returns an object containing url objects belonging to the user with the given ID.
+ * @param  {string} id
+ *         A string containing the user's ID.
+ * @return {{Object.<userID: string, longURL: string>}}
+ *         An object with the user's URLs.
+ */
+const urlsForUser = (id) => {
+  const userDB = {};
+  // Filter the database for entries belonging to the user ID
+  const userShortURLs = Object.keys(urlDatabase).filter(shortURL => urlDatabase[shortURL].userID === id);
+  // Populate userDB with the data of each short URL, retrieved from the URL database.
+  for (const shortURL of userShortURLs) {
+    userDB[shortURL] = urlDatabase[shortURL];
+  }
+  return userDB;
+};
+
 // ROUTES //////////////////////////////////////////
 
 // Log the user in
@@ -232,14 +250,10 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   const userData = users[cookieUserID];
-  // If a user is logged in, retrieve their URLs, otherwise pass an empty database
+  // If a user is logged in, retrieve their URLs, otherwise pass the empty database
   let userDB = {};
   if (userData) {
-    // Filter the database for entries belonging to the user ID and populate userDB
-    const userShortURLs = Object.keys(urlDatabase).filter(shortURL => urlDatabase[shortURL].userID === userData.id);
-    for (const shortURL of userShortURLs) {
-      userDB[shortURL] = urlDatabase[shortURL];
-    }
+    userDB = urlsForUser(userData.id);
   }
   const templateVars = { userData: userData, urlDB: userDB };
   res.render("urls_index", templateVars);
