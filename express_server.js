@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 const methodOverride = require("method-override");
 const bcrypt = require("bcrypt");
 const app = express();
@@ -42,7 +42,12 @@ app.set("view engine", "ejs");
 // Convert the request body from a Buffer into a readable string (req.body)
 app.use(bodyParser.urlencoded({extended: true}));
 // Parse cookies
-app.use(cookieParser());
+app.use(cookieSession({
+  name: "session",
+  keys: ["userID"],
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 // Override POST requests with PUT/DELETE
 app.use(methodOverride("_method"));
 
@@ -147,7 +152,7 @@ app.post("/login", (req, res) => {
   // Check if the email/password combination exists
   const userData = getUser(email, password);
   if (userData) {
-    res.cookie("user_id", userData.id);
+    req.session.userID = userData.id;
     res.redirect("/urls");
   } else {
     res.status(403).send("Invalid email/password!");
@@ -156,13 +161,13 @@ app.post("/login", (req, res) => {
 
 // Log the user out
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id");
+  req.session.userID = null;
   res.redirect("/urls");
 });
 
 // Form to login to an existing account
 app.get("/login", (req, res) => {
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   const templateVars = { userData: userData };
   res.render("login", templateVars);
@@ -170,7 +175,7 @@ app.get("/login", (req, res) => {
 
 // Form to register a new account
 app.get("/register", (req, res) => {
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   const templateVars = { userData: userData };
   res.render("register", templateVars);
@@ -190,7 +195,7 @@ app.post("/register", (req, res) => {
     const id = generateRandomString(6);
     users[id] = { id, email, password: hashedPassword };
     // Set cookies with new user info
-    res.cookie("user_id", id);
+    req.session.userID = id;
     res.redirect("/urls");
   }
 });
@@ -203,7 +208,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   // If the user is not logged in, redirect to the login page
   if (!userData) {
@@ -224,7 +229,7 @@ app.post("/urls", (req, res) => {
     shortURL = generateRandomString(6);
   }
   // Retrieve the user's ID
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const newURL = {
     userID: cookieUserID,
     longURL: longURL
@@ -238,7 +243,7 @@ app.post("/urls", (req, res) => {
 app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before deleting
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   if (userOwnsURL(cookieUserID, shortURL)) {
     delete urlDatabase[shortURL];
   }
@@ -249,7 +254,7 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before editing
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   if (userOwnsURL(cookieUserID, shortURL)) {
     // Add "http://" to the new URL if it doesn't already have it
     const newURL = addHttp(req.body.newURL);
@@ -262,7 +267,7 @@ app.put("/urls/:shortURL", (req, res) => {
 
 // Display a URL from the database
 app.get("/urls/:shortURL", (req, res) => {
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   const url = req.params.shortURL;
   const templateVars = { userData: userData, shortURL: url, longURL: urlDatabase[url].longURL};
@@ -271,7 +276,7 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // Display all URLs in the database
 app.get("/urls", (req, res) => {
-  const cookieUserID = req.cookies["user_id"];
+  const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   // If a user is logged in, retrieve their URLs, otherwise pass the empty database
   let userDB = {};
