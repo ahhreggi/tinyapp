@@ -75,6 +75,13 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+// Form to register a new account
+app.get("/register", (req, res) => {
+  const cookieUsername = req.cookies["username"];
+  const templateVars = { username: cookieUsername };
+  res.render("register", templateVars);
+});
+
 // Redirect valid /u/shortURL requests to its longURL
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
