@@ -90,12 +90,14 @@ const generateRandomString = (length = 6) => {
  * Returns true if an email exists in the database, false otherwise.
  * @param  {string} email
  *         An email to look up in the database.
+ * @param  {{Object.<id: string, email: string, password: string}} userDB
+ *         An object containing user IDs and the corresponding user credentials.
  * @return {boolean}
  *         A boolean representing whether or not the email exists.
  */
-const isExistingUser = (email) => {
+const isExistingUser = (email, userDB) => {
   // Get an array of all emails in the user database
-  const allEmails = Object.keys(users).map((id) => users[id].email);
+  const allEmails = Object.keys(userDB).map((id) => userDB[id].email);
   return allEmails.includes(email);
 };
 
@@ -103,14 +105,14 @@ const isExistingUser = (email) => {
  * Returns an object containing a user object from the user database given an email.
  * @param  {string} email
  *         A string containing a user's email.
- * @param  {{Object.<id: string, email: string, password: string}} database
+ * @param  {{Object.<id: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|false}
  *         An object containing a single user's credentials or false if none exist.
  */
-const getUserByEmail = (email, database) => {
+const getUserByEmail = (email, userDB) => {
   // Find and return the user object in the user database that has the given email
-  const userData = Object.values(database).find((user) => user.email === email);
+  const userData = Object.values(userDB).find((user) => user.email === email);
   // If an account was found, return the user data, false otherwise
   return userData ? userData : false;
 };
@@ -121,14 +123,14 @@ const getUserByEmail = (email, database) => {
  *         A string containing a user's email.
  * @param  {string} password
  *         A string containing a user's password.
- * @param  {{Object.<id: string, email: string, password: string}} database
+ * @param  {{Object.<id: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|boolean}
  *         An object containing a single user's credentials or false if none exist.
  */
-const authenticateUser = (email, password, database) => {
+const authenticateUser = (email, password, userDB) => {
   // Retrieve user info from the database by email
-  const userData = getUserByEmail(email, database);
+  const userData = getUserByEmail(email, userDB);
   // If a user with the email exists, check if the credentials are valid
   const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
   // If the credentials are valid, return the user data, false otherwise
@@ -136,19 +138,21 @@ const authenticateUser = (email, password, database) => {
 };
 
 /**
- * Returns an object containing url objects belonging to the user with the given ID.
+ * Returns an object containing URLs from the database belonging to the user with the given ID.
  * @param  {string} id
  *         A string containing the user's ID.
+ * @param  {{Object.<userID: string, longURL: string>}} urlDB
+ *         An object containing all URLs in the database.
  * @return {{Object.<userID: string, longURL: string>}}
- *         An object with the user's URLs.
+ *         An object with URLs from the database belonging to the given ID.
  */
-const urlsForUser = (id) => {
+const urlsForUser = (id, urlDB) => {
   const userDB = {};
   // Filter the database for entries belonging to the user ID
-  const userShortURLs = Object.keys(urlDatabase).filter(shortURL => urlDatabase[shortURL].userID === id);
+  const userShortURLs = Object.keys(urlDB).filter(shortURL => urlDB[shortURL].userID === id);
   // Populate userDB with the data of each short URL, retrieved from the URL database.
   for (const shortURL of userShortURLs) {
-    userDB[shortURL] = urlDatabase[shortURL];
+    userDB[shortURL] = urlDB[shortURL];
   }
   return userDB;
 };
@@ -159,11 +163,13 @@ const urlsForUser = (id) => {
  *         A string containing the ID of a user.
  * @param  {string} shortURL
  *         A string containing the ID of a URL.
+ * @param  {{Object.<userID: string, longURL: string>}} urlDB
+ *         An object containing all URLs in the database.
  * @return {boolean}
  *         A boolean representing whether or not the URL belongs to the user.
  */
-const userOwnsURL = (userID, shortURL) => {
-  return urlDatabase[shortURL].userID === userID;
+const userOwnsURL = (userID, shortURL, urlDB) => {
+  return urlDB[shortURL].userID === userID;
 };
 
 // ROUTES //////////////////////////////////////////
@@ -211,7 +217,7 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
   // If an email/password is not provided or an email already exists, respond with a 400 status code
-  if (!email || !password || isExistingUser(email)) {
+  if (!email || !password || isExistingUser(email, users)) {
     res.status(400).send("Something went wrong!");
   } else {
     // Add data to the database
@@ -267,7 +273,7 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before deleting
   const cookieUserID = req.session.userID;
-  if (userOwnsURL(cookieUserID, shortURL)) {
+  if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
     delete urlDatabase[shortURL];
   }
   res.redirect("/urls");
@@ -278,7 +284,7 @@ app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before editing
   const cookieUserID = req.session.userID;
-  if (userOwnsURL(cookieUserID, shortURL)) {
+  if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
     // Add "http://" to the new URL if it doesn't already have it
     const newURL = addHttp(req.body.newURL);
     // Update entry in database
@@ -304,7 +310,7 @@ app.get("/urls", (req, res) => {
   // If a user is logged in, retrieve their URLs, otherwise pass the empty database
   let userDB = {};
   if (userData) {
-    userDB = urlsForUser(userData.id);
+    userDB = urlsForUser(userData.id, urlDatabase);
   }
   const templateVars = { userData: userData, urlDB: userDB };
   res.render("urls_index", templateVars);
