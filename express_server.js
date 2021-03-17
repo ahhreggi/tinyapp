@@ -82,6 +82,14 @@ app.get("/register", (req, res) => {
   res.render("register", templateVars);
 });
 
+// Create a new account, log the user in, then redirect to home page
+app.post("/register", (req, res) => {
+  const newUsername = req.body.newUsername;
+  const newPassword = req.body.newPassword;
+  res.cookie("username", newUsername);
+  res.redirect("/urls");
+});
+
 // Redirect valid /u/shortURL requests to its longURL
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
