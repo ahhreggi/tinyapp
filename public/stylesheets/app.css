@@ -1,14 +1,23 @@
 body {
   background-color: rgb(255, 255, 255);
-  color: white;
+  color: rgb(33, 36, 65);
 }
 
 .jumbotron {
   background-image: linear-gradient(rgb(10, 10, 10), rgb(70, 70, 70));
+  color: white;
 }
 
-.nav-item {
+.nav-tinyapp {
   color: rgb(33, 36, 65) !important;
+}
+
+.nav-tinyapp:hover {
+  color: rgb(33, 36, 65, 0.7) !important;
+}
+
+.nav-tinyapp:active {
+  color: rgb(33, 36, 65, 0.4) !important;
 }
 
 hr {
