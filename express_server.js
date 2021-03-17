@@ -96,9 +96,16 @@ app.get("/register", (req, res) => {
 
 // Create a new account, log the user in, then redirect to home page
 app.post("/register", (req, res) => {
+  // Retrieve email and password from request body
   const email = req.body.email;
   const password = req.body.password;
+  // Add data to the database
+  const id = generateRandomString(6);
+  users[id] = { id, email, password };
+  // Set cookies with new user info
+  res.cookie("user_id", id);
   res.cookie("username", email);
+  console.log(users);
   res.redirect("/urls");
 });
 
