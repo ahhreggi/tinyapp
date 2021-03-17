@@ -83,20 +83,38 @@ const isExistingUser = (email) => {
   return allEmails.includes(email);
 };
 
+/**
+ * Returns an object containing a user object from the user database given an email and password.
+ * @param  {string} email
+ *         A string containing a user's email.
+ * @param  {string} password
+ *         A string containing a user's password.
+ * @return {{id: string, email: string, password: string}}
+ */
+const getUser = (email, password) => {
+  // Return the user object in the user database that has the given email and password
+  return Object.values(users).find((user) => user.email === email && user.password === password);
+};
+
 // ROUTES //////////////////////////////////////////
 
 // Log the user in
 app.post("/login", (req, res) => {
-  const username = req.body.username;
-  if (username) {
-    res.cookie("username", username);
+  const email = req.body.email;
+  const password = req.body.password;
+  // Check if the email/password combination exists
+  const userData = getUser(email, password);
+  if (userData) {
+    res.cookie("user_id", userData.id);
+    res.redirect("/urls");
+  } else {
+    res.status(403).send("Invalid username/password!");
   }
-  res.redirect("/urls");
 });
 
 // Log the user out
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
 
