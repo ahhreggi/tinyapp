@@ -239,7 +239,6 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   const cookieUserID = req.cookies["user_id"];
   if (userOwnsURL(cookieUserID, shortURL)) {
     delete urlDatabase[shortURL];
-    console.log("DELETED");
   }
   res.redirect("/urls");
 });
