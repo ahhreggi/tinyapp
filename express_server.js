@@ -164,7 +164,7 @@ app.post("/register", (req, res) => {
 
 // Redirect valid /u/shortURL requests to its longURL
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
@@ -190,7 +190,13 @@ app.post("/urls", (req, res) => {
   while (shortURL in urlDatabase) {
     shortURL = generateRandomString(6);
   }
-  urlDatabase[shortURL] = longURL;
+  // Retrieve the user's ID
+  const cookieUserID = req.cookies["user_id"];
+  const newURL = {
+      userID: cookieUserID,
+      longURL: longURL
+  }
+  urlDatabase[shortURL] = newURL;
   // Redirect to the newly created URL's show page
   res.redirect(`/urls/${shortURL}`);
 });
