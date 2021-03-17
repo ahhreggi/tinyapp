@@ -1,34 +1,31 @@
 :root {
-  --primary-color: rgb(33, 36, 65);
-  --primary-color-light: rgb(82, 86, 117);
-  --primary-color-lighter: rgb(144, 147, 179);
+  --tinyapp-primary: rgb(33, 36, 65);
+  --tinyapp-secondary: rgb(82, 86, 117);
+  --tinyapp-tertiary: rgb(144, 147, 179);
+  --tinyapp-white: rgb(231, 231, 231);
 }
 
 .card {
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.24);
+  color: var(--tinyapp-primary);
 }
 
 body {
   background-color: rgb(10, 10, 20);
-  color: rgb(33, 36, 65);
-}
-
-.jumbotron {
-  background-image: linear-gradient(rgb(10, 10, 10), rgb(70, 70, 70));
-  color: white;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+  color: var(--tinyapp-white);
 }
 
 .nav-tinyapp-link {
-  color: var(--primary-color) !important;
+  color: var(--tinyapp-primary) !important;
 }
 
 .nav-tinyapp-link:hover,
 .tinyapp-link:hover {
-  color: var(--primary-color-lighter) !important;
+  color: var(--tinyapp-tertiary) !important;
   text-decoration: none;
 }
 
-hr {
-  background-color: rgb(255, 255, 255);
+hr,
+.navbar-tinyapp {
+  background-color: var(--tinyapp-white) !important;
 }
