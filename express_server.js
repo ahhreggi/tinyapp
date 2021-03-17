@@ -71,6 +71,7 @@ app.post("/login", (req, res) => {
   // Retrieve the account that matches the credentials if one exists
   const userData = authenticateUser(email, password, users);
   if (userData) {
+    // Set a cookie and redirect to /urls
     req.session.userID = userData.id;
     res.redirect("/urls");
   } else {
@@ -118,12 +119,12 @@ app.post("/register", (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
   // If an email/password is not provided or an email already exists, respond with a 400 status code
   if (!email || !password || isExistingUser(email, users)) {
-    res.status(400).send("Something went wrong!");
+    res.status(400).send("You didn't enter an email/password!");
   } else {
     // Add data to the database
     const id = generateRandomString(6);
     users[id] = { id, email, password: hashedPassword };
-    // Set cookies with new user info
+    // Set cookie with new user info and redirect to /urls
     req.session.userID = id;
     res.redirect("/urls");
   }
@@ -255,7 +256,9 @@ app.get("/", (req, res) => {
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   // If a user is logged in, redirect to /urls, otherwise /login
-  res.redirect(userData ? "/urls" : "/login");
+  // res.redirect(userData ? "/urls" : "/login");
+  const templateVars = { userData };
+  res.render("home", templateVars);
 });
 
 ////////////////////////////////////////////////////
