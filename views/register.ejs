@@ -12,19 +12,27 @@
 
   <body>
 
-    <%- include('partials/_header', {userData}) %>
+    <div class="container">
+    
+      <%- include("partials/_header.ejs", {userData}) %>
 
-    <h3>Register</h3>
+      <main class="container">
 
-    Sign up and start creating your own URLs!
+        <h3>Register</h3>
 
-    <form class="form-inline" action="/register" method="POST">
-      <div class="form-group mb-2">
-        <input class="form-control" type="email" name="email" placeholder="email" style="width: 300px; margin: 1em" required>
-        <input class="form-control" type="password" name="password" placeholder="password" style="width: 300px; margin: 1em" required>
-        <button type="submit" class="btn btn-primary">Sign up!</button>
-      </div>
-    </form>
+        Sign up and start creating your own URLs!
+
+        <form class="form-inline" action="/register" method="POST">
+          <div class="form-group mb-2">
+            <input class="form-control" type="email" name="email" placeholder="email" style="width: 300px; margin: 1em" required>
+            <input class="form-control" type="password" name="password" placeholder="password" style="width: 300px; margin: 1em" required>
+            <button type="submit" class="btn btn-primary">Sign up!</button>
+          </div>
+        </form>
+
+      </main>
+
+    </div>
   
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
