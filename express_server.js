@@ -208,7 +208,10 @@ app.get("/urls", (req, res) => {
 
 // Home page
 app.get("/", (req, res) => {
-  res.redirect("/urls");
+  const cookieUserID = req.session.userID;
+  const userData = users[cookieUserID];
+  // If a user is logged in, redirect to /urls, otherwise /login
+  res.redirect(userData ? "/urls" : "/login");
 });
 
 ////////////////////////////////////////////////////
