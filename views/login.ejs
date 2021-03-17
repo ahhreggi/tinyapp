@@ -13,9 +13,9 @@
   </head>
   <body>
 
-    <div class="container">
+    <%- include("partials/_header.ejs", {userData}) %>
     
-      <%- include("partials/_header.ejs", {userData}) %>
+    <div class="container">
 
       <main class="d-flex justify-content-center">
 
@@ -34,6 +34,8 @@
                 <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
               </div>
             </form>
+
+            <p class="text-muted mt-4">First time here? <a class="tinyapp-link" href="/register">Create an account</a>. It's free! :)</p>
 
           </div>
         </div>

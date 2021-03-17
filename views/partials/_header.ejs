@@ -1,34 +1,35 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-light bg-transparent">
-    <a class="navbar-brand mb-0 h1" href="/">tinyapp.</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
-        <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
-      </div>
-    
-      <div class="navbar-nav ml-auto">
-        <!-- Login form -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand mb-0 h1" href="/">tinyapp.</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
+          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
+        </div>
+      
+        <div class="navbar-nav ml-auto">
+          <!-- Login form -->
 
-        <% if (!userData) { %>
+          <% if (!userData) { %>
 
-          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/login">login</a>
-          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/register">sign up</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/login">login</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/register">sign up</a>
 
-        <% } else { %>
+          <% } else { %>
 
-          <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
+            <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
 
-          <form class="form-inline" action="/logout" method="POST">
-            <button type="submit" class="btn btn-dark" style="width: 100px">Logout</button>
-          </form>
-        
-        <% } %>
+            <form class="form-inline" action="/logout" method="POST">
+              <button type="submit" class="btn btn-dark" style="width: 100px">Logout</button>
+            </form>
+          
+          <% } %>
+        </div>
       </div>
     </div>
-
   </nav>
 </header>

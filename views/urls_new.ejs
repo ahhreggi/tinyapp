@@ -13,9 +13,9 @@
   </head>
   <body>
 
-    <div class="container">
+    <%- include("partials/_header.ejs", {userData}) %>
     
-      <%- include("partials/_header.ejs", {userData}) %>
+    <div class="container">
 
       <main style="margin: 1em;">
         <h3>Create TinyURL</h3>
