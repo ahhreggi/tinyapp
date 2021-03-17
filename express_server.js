@@ -11,7 +11,7 @@ const urlDatabase = {
     userID: "user01",
     longURL: "http://www.lighthouselabs.ca"
   },
-  "g93mnV": {
+  "sgq3y6": {
     userID: "user01",
     longURL: "http://www.reddit.com"
   },
@@ -85,7 +85,7 @@ const generateRandomString = (length = 6) => {
  * @param  {string} email
  *         An email to look up in the database.
  * @return {boolean}
- *         A boolean determining whether or not the email exists.
+ *         A boolean representing whether or not the email exists.
  */
 const isExistingUser = (email) => {
   // Get an array of all emails in the user database
@@ -122,6 +122,19 @@ const urlsForUser = (id) => {
     userDB[shortURL] = urlDatabase[shortURL];
   }
   return userDB;
+};
+
+/**
+ * Return true if the given shortURL belongs to the specified user ID.
+ * @param  {string} userID
+ *         A string containing the ID of a user.
+ * @param  {string} shortURL
+ *         A string containing the ID of a URL.
+ * @return {boolean}
+ *         A boolean representing whether or not the URL belongs to the user.
+ */
+const userOwnsURL = (userID, shortURL) => {
+  return urlDatabase[shortURL].userID === userID;
 };
 
 // ROUTES //////////////////////////////////////////
@@ -224,8 +237,9 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   // Check that the user is logged in and owns the short URL before deleting
   const cookieUserID = req.cookies["user_id"];
-  if (urlDatabase[shortURL].userID === cookieUserID) {
+  if (userOwnsURL(cookieUserID, shortURL)) {
     delete urlDatabase[shortURL];
+    console.log("DELETED");
   }
   res.redirect("/urls");
 });
@@ -233,10 +247,14 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 // Updates a URL
 app.put("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  // Add "http://" to the new URL if it doesn't already have it
-  const newURL = addHttp(req.body.newURL);
-  // Update entry in database
-  urlDatabase[shortURL].longURL = newURL;
+  // Check that the user is logged in and owns the short URL before editing
+  const cookieUserID = req.cookies["user_id"];
+  if (userOwnsURL(cookieUserID, shortURL)) {
+    // Add "http://" to the new URL if it doesn't already have it
+    const newURL = addHttp(req.body.newURL);
+    // Update entry in database
+    urlDatabase[shortURL].longURL = newURL;
+  }
   // Redirect to index page
   res.redirect(`/urls`);
 });
