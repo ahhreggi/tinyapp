@@ -20,8 +20,8 @@
           <% if (!userData) { %>
 
             <!-- LOGIN/REGISTER (shown if user is currently not logged in) -->
-            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/login">login</a>
-            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/register">sign up</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link <%= currentPage === "/login" ? "active" : ""%>" href="/login">login</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link <%= currentPage === "/register" ? "active" : ""%>" href="/register">sign up</a>
 
           <% } else { %>
           
