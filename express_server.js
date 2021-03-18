@@ -242,7 +242,6 @@ app.get("/u/:shortURL", (req, res) => {
     };
     urlDatabase[shortURL].visitorLog.push(newVisitor);
     targetURL = urlData.longURL;
-    console.log(urlDatabase[shortURL].visitorLog);
   }
   res.redirect(targetURL);
 });
@@ -358,7 +357,8 @@ app.get("/urls/:shortURL", (req, res) => {
     // If the user is logged in and owns the URL, display the page
     if (userData) {
       if (urlDatabase[targetURL].userID === userData.id) {
-        const templateVars = { alerts, userData, currentPage, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL };
+        const visitData = getVisits(targetURL, urlDatabase);
+        const templateVars = { alerts, userData, currentPage, shortURL: targetURL, urlData: urlDatabase[targetURL], visitData };
         res.render("urls_show", templateVars);
       } else {
       // Otherwise, flash an error and redirect to home page

@@ -189,13 +189,11 @@ const getVisits = (url, urlDB) => {
     return false;
   }
   const visitorLog = urlDB[url].visitorLog;
-  // Retrieve unique visitor IDs
-  const uniqueVisitors = visitorLog
-  .map(visit => visit.visitorID) // array of all visitor IDs
-  .filter((visitorID, index, allVisitors) => { // array of all unique visitor IDs
-    allVisitors.indexOf(visitorID) === index
-  });
-  return { total: visitorLog.length, unique: uniqueVisitors.length }
+  // Retrieve an array of all visitor IDs then filter the unique values
+  let uniqueVisitors = visitorLog
+    .map(visit => visit.visitorID)
+    .filter((visitorID, index, allVisitors) => allVisitors.indexOf(visitorID) === index);
+  return { total: visitorLog.length, unique: uniqueVisitors.length };
 };
 
 module.exports = {

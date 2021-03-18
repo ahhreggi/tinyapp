@@ -16,8 +16,20 @@
     <main class="container">
 
       <!-- SHORT URL & HEADER -->
-      <h1 class="display-4 mb-4"><a class="tinyapp-link" href="/u/<%= shortURL %>" target="_blank">/u/<%= shortURL %></a></h1>
-      <p class="lead">this tinyapp link redirects to <a class="tinyapp-link" href="<%= longURL %>" target="_blank"><%= longURL %></a></p>
+      <section class="lead">
+        <h1 class="display-4 mb-4"><a class="tinyapp-link" href="/u/<%= shortURL %>" target="_blank">/u/<%= shortURL %></a></h1>
+        <p>this tinyapp link redirects to <a class="tinyapp-link" href="<%= urlData.longURL %>" target="_blank"><%= urlData.longURL %></a></p>
+      </section>
+      
+      <hr class="mt-4">
+
+      <!-- LINK STATS -->
+      <section class="lead">
+        <p class="display-4 display-sub my-3">stats</p>
+        <p>total visits: <%= visitData.total %></p>
+        <p>unique visits: <%= visitData.unique %></p>
+        <p>last modified: <%= urlData.lastModified %></p>
+      </section>
 
       <hr class="my-4">
 
@@ -27,7 +39,7 @@
       <form class="form-inline" action="/urls/<%= shortURL %>?_method=PUT" method="POST">
         <div class="form-group mb-2">
           <label class="lead" for="newURL">enter a new URL:</label>
-          <input class="form-control" type="text" name="newURL" placeholder="<%= longURL %>" style="width: 300px; margin: 1em" required>
+          <input class="form-control" type="text" name="newURL" placeholder="<%= urlData.longURL %>" style="width: 300px; margin: 1em" required>
           <button type="submit" class="btn btn-primary">update</button>
         </div>
       </form>
