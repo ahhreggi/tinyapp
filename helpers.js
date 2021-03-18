@@ -65,12 +65,14 @@ const isExistingUser = (username, email, userDB) => {
  *         A username/email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
- * @return {{id: string, email: string, password: string}|false}
- *         An object containing a single user's credentials or false if none exist.
+ * @return {{id: string, email: string, password: string}|undefined}
+ *         An object containing a single user's credentials or undefined if none exist.
  */
 const getUserData = (login, userDB) => {
-  const userData = Object.values(userDB).find((user) => user.username === login || user.email === login);
-  return userData ? userData : false;
+  const userData = Object.values(userDB).find((user) => {
+    return user.username === login || user.email === login;
+  });
+  return userData;
 };
 
 /**
