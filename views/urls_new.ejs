@@ -17,9 +17,13 @@
     
     <div class="container">
 
-      <h1 class="display-4 mb-2">create a new link</h1>
+      <h1 class="display-4 mb-4"><span class="highlight">create</span> a new link</h1>
+      <h1 class="lead">we'll automatically generate a unique, short link for you!</h1>
+
+      <hr class="mt-4">
+
       <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2">
+        <div class="form-group">
           <label class="lead" for="longURL">enter a URL:</label>
           <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em" required>
           <button type="submit" class="btn btn-primary">Submit</button>
