@@ -22,6 +22,18 @@ th {
   text-align: center;
 }
 
+.alert-success {
+  color: rgb(128, 255, 128);
+}
+
+.alert-warning {
+  color: rgb(255, 253, 108);
+}
+
+.alert-danger {
+  color: rgb(255, 78, 78);
+}
+
 .btn-dark,
 .btn-outline-dark:hover {
   background-color: var(--tinyapp-primary) !important;
@@ -70,18 +82,6 @@ th {
 
 .tinyapp-alert {
   background-color: var(--tinyapp-primary-darker);
-}
-
-.alert-success {
-  color: rgb(128, 255, 128);
-}
-
-.alert-warning {
-  color: rgb(255, 253, 108);
-}
-
-.alert-danger {
-  color: rgb(255, 78, 78);
 }
 
 .tinyapp-link:hover,
