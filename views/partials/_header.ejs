@@ -21,10 +21,10 @@
 
           <% } else { %>
 
-            <span class="navbar-brand">Welcome, <b><%= userData.email %></b>!</span>
+            <span class="navbar-brand">signed in as: <b><%= userData.email %></b></span>
 
             <form class="form-inline" action="/logout" method="POST">
-              <button type="submit" class="btn btn-dark" style="width: 100px">Logout</button>
+              <button type="submit" class="btn btn-outline-dark" style="width: 100px">logout</button>
             </form>
           
           <% } %>
