@@ -5,7 +5,6 @@ const methodOverride = require("method-override");
 const path = require("path");
 
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 
 // Helper functions
@@ -75,14 +74,13 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-      httpOnly: true,
-      expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // + 7 days in milliseconds
-      maxAge: 1000 * 60 * 60 * 24 * 7
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // + 7 days in milliseconds
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
-}
+};
 app.use(session(sessionConfig));
 app.use(flash());
-
 
 // ENDPOINTS & ROUTES //////////////////////////////
 
@@ -101,7 +99,7 @@ app.post("/login", (req, res) => {
   } else {
     // If the email/password is invalid, flash an error
     req.flash("danger", "The email/password you entered is invalid.");
-    res.redirect("/login")
+    res.redirect("/login");
   }
 });
 
@@ -217,9 +215,9 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
       res.redirect("/");
     }
   } else {
-      // If the user is not logged in, flash an error and redirect to login page
-      req.flash("warning", "You must be logged in to do that!");
-      res.redirect("/login");
+    // If the user is not logged in, flash an error and redirect to login page
+    req.flash("warning", "You must be logged in to do that!");
+    res.redirect("/login");
   }
   res.redirect("/urls");
 });
@@ -267,12 +265,12 @@ app.get("/urls/:shortURL", (req, res) => {
     // If the user is logged in and owns the URL, display the page
     if (userData) {
       if (urlDatabase[targetURL].userID === userData.id) {
-      const templateVars = { userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL, alerts };
-      res.render("urls_show", templateVars);
+        const templateVars = { userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL, alerts };
+        res.render("urls_show", templateVars);
       } else {
       // If the user doesn't own the URL, flash an error and redirect to home page
-      req.flash("danger", "You don't have permission to do that!");
-      res.redirect("/");
+        req.flash("danger", "You don't have permission to do that!");
+        res.redirect("/");
       }
     } else {
       // If the user is not logged in, flash an error and redirect to login page
