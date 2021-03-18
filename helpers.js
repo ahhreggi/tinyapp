@@ -105,7 +105,7 @@ const urlsForUser = (id, urlDB) => {
 };
 
 /**
- * Return true if the given shortURL belongs to the specified user ID.
+ * Returns true if the given shortURL belongs to the specified user ID.
  * @param  {string} userID
  *         A string containing the ID of a user.
  * @param  {string} shortURL
@@ -119,6 +119,24 @@ const userOwnsURL = (userID, shortURL, urlDB) => {
   return urlDB[shortURL].userID === userID;
 };
 
+/**
+ * Returns true if the given URL is possibly valid.
+ * @param  {string} url
+ *         A string containing a URL.
+ * @return {boolean}
+ *         A boolean representing whether or not the URL is valid.
+ */
+const validateURL = (url) => {
+  let valid;
+  try {
+    new URL(url);
+    valid = true;
+  } catch (err) {
+    valid = false;
+  }
+  return valid;
+};
+
 module.exports = {
   addHttp,
   generateRandomString,
@@ -126,5 +144,6 @@ module.exports = {
   getUserByEmail,
   authenticateUser,
   urlsForUser,
-  userOwnsURL
+  userOwnsURL,
+  validateURL
 };

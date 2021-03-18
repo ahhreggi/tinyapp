@@ -16,7 +16,8 @@ const {
   isExistingUser,
   authenticateUser,
   urlsForUser,
-  userOwnsURL
+  userOwnsURL,
+  validateURL
 } = require("./helpers");
 
 // IN-MEMORY DATABASES /////////////////////////////
@@ -187,17 +188,14 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  const url = req.body.longURL;
-  // If the URL is empty, flash an error
-  const urlCheck = url.replaceAll("http://", "").replaceAll("https://", "");
-  console.log(urlCheck);
-  if (!urlCheck) {
+  // Add "http://" to the URL if it doesn't already have it
+  const longURL = addHttp(req.body.longURL);
+  // If the URL is invalid, flash an error
+  if (!validateURL(longURL)) {
     req.flash("danger", "Please enter a valid URL.");
-    res.redirect("/urls");
+    res.redirect("/urls/new");
     // Otherwise, add the URL to the database
   } else {
-    // Add "http://" to the URL if it doesn't already have it
-    const longURL = addHttp(url);
     // Generate a unique shortURL to be added to the database
     let shortURL = generateRandomString(6);
     while (shortURL in urlDatabase) {
@@ -244,8 +242,16 @@ app.put("/urls/:shortURL", (req, res) => {
   if (userData) {
     if (userOwnsURL(userData.id, shortURL, urlDatabase)) {
       const newURL = addHttp(req.body.newURL);
-      urlDatabase[shortURL].longURL = newURL;
-      res.redirect(`/urls`);
+      // If the URL is invalid, flash an error
+      if (!validateURL(newURL)) {
+        req.flash("danger", "Please enter a valid URL.");
+        res.redirect(`/urls/${shortURL}`);
+        // Otherwise, update the URL
+      } else {
+        urlDatabase[shortURL].longURL = newURL;
+        req.flash("success", "Link successfully updated!");
+        res.redirect(`/urls`);
+      }
       // Otherwise, flash an error and redirect
     } else {
       req.flash("danger", "You don't have permission to do that!");
