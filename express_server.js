@@ -28,20 +28,42 @@ const urlDatabase = {
   "b2xVn2": {
     userID: "aUA4CE",
     longURL: "http://www.lighthouselabs.ca",
-    visits: 5,
-    lastModified: "2021-03-12 16:45:24"
+    visits: 1,
+    lastModified: "2021-03-12 16:45:24",
+    visitsLog: [
+      {
+        timestamp: "2021-03-12 16:45:24",
+        visitorID: "cookie1"
+      },
+      {
+        timestamp: "2021-03-11 16:45:24",
+        visitorID: "cookie4"
+      }
+    ],
   },
   "sgq3y6": {
     userID: "aUA4CE",
     longURL: "http://www.reddit.com",
-    visits: 2,
-    lastModified: "2021-02-26 04:11:37"
+    visits: 1,
+    lastModified: "2021-02-26 04:11:37",
+    visitsLog: [
+      {
+        timestamp: "2021-03-12 16:45:24",
+        visitorID: "cookie2"
+      }
+    ]
   },
   "9sm5xK": {
     userID: "ccLPCa",
     longURL: "http://www.google.com",
-    visits: 4,
-    lastModified: "2021-03-16 13:22:19"
+    visits: 1,
+    lastModified: "2021-03-16 13:22:19",
+    visitsLog: [
+      {
+        timestamp: "2021-03-12 16:45:24",
+        visitorID: "cookie3"
+      }
+    ],
   }
 };
 
