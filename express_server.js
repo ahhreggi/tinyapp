@@ -283,11 +283,13 @@ app.put("/urls/:shortURL", (req, res) => {
       if (!validateURL(newURL)) {
         req.flash("danger", "Please enter a valid URL.");
         res.redirect(`/urls/${shortURL}`);
-        // Otherwise, update the URL
+        // If the URL is valid and is not the same as the original, update the URL
       } else {
-        urlDatabase[shortURL].longURL = newURL;
-        urlDatabase[shortURL].lastModified = currentDateTime;
-        req.flash("success", "Link successfully updated!");
+        if (urlDatabase[shortURL].longURL !== newURL) {
+          urlDatabase[shortURL].longURL = newURL;
+          urlDatabase[shortURL].lastModified = currentDateTime;
+          req.flash("success", "Link successfully updated!");
+        }
         res.redirect(`/urls`);
       }
       // Otherwise, flash an error and redirect
