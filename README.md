@@ -1,6 +1,6 @@
 <!-- TITLE -->
 
-# tiny<b>app</b>.
+# tinyapp.
 
 <!-- INTRODUCTION -->
 
@@ -35,3 +35,12 @@
    node express_server.js
    ```
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
+
+## 📷 Screenshots
+
+![home](screenshots/home.png)
+![register](screenshots/register.png)
+![hello](screenshots/hello.png)
+![create](screenshots/create.png)
+![create](screenshots/mylinks.png)
+![edit](screenshots/edit.png)
