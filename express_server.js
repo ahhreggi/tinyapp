@@ -26,15 +26,18 @@ const {
 const urlDatabase = {
   "b2xVn2": {
     userID: "aUA4CE",
-    longURL: "http://www.lighthouselabs.ca"
+    longURL: "http://www.lighthouselabs.ca",
+    visits: 5
   },
   "sgq3y6": {
     userID: "aUA4CE",
-    longURL: "http://www.reddit.com"
+    longURL: "http://www.reddit.com",
+    visits: 2
   },
   "9sm5xK": {
     userID: "ccLPCa",
-    longURL: "http://www.google.com"
+    longURL: "http://www.google.com",
+    visits: 4
   }
 };
 
@@ -54,7 +57,6 @@ const users = {
 };
 
 // CONFIGURATIONS & MIDDLEWARE /////////////////////
-
 
 app.set("view engine", "ejs"); // set the view engine to EJS
 app.use(bodyParser.urlencoded({extended: true})); // parse req body
@@ -193,6 +195,7 @@ app.get("/u/:shortURL", (req, res) => {
     // Otherwise, redirect to longURL
   } else {
     targetURL = urlData.longURL;
+    targetURL.visits += 1;
   }
   res.redirect(targetURL);
 });
@@ -229,7 +232,8 @@ app.post("/urls", (req, res) => {
     const cookieUserID = req.session.userID;
     const newURL = {
       userID: cookieUserID,
-      longURL: longURL
+      longURL: longURL,
+      visits: 0
     };
     urlDatabase[shortURL] = newURL;
     // Redirect to the newly created URL's show page
