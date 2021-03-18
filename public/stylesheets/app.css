@@ -39,14 +39,11 @@ hr,
   font-weight: 400;
 }
 
-.nav-tinyapp-link {
-  color: var(--tinyapp-tertiary);
-}
-
 .navbar-highlight {
   color: var(--tinyapp-primary) !important;
 }
 
+.tinyapp-link:hover,
 .tinyapp-table-link:hover {
   color: var(--tinyapp-tertiary) !important;
   text-decoration: none;
