@@ -288,7 +288,8 @@ app.post("/urls", (req, res) => {
       visitorLog: []
     };
     urlDatabase[shortURL] = newURL;
-    // Redirect to the newly created URL's show page
+    // Flash success and redirect to the newly created URL's show page
+    req.flash("success", "Link created successfully!");
     res.redirect(`/urls/${shortURL}`);
   }
 });
@@ -331,7 +332,7 @@ app.put("/urls/:shortURL", (req, res) => {
         if (urlDatabase[shortURL].longURL !== newURL) {
           urlDatabase[shortURL].longURL = newURL;
           urlDatabase[shortURL].lastModified = currentDateTime;
-          req.flash("success", "Link successfully updated!");
+          req.flash("success", "Link updated successfully!");
         }
         res.redirect(`/urls/${shortURL}`);
       }
