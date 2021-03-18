@@ -121,13 +121,14 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If a username/email/password is not provided or exists, flash an error
-  let errorMsg;
+  // If a username/email/password is not provided or exists, flash an error and redirect
   const existingData = isExistingUser(username, email, userDatabase);
   if (!username || !email || !password) {
-    errorMsg = "Please complete all fields.";
+    req.flash("danger", "Please complete all fields.");
+    res.redirect("/register");
   } else if (existingData) {
-    errorMsg = `The ${existingData} you entered is already in use.`;
+    req.flash("danger", `The ${existingData} you entered is already in use.`);
+    res.redirect("/register");
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
@@ -138,8 +139,6 @@ app.post("/register", (req, res) => {
     res.redirect("/");
     return;
   }
-  req.flash("danger", errorMsg);
-  res.redirect("/register");
 });
 
 // Redirect valid /u/shortURL requests to its longURL
