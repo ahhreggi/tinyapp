@@ -13,7 +13,7 @@
 
     <%- include("partials/_header.ejs", {userData}) %>
 
-    <div class="container">
+    <main class="container">
 
       <!-- PAGE TITLE -->
       <h1 class="display-4 mb-4"><%= userData.email %>'s <span class="highlight">links</span></h1>
@@ -25,6 +25,7 @@
         <p class="lead">here are the links you've created so far:</p>
 
         <table class="table">
+
           <!-- TABLE HEADER -->
           <thead class="thead">
             <tr>
@@ -34,9 +35,12 @@
               <th scope="col"></th>
             </tr>
           </thead>
+
           <!-- TABLE CONTENTS (populated using user's links from the database) -->
           <tbody>
+
             <% for(let shortURL in urlDB) { %>
+              
               <tr>
                 <td>
                   <a class="tinyapp-table-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
@@ -72,7 +76,7 @@
         <button type="button" class="btn btn-outline-light mt-2" style="width: 200px">create a new link</button>
       </a>
     
-    </div>
+    </main>
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

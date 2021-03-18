@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
+        <section class="navbar-nav">
 
           <!-- NAVIGATION LINKS (shown if user is currently logged in) -->
           <% if (userData) { %> 
@@ -14,8 +14,8 @@
             <a class="navbar-brand nav-item nav-link nav-tinyapp-link <%= currentPage === "/urls/new" ? "active" : ""%>" href="/urls/new">create</a>
           <% } %> 
           
-        </div>
-        <div class="navbar-nav ml-auto">
+        </section>
+        <section class="navbar-nav ml-auto">
 
           <% if (!userData) { %>
 
@@ -33,7 +33,7 @@
           
           <% } %>
 
-        </div>
+        </section>
       </div>
     </div>
   </nav>
