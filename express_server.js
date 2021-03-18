@@ -116,7 +116,7 @@ app.post("/login", (req, res) => {
   if (validUserData) {
     req.session.userID = validUserData.id;
     req.flash("success", `Login successful. Welcome back, ${validUserData.username}!`);
-    res.redirect("/urls");
+    res.redirect("/");
     // Otherwise, flash error
   } else {
     req.flash("danger", "The username/password you entered is invalid.");
@@ -199,10 +199,10 @@ app.get("/u/:shortURL", (req, res) => {
   if (!urlData) {
     req.flash("danger", "Invalid URL.");
     targetURL = "/";
-    // Otherwise, redirect to longURL
+    // Otherwise, update visits counter and redirect to longURL
   } else {
-    targetURL = urlData.longURL;
     urlDatabase[shortURL].visits += 1;
+    targetURL = urlData.longURL;
   }
   res.redirect(targetURL);
 });

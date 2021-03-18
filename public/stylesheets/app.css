@@ -20,10 +20,12 @@ hr,
 .btn-dark,
 .btn-outline-dark:hover {
   background-color: var(--tinyapp-primary) !important;
+  border-color: var(--tinyapp-primary) !important;
 }
 
 .btn-dark:hover {
   background: var(--tinyapp-primary-darker) !important;
+  border-color: var(--tinyapp-primary-darker) !important;
 }
 
 .btn-outline-secondary {
