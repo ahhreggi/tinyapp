@@ -26,9 +26,12 @@
       <!-- LINK STATS -->
       <section class="lead">
         <p class="display-4 display-sub my-3">stats</p>
-        <p>total visits: <%= visitData.total %></p>
-        <p>unique visits: <%= visitData.unique %></p>
-        <p>last modified: <%= urlData.lastModified %></p>
+        <p>total clicks: <%= visitData.total %></p>
+        <p>unique clicks: <%= visitData.unique %></p>
+        <p>created: <%= urlData.created %></p>
+        <% if (urlData.lastModified) { %>
+          <p>last modified: <%= urlData.lastModified %></p>
+        <% } %>
       </section>
 
       <hr class="my-4">

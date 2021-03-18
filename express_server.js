@@ -48,7 +48,7 @@ const urlDatabase = {
         timestamp: "2021-03-11 17:24:55",
         visitorID: "dJfCwPND"
       }
-    ],
+    ]
   },
   "sgq3y6": { // 1 unique visits, 1 total visits
     userID: "aUA4CE",
@@ -333,7 +333,7 @@ app.put("/urls/:shortURL", (req, res) => {
           urlDatabase[shortURL].lastModified = currentDateTime;
           req.flash("success", "Link successfully updated!");
         }
-        res.redirect(`/urls`);
+        res.redirect(`/urls/${shortURL}`);
       }
       // Otherwise, flash an error and redirect
     } else {
