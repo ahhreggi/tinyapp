@@ -220,7 +220,7 @@ app.post("/register", (req, res) => {
     // Set cookie with new user info, flash success and redirect
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
-    res.redirect("/urls");
+    res.redirect("/");
     return;
   }
   req.flash("danger", errorMsg);

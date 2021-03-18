@@ -46,7 +46,7 @@
 <% const alertType = alerts["warning"] ? "warning" : alerts["danger"] ? "danger" : alerts["success"] ? "success" : "" %> 
 <!-- Display alert if there is one -->
 <% if (alerts[alertType]) { %>
-  <div class="alert alert-<%= alertType %> alert-dismissible fade show" role="alert">
+  <div class="alert alert-<%= alertType %> tinyapp-alert alert-dismissible fade show" role="alert">
     <%= alerts[alertType] %> 
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
