@@ -333,7 +333,7 @@ app.put("/urls/:shortURL", (req, res) => {
           urlDatabase[shortURL].lastModified = currentDateTime;
           req.flash("success", "Link updated successfully!");
         }
-        res.redirect(`/urls/${shortURL}`);
+        res.redirect("/urls/");
       }
       // Otherwise, flash an error and redirect
     } else {
