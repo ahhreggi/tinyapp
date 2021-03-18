@@ -98,7 +98,11 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   // Retrieve the user account that matches the given credentials (false if none)
-  const validUserData = authenticateUser(email, password, users);
+  let validUserData = authenticateUser(email, password, users);
+  // If the email/password combination did not return a user, try searching by username
+  if (!validUserData) {
+    validUserData = authenticateUser(email, password, users, true);
+  }
   // If a user is found, set a cookie, flash success and redirect
   if (validUserData) {
     req.session.userID = validUserData.id;
@@ -106,7 +110,7 @@ app.post("/login", (req, res) => {
     res.redirect("/urls");
     // Otherwise, flash error
   } else {
-    req.flash("danger", "The email/password you entered is invalid.");
+    req.flash("danger", "The username/password you entered is invalid.");
     res.redirect("/login");
   }
 });

@@ -81,20 +81,27 @@ const getUserByUsername = (username, userDB) => {
 };
 
 /**
- * Returns true if the given email/password combination exists in the database.
+ * Returns true if the given email and password combination exists in the database.
  * @param  {string} email
  *         A string containing a user's email.
  * @param  {string} password
  *         A string containing a user's password.
  * @param  {{Object.<id: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
+ * @param  {boolean} useUsername
+ *         A boolean determining whether or not to use a username instead of an email.
  * @return {{id: string, email: string, password: string}|boolean}
  *         An object containing a single user's credentials or false if none exist.
  */
-const authenticateUser = (email, password, userDB) => {
-  // Retrieve user info from the database by email
-  const userData = getUserByEmail(email, userDB);
-  // If a user with the email exists, check if the credentials are valid
+const authenticateUser = (email, password, userDB, useUsername = false) => {
+  let userData;
+  // Retrieve user info from the database by username/email
+  if (useUsername) {
+    userData = getUserByUsername(email, userDB);
+  } else {
+    userData = getUserByEmail(email, userDB);
+  }
+  // If a user with the username/email exists, check if the credentials are valid
   const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
   // If the credentials are valid, return the user data, false otherwise
   return valid ? userData : false;
@@ -158,7 +165,6 @@ module.exports = {
   generateRandomString,
   isExistingUser,
   getUserByEmail,
-  getUserByUsername,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
