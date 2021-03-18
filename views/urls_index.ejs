@@ -15,6 +15,7 @@
 
     <div class="container">
 
+      <!-- PAGE TITLE -->
       <h1 class="display-4 mb-4"><%= userData.email %>'s <span class="highlight">links</span></h1>
 
       <!-- USER LINKS (shown only if the user has at least 1 link) -->
@@ -24,6 +25,7 @@
         <p class="lead">here are the links you've created so far:</p>
 
         <table class="table">
+          <!-- TABLE HEADER -->
           <thead class="thead">
             <tr>
               <th scope="col">short link</th>
@@ -32,6 +34,7 @@
               <th scope="col"></th>
             </tr>
           </thead>
+          <!-- TABLE CONTENTS (populated using user's links from the database) -->
           <tbody>
             <% for(let shortURL in urlDB) { %>
               <tr>
@@ -62,8 +65,9 @@
 
           <p class="lead">you don't have any links yet, click the button below to get started:</p>
           
-        <% } %> 
-      
+        <% } %>
+
+      <!-- BUTTON TO CREATE A NEW LINK -->
       <a href="/urls/new">
         <button type="button" class="btn btn-outline-light mt-2" style="width: 200px">create a new link</button>
       </a>

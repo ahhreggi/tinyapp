@@ -15,6 +15,7 @@
     
     <div class="container">
 
+      <!-- SHORT URL & HEADER -->
       <h1 class="display-4 mb-4"><a class="tinyapp-link" href="/u/<%= shortURL %>" target="_blank">/u/<%= shortURL %></a></h1>
       <p class="lead">this tinyapp link redirects to <a class="tinyapp-link" href="<%= longURL %>" target="_blank"><%= longURL %></a></p>
 
@@ -22,6 +23,7 @@
 
       <h1 class="lead">change your mind? you can edit the reference link here:</h1>
 
+      <!-- EDIT FORM -->
       <form class="form-inline" action="/urls/<%= shortURL %>?_method=PUT" method="POST">
         <div class="form-group mb-2">
           <label class="lead" for="newURL">enter a new URL:</label>
@@ -30,6 +32,7 @@
         </div>
       </form>
 
+      <!-- BACK BUTTON -->
       <a href="/urls">
         <button type="button" class="btn btn-outline-light mt-3" style="width: 200px">back to my links</button>
       </a>
