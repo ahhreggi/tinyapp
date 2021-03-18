@@ -3,12 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- TinyApp CSS -->
     <link rel="stylesheet" href="/stylesheets/app.css">
-
     <title>tinyapp. - my links</title>
   </head>
   <body>
@@ -16,15 +14,15 @@
     <%- include("partials/_header.ejs", {userData}) %>
 
     <div class="container">
-    
-      <% if (!userData) { %>
 
-        Log in or sign up to start creating your own URLs!
+      <h1 class="display-4 mb-4"><%= userData.email %>'s <span class="highlight">links</span></h1>
 
-      <% } else { %> 
+      <!-- USER LINKS (shown only if the user has at least 1 link) -->
 
-        <h1 class="display-4 mb-4"><%= userData.email %>'s <span class="highlight">links</span></h1>
+      <% if (Object.keys(urlDB).length > 0) { %> 
+
         <p class="lead">here are the links you've created so far:</p>
+
         <table class="table">
           <thead class="thead">
             <tr>
@@ -59,8 +57,12 @@
 
           </tbody>
         </table>
+      
+        <% } else { %>
 
-      <% } %> 
+          <p class="lead">you don't have any links yet, click the button below to get started:</p>
+          
+        <% } %> 
       
       <a href="/urls/new">
         <button type="button" class="btn btn-outline-light mt-2" style="width: 200px">create a new link</button>

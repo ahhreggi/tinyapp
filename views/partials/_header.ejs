@@ -7,27 +7,30 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+
+          <!-- NAVIGATION LINKS -->
           <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
           <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
+          
         </div>
-      
         <div class="navbar-nav ml-auto">
-          <!-- Login form -->
 
           <% if (!userData) { %>
 
+            <!-- LOGIN/REGISTER (shown if user is currently not logged in) -->
             <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/login">login</a>
             <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/register">sign up</a>
 
           <% } else { %>
-
+          
+            <!-- LOGOUT (shown if user is currently logged in) -->
             <span class="navbar-brand">signed in as: <b><%= userData.email %></b></span>
-
             <form class="form-inline" action="/logout" method="POST">
               <button type="submit" class="btn btn-outline-dark" style="width: 100px">logout</button>
             </form>
           
           <% } %>
+
         </div>
       </div>
     </div>
