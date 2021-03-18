@@ -10,8 +10,8 @@
 
           <!-- NAVIGATION LINKS (shown if user is currently logged in) -->
           <% if (userData) { %> 
-            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
-            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link <%= currentPage === "/urls" ? "active" : ""%>" href="/urls">my links</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link <%= currentPage === "/urls/new" ? "active" : ""%>" href="/urls/new">create</a>
           <% } %> 
           
         </div>

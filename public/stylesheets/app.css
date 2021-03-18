@@ -16,6 +16,10 @@ hr,
   background-color: var(--tinyapp-white) !important;
 }
 
+.active {
+  text-decoration: underline;
+}
+
 .card {
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.24);
   color: var(--tinyapp-primary);
@@ -30,7 +34,6 @@ hr,
   color: var(--tinyapp-primary) !important;
 }
 
-.nav-tinyapp-link:hover,
 .tinyapp-link:hover,
 .tinyapp-table-link:hover {
   color: var(--tinyapp-tertiary) !important;
