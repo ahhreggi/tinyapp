@@ -186,7 +186,8 @@ app.post("/register", (req, res) => {
 
 // Redirect valid /u/shortURL requests to its longURL
 app.get("/u/:shortURL", (req, res) => {
-  const urlData = urlDatabase[req.params.shortURL];
+  const shortURL = req.params.shortURL;
+  const urlData = urlDatabase[shortURL];
   let targetURL;
   // If the URL is not in the database, flash an error and redirect
   if (!urlData) {
@@ -195,7 +196,7 @@ app.get("/u/:shortURL", (req, res) => {
     // Otherwise, redirect to longURL
   } else {
     targetURL = urlData.longURL;
-    targetURL.visits += 1;
+    urlDatabase[shortURL].visits += 1;
   }
   res.redirect(targetURL);
 });

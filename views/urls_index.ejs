@@ -24,15 +24,16 @@
 
         <p class="lead">here are the links you've created so far:</p>
 
-        <table class="table">
+        <table class="table table-bordered">
 
           <!-- TABLE HEADER -->
           <thead class="thead">
             <tr>
               <th scope="col">short link</th>
               <th scope="col">reference link</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
+              <th scope="col">visits</th>
+              <th scope="col">edit link</th>
+              <th scope="col">delete link</th>
             </tr>
           </thead>
 
@@ -43,10 +44,13 @@
               
               <tr>
                 <td>
-                  <a class="tinyapp-table-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
+                  <a class="tinyapp-table-link" href="/u/<%= shortURL %>" target="_blank"><%= shortURL %></a>
                 </td>
                 <td>
                   <a class="tinyapp-table-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
+                </td>
+                <td>
+                  <%= urlDB[shortURL].visits %>
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">
