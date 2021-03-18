@@ -173,14 +173,14 @@ app.get("/u/:shortURL", (req, res) => {
   let targetURL;
   // If the URL is not in the database, flash an error and redirect
   if (!urlData) {
-    req.flash("danger", "Invalid URL.")
+    req.flash("danger", "Invalid URL.");
     targetURL = "/";
     // Otherwise, redirect to longURL
   } else {
     targetURL = urlData.longURL;
   }
   res.redirect(targetURL);
-  });
+});
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {

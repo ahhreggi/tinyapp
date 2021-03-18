@@ -14,27 +14,34 @@
     <%- include("partials/_header.ejs", {userData}) %>
 
     <main class="container">
-    
-      <div class="card" style="max-width: 550px">
-        <img class="card-img-top" src="assets/puzzles.jpg" alt="puzzle pieces">
-        <div class="card-body">
+
+      <div class="card">
+        <div class="row">
 
           <!-- REGISTRATION FORM -->
-          <h5 class="card-title h3">Sign up</h5>
-          <form class="form" action="/register" method="POST">
-            <div class="form-group mb-2">
-              <!-- EMAIL -->
-              <label for="email" class="form-label text-muted">Email</label>
-              <input class="form-control" type="email" name="email" required>
-              <!-- PASSWORD -->
-              <label for="password" class="form-label text-muted mt-2">Password</label>
-              <input class="form-control" type="password" name="password" pl required>
-              <!-- SUBMIT -->
-              <button type="submit" class="btn btn-primary btn-block mt-3">Sign up</button>
+          <div class="col-lg-4">
+            <div class="card-body align-items-center">
+              <h1 class="card-title h3">Sign up</h1>
+              <form class="form" action="/register" method="POST">
+                <div class="form-group mb-2">
+                  <!-- EMAIL -->
+                  <label for="email" class="form-label text-muted">Email</label>
+                  <input class="form-control" type="email" name="email" required>
+                  <!-- PASSWORD -->
+                  <label for="password" class="form-label text-muted mt-2">Password</label>
+                  <!-- SUBMIT -->
+                  <input class="form-control" type="password" name="password" pl required>
+                  <button type="submit" class="btn btn-primary btn-block mt-3">Sign up</button>
+                </div>
+              </form>
+              <p class="text-muted mt-4">Already have an account? <a class="tinyapp-link" href="/login">Log in</a>.</p>
             </div>
-          </form>
+          </div>
 
-          <p class="text-muted mt-4">Already have an account? <a class="tinyapp-link" href="/login">Log in</a>.</p>
+          <!-- IMAGE -->
+          <div class="col">
+            <img class="card-img-top d-none d-lg-block" src="assets/puzzles2.png" alt="puzzle pieces">
+          </div>
 
         </div>
       </div>

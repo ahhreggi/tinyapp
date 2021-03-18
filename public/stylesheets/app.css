@@ -1,12 +1,14 @@
 :root {
   --tinyapp-primary: rgb(33, 36, 65);
+  --tinyapp-primary-darker: rgb(22, 25, 44);
   --tinyapp-secondary: rgb(64, 68, 99);
   --tinyapp-tertiary: rgb(112, 117, 156);
   --tinyapp-white: rgb(231, 231, 231);
+  --tinyapp-black: rgb(10, 10, 20);
 }
 
 body {
-  background-color: rgb(10, 10, 20);
+  background-color: var(--tinyapp-black);
   color: var(--tinyapp-white);
 }
 
@@ -15,8 +17,13 @@ hr,
   background-color: var(--tinyapp-white) !important;
 }
 
+.btn-dark,
 .btn-outline-dark:hover {
   background-color: var(--tinyapp-primary) !important;
+}
+
+.btn-dark:hover {
+  background: var(--tinyapp-primary-darker) !important;
 }
 
 .btn-outline-secondary {

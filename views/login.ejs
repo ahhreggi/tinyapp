@@ -15,26 +15,33 @@
 
     <main class="container">
 
-      <div class="card" style="max-width: 550px">
-        <img class="card-img-top" src="assets/puzzles.jpg" alt="puzzle pieces">
-        <div class="card-body">
-          
-          <!-- LOGIN FORM -->
-          <h1 class="card-title h3">Login</h1>
-          <form class="form" action="/login" method="POST">
-            <div class="form-group mb-2">
-              <!-- EMAIL -->
-              <label for="email" class="form-label text-muted">Email</label>
-              <input class="form-control" type="email" name="email" required>
-              <!-- PASSWORD -->
-              <label for="password" class="form-label text-muted mt-2">Password</label>
-              <!-- SUBMIT -->
-              <input class="form-control" type="password" name="password" pl required>
-              <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
-            </div>
-          </form>
+      <div class="card">
+        <div class="row">
 
-          <p class="text-muted mt-4">First time here? <a class="tinyapp-link" href="/register">Create an account</a>. It's free! :)</p>
+          <!-- LOGIN FORM -->
+          <div class="col-lg-4">
+            <div class="card-body align-items-center">
+              <h1 class="card-title h3">Login</h1>
+              <form class="form" action="/login" method="POST">
+                <div class="form-group mb-2">
+                  <!-- EMAIL -->
+                  <label for="email" class="form-label text-muted">Email</label>
+                  <input class="form-control" type="email" name="email" required>
+                  <!-- PASSWORD -->
+                  <label for="password" class="form-label text-muted mt-2">Password</label>
+                  <!-- SUBMIT -->
+                  <input class="form-control" type="password" name="password" pl required>
+                  <button type="submit" class="btn btn-dark btn-block mt-3">Login</button>
+                </div>
+              </form>
+              <p class="text-muted mt-4">First time here? <a class="tinyapp-link" href="/register">Create an account</a>.</p>
+            </div>
+          </div>
+
+          <!-- IMAGE -->
+          <div class="col">
+            <img class="card-img-top d-none d-lg-block" src="assets/puzzles1.png" alt="puzzle pieces">
+          </div>
 
         </div>
       </div>
