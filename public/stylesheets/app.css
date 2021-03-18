@@ -1,8 +1,14 @@
 :root {
   --tinyapp-primary: rgb(33, 36, 65);
   --tinyapp-secondary: rgb(64, 68, 99);
-  --tinyapp-tertiary: rgb(110, 113, 150);
+  --tinyapp-tertiary: rgb(95, 102, 153);
+  --tinyapp-highlight: rgb(255, 255, 255);
   --tinyapp-white: rgb(231, 231, 231);
+}
+
+.highlight {
+  color: var(--tinyapp-highlight);
+  font-weight: 500;
 }
 
 .card {
