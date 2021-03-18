@@ -30,6 +30,10 @@ hr,
   color: var(--tinyapp-tertiary);
 }
 
+.navbar-highlight {
+  color: var(--tinyapp-primary) !important;
+}
+
 .tinyapp-table-link:hover {
   color: var(--tinyapp-tertiary) !important;
   text-decoration: none;

@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-light bg-light navbar-tinyapp mb-5">
     <div class="container">
-      <a class="navbar-brand mb-0 h1" href="/">tinyapp.</a>
+      <a class="navbar-brand navbar-highlight mb-0 h1" href="/">tinyapp.</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -26,7 +26,7 @@
           <% } else { %>
           
             <!-- LOGOUT (shown if user is currently logged in) -->
-            <span class="navbar-brand">signed in as: <b><%= userData.email %></b></span>
+            <span class="navbar-brand navbar-highlight">signed in as: <b><%= userData.email %></b></span>
             <form class="form-inline" action="/logout" method="POST">
               <button type="submit" class="btn btn-outline-dark" style="width: 100px">logout</button>
             </form>
