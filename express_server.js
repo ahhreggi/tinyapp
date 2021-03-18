@@ -6,8 +6,8 @@ const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
 const dayjs = require("dayjs");
-
 const bcrypt = require("bcrypt");
+
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -91,7 +91,7 @@ const users = {
   }
 };
 
-// CONFIGURATIONS & MIDDLEWARE /////////////////////
+// MIDDLEWARE & CONFIGURATIONS /////////////////////
 
 app.set("view engine", "ejs"); // set the view engine to EJS
 app.use(bodyParser.urlencoded({extended: true})); // parse req body
@@ -118,9 +118,8 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-// Store flash messages, user data, and current path into local variables on every request
+// Store flash messages, user/session data, and current path into local variables on every request
 app.use((req, res, next) => {
-  // Generate unique visitorID per session
   if (!req.session.visitorID) {
     req.session.visitorID = generateRandomString(8);
   }
@@ -145,7 +144,7 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
   // Retrieve the user account that matches the given credentials (false if none)
   let validUserData = authenticateUser(email, password, users);
-  // If the email/password combination did not return a user, try searching by username
+  // If the email/password combination did not return a user, search by username
   if (!validUserData) {
     validUserData = authenticateUser(email, password, users, true);
   }
@@ -327,8 +326,8 @@ app.put("/urls/:shortURL", (req, res) => {
       if (!validateURL(newURL)) {
         req.flash("danger", "Please enter a valid URL.");
         res.redirect(`/urls/${shortURL}`);
-        // If the URL is valid and is not the same as the original, update the URL
       } else {
+        // If the URL is valid and is not the same as the original, update the URL
         if (urlDatabase[shortURL].longURL !== newURL) {
           urlDatabase[shortURL].longURL = newURL;
           urlDatabase[shortURL].lastModified = currentDateTime;
@@ -356,7 +355,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
   // If the URL does not exist, flash an error and redirect
   if (!longURL) {
-    req.flash("danger", "That page doesn't exist!"); // --> Convert to 404 error page? ("We couldn't find what you were looking for!")
+    req.flash("danger", "That page doesn't exist!");
     res.redirect("/");
   } else {
     // If the user is logged in and owns the URL, display the page
