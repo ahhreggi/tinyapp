@@ -155,7 +155,7 @@ app.post("/login", (req, res) => {
     res.redirect("/");
     // Otherwise, flash error
   } else {
-    req.flash("danger", "The username/password you entered is invalid.");
+    req.flash("danger", "The username/email or password you entered is invalid.");
     res.redirect("/login");
   }
 });
@@ -209,9 +209,9 @@ app.post("/register", (req, res) => {
   if (!username || !email || !password) {
     errorMsg = "Please complete all fields.";
   } else if (isExistingUsername(username, users)) {
-    errorMsg = "Username already in use.";
+    errorMsg = "The username you entered is already in use. Please try a different one.";
   } else if (isExistingEmail(email, users)) {
-    errorMsg = "Email already in use.";
+    errorMsg = "The email you entered is already in use. Please try a different one.";
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
@@ -231,10 +231,9 @@ app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const urlData = urlDatabase[shortURL];
   let targetURL;
-  // If the URL is not in the database, flash an error and redirect
+  // If the URL is not in the database, redirect to 404 page
   if (!urlData) {
-    req.flash("danger", "Invalid URL.");
-    targetURL = "/";
+    targetURL = "/404";
     // Otherwise, log visitor information and redirect to longURL
   } else {
     const { currentDateTime, visitorID } = res.locals.vars;
@@ -353,10 +352,9 @@ app.get("/urls/:shortURL", (req, res) => {
   const targetURL = req.params.shortURL;
   // Retrieve the longURL from the database if it exists
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
-  // If the URL does not exist, flash an error and redirect
+  // If the URL does not exist, redirect to 404 page
   if (!longURL) {
-    req.flash("danger", "That page doesn't exist!");
-    res.redirect("/");
+    res.redirect("/404");
   } else {
     // If the user is logged in and owns the URL, display the page
     if (userData) {
@@ -393,11 +391,24 @@ app.get("/urls", (req, res) => {
   }
 });
 
+// Error 404 page
+app.get("/404", (req, res) => {
+  const { alerts, userData, currentPage } = res.locals.vars;
+  const templateVars = { alerts, userData, currentPage };
+  res.status(404).render("404", templateVars);
+})
+
 // Home page
 app.get("/", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   const templateVars = { alerts, userData, currentPage };
   res.render("home", templateVars);
+});
+
+
+// Wildcard route
+app.get("/*", (req, res) => {
+  res.redirect("/404");
 });
 
 ////////////////////////////////////////////////////
