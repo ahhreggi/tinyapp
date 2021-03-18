@@ -20,7 +20,7 @@
 
       <!-- USER LINKS (shown only if the user has at least 1 link) -->
 
-      <% if (Object.keys(urlDB).length > 0) { %> 
+      <% if (userURLs.length > 0) { %> 
 
         <p class="lead">here are the links you've created so far:</p>
 
@@ -41,28 +41,28 @@
           <!-- TABLE CONTENTS (populated using user's links from the database) -->
           <tbody>
 
-            <% for(let shortURL in urlDB) { %>
+            <% for(let url of userURLs) { %>
               
               <tr>
                 <td>
-                  <a class="tinyapp-table-link" href="/u/<%= shortURL %>" target="_blank"><%= shortURL %></a>
+                  <a class="tinyapp-table-link" href="/u/<%= url.shortURL %>" target="_blank"><%= url.shortURL %></a>
                 </td>
                 <td>
-                  <a class="tinyapp-table-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
+                  <a class="tinyapp-table-link" href="<%= url.data.longURL %>" target="_blank"><%= url.data.longURL %></a>
                 </td>
                 <td class="tinyapp-table-text">
-                  <%= urlDB[shortURL].visitorLog.length %>
+                  <%= url.data.visitorLog.length %>
                 </td>
                 <td class="tinyapp-table-text">
-                  <%= urlDB[shortURL].lastModified ? `${urlDB[shortURL].lastModified}` : urlDB[shortURL].created  %> 
+                  <%= url.data.lastModified ? `${url.data.lastModified}` : url.data.created  %> 
                 </td>
                 <td>
-                  <a href="/urls/<%= shortURL %>">
+                  <a href="/urls/<%= url.shortURL %>">
                     <button type="button" class="btn btn-outline-secondary" style="width: 100px">view</button>
                   </a>
                 </td>
                 <td>
-                  <form method="POST" action="/urls/<%= shortURL %>/delete?_method=DELETE">
+                  <form method="POST" action="/urls/<%= url.shortURL %>/delete?_method=DELETE">
                     <button type="submit" class="btn btn-outline-danger" style="width: 100px">delete</button>
                   </form>
                 </td>

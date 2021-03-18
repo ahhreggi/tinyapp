@@ -123,21 +123,25 @@ const authenticateUser = (email, password, userDB, useUsername = false) => {
 };
 
 /**
- * Returns an object containing URLs from the database belonging to the user with the given ID.
+ * Returns an array containing URLs from the database belonging to the user with the given ID.
  * @param  {string} id
  *         A string containing the user's ID.
  * @param  {{Object.<userID: string, longURL: string>}} urlDB
  *         An object containing all URLs in the database.
- * @return {{Object.<userID: string, longURL: string>}}
- *         An object with URLs from the database belonging to the given ID.
+ * @return {Array.<{shortURL: string, data: {<userID: string, longURL: string>}}>}
+ *         An array of objects containing URL IDs and their data belonging to the given ID.
  */
 const urlsForUser = (id, urlDB) => {
-  const userDB = {};
+  const userDB = [];
   // Filter the database for entries belonging to the user ID
   const userShortURLs = Object.keys(urlDB).filter(shortURL => urlDB[shortURL].userID === id);
   // Populate userDB with the data of each short URL, retrieved from the URL database.
   for (const shortURL of userShortURLs) {
-    userDB[shortURL] = urlDB[shortURL];
+    const url = {
+      shortURL,
+      data: urlDB[shortURL]
+    };
+    userDB.push(url);
   }
   return userDB;
 };

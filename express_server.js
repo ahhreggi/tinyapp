@@ -381,10 +381,10 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   // If a user is logged in, retrieve their URLs from the database
-  let userDB = {};
+  let userURLs = [];
   if (userData) {
-    userDB = urlsForUser(userData.id, urlDatabase);
-    const templateVars = { alerts, userData, currentPage, urlDB: userDB };
+    userURLs = urlsForUser(userData.id, urlDatabase);
+    const templateVars = { alerts, userData, currentPage, userURLs };
     res.render("urls_index", templateVars);
     // Otherwise, flash an error and redirect to login page
   } else {
