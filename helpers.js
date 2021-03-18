@@ -22,7 +22,7 @@ const addHttp = (url) => {
  * @return {string}
  *         A string containing random alphanumeric characters.
  */
-const generateRandomString = (length = 6) => {
+const generateRandomString = (length) => {
   const alpha = "abcdefghijklmnopqrstuvwxyz";
   const num = "1234567890";
   const alphaNum = alpha + alpha.toUpperCase() + num;
@@ -37,7 +37,7 @@ const generateRandomString = (length = 6) => {
  * Returns true if an email exists in the database, false otherwise.
  * @param  {string} email
  *         An email to look up in the database.
- * @param  {{Object.<id: string, email: string, password: string}} userDB
+ * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {boolean}
  *         A boolean representing whether or not the email exists.
@@ -52,7 +52,7 @@ const isExistingEmail = (email, userDB) => {
  * Returns true if a username exists in the database, false otherwise.
  * @param  {string} username
  *         A username to look up in the database.
- * @param  {{Object.<id: string, username: string, password: string}} userDB
+ * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {boolean}
  *         A boolean representing whether or not the username exists.
@@ -67,7 +67,7 @@ const isExistingUsername = (username, userDB) => {
  * Returns an object containing a user object from the user database given an email.
  * @param  {string} email
  *         A string containing a user's email.
- * @param  {{Object.<id: string, email: string, password: string}} userDB
+ * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|false}
  *         An object containing a single user's credentials or false if none exist.
@@ -83,7 +83,7 @@ const getUserByEmail = (email, userDB) => {
  * Returns an object containing a user object from the user database given a username.
  * @param  {string} username
  *         A string containing a user's username.
- * @param  {{Object.<id: string, email: string, password: string}} userDB
+ * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|false}
  *         An object containing a single user's credentials or false if none exist.
@@ -101,7 +101,7 @@ const getUserByUsername = (username, userDB) => {
  *         A string containing a user's email.
  * @param  {string} password
  *         A string containing a user's password.
- * @param  {{Object.<id: string, email: string, password: string}} userDB
+ * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @param  {boolean} useUsername
  *         A boolean determining whether or not to use a username instead of an email.
@@ -124,10 +124,20 @@ const authenticateUser = (email, password, userDB, useUsername = false) => {
 
 /**
  * Returns an array containing URLs from the database belonging to the user with the given ID.
- * @param  {string} id
- *         A string containing the user's ID.
- * @param  {{Object.<userID: string, longURL: string>}} urlDB
- *         An object containing all URLs in the database.
+ * @param    {string} id
+ *           A string containing the user's ID.
+ * @param    {Object} urlDB
+ *           An object containing all URLs in the database.
+ * @property {string} urlDB.userID
+ *           A string containing the ID of the URL creator.
+ * @property {string} urlDB.longURL
+ *           A string containing the reference URL.
+ * @property {string} urlDB.created
+ *           A string containing the timestamp of the URL's creation.
+ * @property {string|null} urlDB.lastModified
+ *           A string containing the timestamp fo the URL's latest update or null.
+ * @property {Array.<{timestamp: string, visitorID: string}>} urlDB.visitorLog
+ *           An array of objects containing visitor data.
  * @return {Array.<{shortURL: string, data: {<userID: string, longURL: string>}}>}
  *         An array of objects containing URL IDs and their data belonging to the given ID.
  */
@@ -148,14 +158,26 @@ const urlsForUser = (id, urlDB) => {
 
 /**
  * Returns true if the given shortURL belongs to the specified user ID.
- * @param  {string} userID
- *         A string containing the ID of a user.
- * @param  {string} shortURL
- *         A string containing the ID of a URL.
- * @param  {{Object.<userID: string, longURL: string>}} urlDB
- *         An object containing all URLs in the database.
- * @return {boolean}
- *         A boolean representing whether or not the URL belongs to the user.
+ * @param    {string} userID
+ *           A string containing the ID of a user.
+ * @param    {string} shortURL
+ *           A string containing the ID of a URL.
+ * @param    {Object} urlDB
+ *           An object containing all URLs in the database.
+ * @property {string} urlDB.userID
+ *           A string containing the ID of the URL creator.
+ * @property {string} urlDB.longURL
+ *           A string containing the reference URL.
+ * @property {string} urlDB.created
+ *           A string containing the timestamp of the URL's creation.
+ * @property {string|null} urlDB.lastModified
+ *           A string containing the timestamp fo the URL's latest update or null.
+ * @property {Array.<{timestamp: string, visitorID: string}>} urlDB.visitorLog
+ *           An array of objects containing visitor data.
+ * @return   {Array.<{shortURL: string, data: {<userID: string, longURL: string>}}>}
+ *           An array of objects containing URL IDs and their data belonging to the given ID.
+ * @return   {boolean}
+ *           A boolean representing whether or not the URL belongs to the user.
  */
 const userOwnsURL = (userID, shortURL, urlDB) => {
   return urlDB[shortURL].userID === userID;
@@ -181,11 +203,23 @@ const validateURL = (url) => {
 
 /**
  * Returns the total and unique number of visits for a given URL in the database.
- * @param  {string} url
- *         A string containing the ID of a URL.
- * @param  {{Object.<userID: string, longURL: string>}} urlDB
- *         An object containing all URLs in the database.
- * @return {Object.<{total: number, unique: number}>|boolean}
+ * @param    {string} url
+ *           A string containing the ID of a URL.
+ * @param    {Object} urlDB
+ *           An object containing all URLs in the database.
+ * @property {string} urlDB.userID
+ *           A string containing the ID of the URL creator.
+ * @property {string} urlDB.longURL
+ *           A string containing the reference URL.
+ * @property {string} urlDB.created
+ *           A string containing the timestamp of the URL's creation.
+ * @property {string|null} urlDB.lastModified
+ *           A string containing the timestamp fo the URL's latest update or null.
+ * @property {Array.<{timestamp: string, visitorID: string}>} urlDB.visitorLog
+ *           An array of objects containing visitor data.
+ * @return   {Array.<{shortURL: string, data: {<userID: string, longURL: string>}}>}
+ *           An array of objects containing URL IDs and their data belonging to the given ID.
+ * @return   {Object.<{total: number, unique: number}>|boolean}
  *         An object containing the total and unique number of visits to the URL or false if it doesn't exist.
  */
 const getVisits = (url, urlDB) => {
