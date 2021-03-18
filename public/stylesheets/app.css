@@ -17,7 +17,7 @@ hr,
 }
 
 .active {
-  text-decoration: underline;
+  font-weight: 500;
 }
 
 .card {
@@ -34,7 +34,6 @@ hr,
   color: var(--tinyapp-primary) !important;
 }
 
-.tinyapp-link:hover,
 .tinyapp-table-link:hover {
   color: var(--tinyapp-tertiary) !important;
   text-decoration: none;
