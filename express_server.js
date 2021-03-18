@@ -107,7 +107,7 @@ app.post("/login", (req, res) => {
   // If a user is found, set a cookie, flash success and redirect
   if (validUserData) {
     req.session.userID = validUserData.id;
-    req.flash("success", "Login successful. Welcome back!");
+    req.flash("success", `Login successful. Welcome back, ${validUserData.username}!`);
     res.redirect("/urls");
     // Otherwise, flash error
   } else {
