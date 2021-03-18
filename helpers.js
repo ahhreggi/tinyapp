@@ -176,16 +176,25 @@ const validateURL = (url) => {
 };
 
 /**
- * Returns an array of visits for a given URL in the database.
+ * Returns the total and unique number of visits for a given URL in the database.
  * @param  {string} url
  *         A string containing the ID of a URL.
  * @param  {{Object.<userID: string, longURL: string>}} urlDB
  *         An object containing all URLs in the database.
- * @return {Array.<{timestamp: string, visitorID: string}>}
- *         An array containing objects with visitor information.
+ * @return {Object.<{total: number, unique: number}>}
+ *         An object containing the total and unique number of visits to the URL.
  */
 const getVisits = (url, urlDB) => {
-  return urlDB[url] ? urlDB[url].visitorLog : [];
+  const visitorLog = urlDB[url].visitorLog;
+  // Retrieve unique visitor IDs
+  let uniqueVisitors = [];
+  for (const visit of visitorLog) {
+    const visitorID = visit.visitorID;
+    if (!uniqueVisitors.includes(visitorID)) {
+      uniqueVisitors.push(visitorID)
+    }
+  }
+  return { total: visitorLog.length, unique: uniqueVisitors.length }
 };
 
 module.exports = {

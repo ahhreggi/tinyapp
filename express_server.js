@@ -30,36 +30,44 @@ const urlDatabase = {
     userID: "aUA4CE",
     longURL: "http://www.lighthouselabs.ca",
     lastModified: "2021-03-12 16:45:24",
-    visitorLog: [
+    visitorLog: [ // 2 unique visits, 4 total visits
       {
         timestamp: "2021-03-12 16:45:24",
-        visitorID: "cookie1"
+        visitorID: "kS62TGva"
       },
       {
-        timestamp: "2021-03-11 16:45:24",
-        visitorID: "cookie4"
+        timestamp: "2021-03-11 16:49:24",
+        visitorID: "dJfCwPND"
+      },
+      {
+        timestamp: "2021-03-11 17:21:11",
+        visitorID: "dJfCwPND"
+      },
+      {
+        timestamp: "2021-03-11 17:24:55",
+        visitorID: "dJfCwPND"
       }
     ],
   },
-  "sgq3y6": {
+  "sgq3y6": { // 1 unique visits, 1 total visits
     userID: "aUA4CE",
     longURL: "http://www.reddit.com",
     lastModified: "2021-02-26 04:11:37",
     visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
-        visitorID: "cookie2"
+        visitorID: "kS62TGva"
       }
     ]
   },
-  "9sm5xK": {
+  "9sm5xK": { // 1 unique visits, 1 total visits
     userID: "ccLPCa",
     longURL: "http://www.google.com",
     lastModified: "2021-03-16 13:22:19",
     visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
-        visitorID: "cookie3"
+        visitorID: "dJfCwPND"
       }
     ],
   }
@@ -86,7 +94,7 @@ app.set("view engine", "ejs"); // set the view engine to EJS
 app.use(bodyParser.urlencoded({extended: true})); // parse req body
 app.use(cookieSession({ // configure cookies
   name: "session",
-  keys: ["userID"],
+  keys: ["userID", "visitorID"],
   maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(methodOverride("_method")); //override POST requests with PUT/DELETE
@@ -109,10 +117,16 @@ app.use(flash());
 
 // Store flash messages, user data, and current path into local variables on every request
 app.use((req, res, next) => {
-  const currentDateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+  // Generate unique visitorID per session
+  if (!req.session.visitorID) {
+    req.session.visitorID = generateRandomString(8);
+  }
+  const visitorID = req.session.visitorID;
   const cookieUserID = req.session.userID;
+  const currentDateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
   res.locals.vars = {
     alerts: req.flash(),
+    visitorID,
     userData: users[cookieUserID],
     currentPage: req.originalUrl,
     currentDateTime
@@ -221,10 +235,10 @@ app.get("/u/:shortURL", (req, res) => {
     targetURL = "/";
     // Otherwise, log visitor information and redirect to longURL
   } else {
-    const { currentDateTime } = res.locals.vars;
+    const { currentDateTime, visitorID } = res.locals.vars;
     const newVisitor = {
       timestamp: currentDateTime,
-      visitorID: req.session.userID
+      visitorID
     };
     urlDatabase[shortURL].visitorLog.push(newVisitor);
     targetURL = urlData.longURL;
@@ -267,8 +281,8 @@ app.post("/urls", (req, res) => {
     const newURL = {
       userID: cookieUserID,
       longURL: longURL,
-      visits: 0,
-      lastModified: currentDateTime
+      lastModified: currentDateTime,
+      visitorLog: []
     };
     urlDatabase[shortURL] = newURL;
     // Redirect to the newly created URL's show page
