@@ -301,7 +301,6 @@ app.get("/urls", (req, res) => {
 // Home page
 app.get("/", (req, res) => {
   const alerts = req.flash();
-  console.log(alerts);
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   const templateVars = { userData, alerts };
@@ -311,5 +310,5 @@ app.get("/", (req, res) => {
 ////////////////////////////////////////////////////
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`tinyapp listening on port ${PORT}.`);
 });
