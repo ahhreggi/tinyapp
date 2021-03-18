@@ -65,6 +65,22 @@ const getUserByEmail = (email, userDB) => {
 };
 
 /**
+ * Returns an object containing a user object from the user database given a username.
+ * @param  {string} username
+ *         A string containing a user's username.
+ * @param  {{Object.<id: string, email: string, password: string}} userDB
+ *         An object containing user IDs and the corresponding user credentials.
+ * @return {{id: string, email: string, password: string}|false}
+ *         An object containing a single user's credentials or false if none exist.
+ */
+const getUserByUsername = (username, userDB) => {
+  // Find and return the user object in the user database that has the given username
+  const userData = Object.values(userDB).find((user) => user.username === username);
+  // If an account was found, return the user data, false otherwise
+  return userData ? userData : false;
+};
+
+/**
  * Returns true if the given email/password combination exists in the database.
  * @param  {string} email
  *         A string containing a user's email.
@@ -142,6 +158,7 @@ module.exports = {
   generateRandomString,
   isExistingUser,
   getUserByEmail,
+  getUserByUsername,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
