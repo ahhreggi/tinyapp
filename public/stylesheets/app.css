@@ -17,6 +17,11 @@ hr,
   background-color: var(--tinyapp-white) !important;
 }
 
+td,
+th {
+  text-align: center;
+}
+
 .btn-dark,
 .btn-outline-dark:hover {
   background-color: var(--tinyapp-primary) !important;
@@ -69,7 +74,8 @@ hr,
   text-decoration: none;
 }
 
-.tinyapp-table-link {
+.tinyapp-table-link,
+.tinyapp-table-text {
   font-size: 1em;
   line-height: 2.4em;
 }

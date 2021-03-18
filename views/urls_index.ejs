@@ -24,17 +24,17 @@
 
         <p class="lead">here are the links you've created so far:</p>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-responsive-sm">
 
           <!-- TABLE HEADER -->
           <thead class="thead">
             <tr>
-              <th scope="col">short link</th>
-              <th scope="col">reference link</th>
-              <th scope="col">clicks</th>
-              <th scope="col">last modified</th>
-              <th scope="col">edit link</th>
-              <th scope="col">delete link</th>
+              <th scope="col"><span class="lead highlight">short link</span></th>
+              <th scope="col"><span class="lead highlight">reference link</span></th>
+              <th scope="col"><span class="lead highlight">clicks</span></th>
+              <th scope="col"><span class="lead highlight">last modified</span></th>
+              <th scope="col"><span class="lead highlight">edit link</span></th>
+              <th scope="col"><span class="lead highlight">delete link</span></th>
             </tr>
           </thead>
 
@@ -50,15 +50,15 @@
                 <td>
                   <a class="tinyapp-table-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
                 </td>
-                <td>
+                <td class="tinyapp-table-text">
                   <%= urlDB[shortURL].visitorLog.length %>
                 </td>
-                <td>
+                <td class="tinyapp-table-text">
                   <%= urlDB[shortURL].lastModified ? `${urlDB[shortURL].lastModified}` : urlDB[shortURL].created  %> 
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">
-                    <button type="button" class="btn btn-outline-secondary" style="width: 100px">edit</button>
+                    <button type="button" class="btn btn-outline-secondary" style="width: 100px">view</button>
                   </a>
                 </td>
                 <td>
