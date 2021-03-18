@@ -17,7 +17,7 @@ hr,
 }
 
 .active {
-  font-weight: 500;
+  color: var(--tinyapp-primary);
 }
 
 .card {
@@ -31,7 +31,7 @@ hr,
 }
 
 .nav-tinyapp-link {
-  color: var(--tinyapp-primary) !important;
+  color: var(--tinyapp-tertiary);
 }
 
 .tinyapp-table-link:hover {
