@@ -82,6 +82,7 @@ th {
 
 .tinyapp-alert {
   background-color: var(--tinyapp-primary-darker);
+  border-color: var(--tinyapp-white);
 }
 
 .tinyapp-link:hover,
