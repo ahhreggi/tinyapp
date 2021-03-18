@@ -34,32 +34,29 @@ const generateRandomString = (length) => {
 };
 
 /**
- * Returns true if an email exists in the database, false otherwise.
+ * Returns true if a username or email exists in the database, false otherwise.
+ * @param  {string} username
+ *         A username to look up in the database.
  * @param  {string} email
  *         An email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
- * @return {boolean}
- *         A boolean representing whether or not the email exists.
+ * @return {string|undefined}
+ *         A string representing the existing property or undefined if none was found.
  */
-const isExistingEmail = (email, userDB) => {
-  // Retrieve an array of all emails in the user database
-  const allEmails = Object.keys(userDB).map((id) => userDB[id].email);
-  return allEmails.includes(email);
-};
-
-/**
- * Returns true if a username exists in the database, false otherwise.
- * @param  {string} username
- *         A username to look up in the database.
- * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
- *         An object containing user IDs and the corresponding user credentials.
- * @return {boolean}
- *         A boolean representing whether or not the username exists.
- */
-const isExistingUsername = (username, userDB) => {
-  const allUsernames = Object.keys(userDB).map((id) => userDB[id].username);
-  return allUsernames.includes(username);
+const isExistingUser = (username, email, userDB) => {
+  let result;
+  // For each user in the database
+  for (const userID in userDB) {
+    if (userDB[userID].username === username) {
+      result = "username";
+      break;
+    } else if (userDB[userID].email === email) {
+      result = "email";
+      break;
+    }
+  }
+  return result;
 };
 
 /**
@@ -232,8 +229,7 @@ const getVisits = (url, urlDB) => {
 module.exports = {
   addHttp,
   generateRandomString,
-  isExistingEmail,
-  isExistingUsername,
+  isExistingUser,
   getUserByEmail,
   authenticateUser,
   urlsForUser,

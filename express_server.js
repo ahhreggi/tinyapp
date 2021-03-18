@@ -14,8 +14,7 @@ const PORT = 8080; // default port 8080
 const {
   addHttp,
   generateRandomString,
-  isExistingEmail,
-  isExistingUsername,
+  isExistingUser,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
@@ -206,12 +205,11 @@ app.post("/register", (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
   // If a username/email/password is not provided, or the username/email is in use, flash an error
   let errorMsg;
+  const existingData = isExistingUser(username, email, users);
   if (!username || !email || !password) {
     errorMsg = "Please complete all fields.";
-  } else if (isExistingUsername(username, users)) {
-    errorMsg = "The username you entered is already in use. Please try a different one.";
-  } else if (isExistingEmail(email, users)) {
-    errorMsg = "The email you entered is already in use. Please try a different one.";
+  } else if (existingData) {
+    errorMsg = `The ${existingData} you entered is already in use. Please try a different one.`;
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
@@ -396,7 +394,7 @@ app.get("/404", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   const templateVars = { alerts, userData, currentPage };
   res.status(404).render("404", templateVars);
-})
+});
 
 // Home page
 app.get("/", (req, res) => {
