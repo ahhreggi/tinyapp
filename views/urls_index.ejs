@@ -45,12 +45,12 @@
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">
-                    <button type="button" class="btn btn-outline-success" style="width: 100px">Edit</button>
+                    <button type="button" class="btn btn-outline-secondary" style="width: 100px">edit</button>
                   </a>
                 </td>
                 <td>
                   <form method="POST" action="/urls/<%= shortURL %>/delete?_method=DELETE">
-                    <button type="submit" class="btn btn-outline-danger" style="width: 100px">Delete</button>
+                    <button type="submit" class="btn btn-outline-danger" style="width: 100px">delete</button>
                   </form>
                 </td>
               </tr>
@@ -61,6 +61,10 @@
         </table>
 
       <% } %> 
+      
+      <a href="/urls/new">
+        <button type="button" class="btn btn-outline-light" style="width: 200px">add a new link</button>
+      </a>
     
     </div>
 
