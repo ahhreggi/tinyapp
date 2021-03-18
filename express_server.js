@@ -187,22 +187,32 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  // Add "http://" to the URL if it doesn't already have it
-  const longURL = addHttp(req.body.longURL);
-  // Generate a unique shortURL to be added to the database
-  let shortURL = generateRandomString(6);
-  while (shortURL in urlDatabase) {
-    shortURL = generateRandomString(6);
+  const url = req.body.longURL;
+  // If the URL is empty, flash an error
+  const urlCheck = url.replaceAll("http://", "").replaceAll("https://", "");
+  console.log(urlCheck);
+  if (!urlCheck) {
+    req.flash("danger", "Please enter a valid URL.");
+    res.redirect("/urls");
+    // Otherwise, add the URL to the database
+  } else {
+    // Add "http://" to the URL if it doesn't already have it
+    const longURL = addHttp(url);
+    // Generate a unique shortURL to be added to the database
+    let shortURL = generateRandomString(6);
+    while (shortURL in urlDatabase) {
+      shortURL = generateRandomString(6);
+    }
+    // Retrieve the user's ID and add the new URL to the database with it
+    const cookieUserID = req.session.userID;
+    const newURL = {
+      userID: cookieUserID,
+      longURL: longURL
+    };
+    urlDatabase[shortURL] = newURL;
+    // Redirect to the newly created URL's show page
+    res.redirect(`/urls/${shortURL}`);
   }
-  // Retrieve the user's ID and add the new URL to the database with it
-  const cookieUserID = req.session.userID;
-  const newURL = {
-    userID: cookieUserID,
-    longURL: longURL
-  };
-  urlDatabase[shortURL] = newURL;
-  // Redirect to the newly created URL's show page
-  res.redirect(`/urls/${shortURL}`);
 });
 
 // Delete a URL
