@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const methodOverride = require("method-override");
 const path = require("path");
-const session = require("express-session");
 const flash = require("connect-flash");
 const dayjs = require("dayjs");
 const bcrypt = require("bcrypt");
@@ -24,71 +23,8 @@ const {
 
 // IN-MEMORY DATABASES /////////////////////////////
 
-const urlDatabase = {
-  "b2xVn2": {
-    userID: "aUA4CE",
-    longURL: "http://www.lighthouselabs.ca",
-    created: "2021-03-12 16:45:24",
-    lastModified: null,
-    visitorLog: [ // 2 unique visits, 4 total visits
-      {
-        timestamp: "2021-03-12 16:45:24",
-        visitorID: "kS62TGva"
-      },
-      {
-        timestamp: "2021-03-11 16:49:24",
-        visitorID: "dJfCwPND"
-      },
-      {
-        timestamp: "2021-03-11 17:21:11",
-        visitorID: "dJfCwPND"
-      },
-      {
-        timestamp: "2021-03-11 17:24:55",
-        visitorID: "dJfCwPND"
-      }
-    ]
-  },
-  "sgq3y6": { // 1 unique visits, 1 total visits
-    userID: "aUA4CE",
-    longURL: "http://www.reddit.com",
-    created: "2021-02-26 02:15:12",
-    lastModified: "2021-02-26 04:11:37",
-    visitorLog: [
-      {
-        timestamp: "2021-03-12 16:45:24",
-        visitorID: "kS62TGva"
-      }
-    ]
-  },
-  "9sm5xK": { // 1 unique visits, 1 total visits
-    userID: "ccLPCa",
-    longURL: "http://www.google.com",
-    created: "2021-03-16 13:22:19",
-    lastModified: null,
-    visitorLog: [
-      {
-        timestamp: "2021-03-12 16:45:24",
-        visitorID: "dJfCwPND"
-      }
-    ],
-  }
-};
-
-const users = {
-  "aUA4CE": {
-    id: "aUA4CE",
-    username: "user1",
-    email: "user1@example.com",
-    password: "$2b$10$Ohnf9u6HTv13.FnN5DPDs.xetN927Id./C90YXXOgREKq/hIQesiq"
-  },
-  ccLPCa: {
-    id: "ccLPCa",
-    username: "user2",
-    email: "user2@example.com",
-    password: "$2b$10$yI6TVKpNSgqGK3eaAPZDu.2YIewoUuFs82bYLiYwfCUuam6cLZIHy"
-  }
-};
+const urlDatabase = require("./data/urlDatabase");
+const userDatabase = require("./data/userDatabase");
 
 // MIDDLEWARE & CONFIGURATIONS /////////////////////
 
@@ -99,23 +35,9 @@ app.use(cookieSession({ // configure cookies
   keys: ["userID", "visitorID"],
   maxAge: 24 * 60 * 60 * 1000
 }));
-app.use(methodOverride("_method")); //override POST requests with PUT/DELETE
+app.use(methodOverride("_method")); // override POST requests
 app.use(express.static(path.join(__dirname, 'public'))); // serve public directory
-
-// Session and flash configuration
-const sessionConfig = {
-  name: 'session',
-  secret: "secret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
-};
-app.use(session(sessionConfig));
-app.use(flash());
+app.use(flash()); // enable storage of flash messages
 
 // Store flash messages, user/session data, and current path into local variables on every request
 app.use((req, res, next) => {
@@ -128,7 +50,7 @@ app.use((req, res, next) => {
   res.locals.vars = {
     alerts: req.flash(),
     visitorID,
-    userData: users[cookieUserID],
+    userData: userDatabase[cookieUserID],
     currentPage: req.originalUrl,
     currentDateTime
   };
@@ -142,10 +64,10 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   // Retrieve the user account that matches the given credentials (false if none)
-  let validUserData = authenticateUser(email, password, users);
+  let validUserData = authenticateUser(email, password, userDatabase);
   // If the email/password combination did not return a user, search by username
   if (!validUserData) {
-    validUserData = authenticateUser(email, password, users, true);
+    validUserData = authenticateUser(email, password, userDatabase, true);
   }
   // If a user is found, set a cookie, flash success and redirect
   if (validUserData) {
@@ -205,7 +127,7 @@ app.post("/register", (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
   // If a username/email/password is not provided, or the username/email is in use, flash an error
   let errorMsg;
-  const existingData = isExistingUser(username, email, users);
+  const existingData = isExistingUser(username, email, userDatabase);
   if (!username || !email || !password) {
     errorMsg = "Please complete all fields.";
   } else if (existingData) {
@@ -213,7 +135,7 @@ app.post("/register", (req, res) => {
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
-    users[id] = { id, username, email, password: hashedPassword };
+    userDatabase[id] = { id, username, email, password: hashedPassword };
     // Set cookie with new user info, flash success and redirect
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
@@ -311,7 +233,7 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-// Updates a URL
+// Update a URL
 app.put("/urls/:shortURL", (req, res) => {
   const { userData, currentDateTime } = res.locals.vars;
   const shortURL = req.params.shortURL;
@@ -402,7 +324,6 @@ app.get("/", (req, res) => {
   const templateVars = { alerts, userData, currentPage };
   res.render("home", templateVars);
 });
-
 
 // Wildcard route
 app.get("/*", (req, res) => {
