@@ -20,12 +20,15 @@
 
           <!-- REGISTRATION FORM -->
           <div class="col-lg-4">
-            <div class="card-body ml-lg-4 mt-4">
+            <div class="card-body ml-lg-4 mt-3">
               <h1 class="card-title h3">Sign up</h1>
               <form class="form" action="/register" method="POST">
                 <div class="form-group mb-2">
+                  <!-- USERNAME -->
+                  <label for="username" class="form-label text-muted">Username</label>
+                  <input class="form-control" type="email" name="email" required>
                   <!-- EMAIL -->
-                  <label for="email" class="form-label text-muted">Email</label>
+                  <label for="email" class="form-label text-muted mt-2">Email</label>
                   <input class="form-control" type="email" name="email" required>
                   <!-- PASSWORD -->
                   <label for="password" class="form-label text-muted mt-2">Password</label>
