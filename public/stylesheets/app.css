@@ -16,10 +16,6 @@ hr,
   background-color: var(--tinyapp-white) !important;
 }
 
-.active {
-  color: var(--tinyapp-primary);
-}
-
 .card {
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.24);
   color: var(--tinyapp-primary);
