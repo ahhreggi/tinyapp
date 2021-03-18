@@ -36,10 +36,10 @@
             <% for(let shortURL in urlDB) { %>
               <tr>
                 <td>
-                  <a class="tinyapp-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
+                  <a class="tinyapp-table-link" href="/urls/<%= shortURL %>"><%= shortURL %></a>
                 </td>
                 <td>
-                  <a class="tinyapp-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
+                  <a class="tinyapp-table-link" href="<%= urlDB[shortURL].longURL %>" target="_blank"><%= urlDB[shortURL].longURL %></a>
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">

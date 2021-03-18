@@ -6,9 +6,14 @@
   --tinyapp-white: rgb(231, 231, 231);
 }
 
-.highlight {
-  color: var(--tinyapp-highlight);
-  font-weight: 400;
+body {
+  background-color: rgb(10, 10, 20);
+  color: var(--tinyapp-white);
+}
+
+hr,
+.navbar-tinyapp {
+  background-color: var(--tinyapp-white) !important;
 }
 
 .card {
@@ -16,9 +21,9 @@
   color: var(--tinyapp-primary);
 }
 
-body {
-  background-color: rgb(10, 10, 20);
-  color: var(--tinyapp-white);
+.highlight {
+  color: var(--tinyapp-highlight);
+  font-weight: 400;
 }
 
 .nav-tinyapp-link {
@@ -26,17 +31,13 @@ body {
 }
 
 .nav-tinyapp-link:hover,
-.tinyapp-link:hover {
+.tinyapp-link:hover,
+.tinyapp-table-link:hover {
   color: var(--tinyapp-tertiary) !important;
   text-decoration: none;
 }
 
-.tinyapp-link {
+.tinyapp-table-link {
   font-size: 1em;
   line-height: 2.4em;
-}
-
-hr,
-.navbar-tinyapp {
-  background-color: var(--tinyapp-white) !important;
 }
