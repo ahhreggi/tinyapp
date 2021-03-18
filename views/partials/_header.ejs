@@ -8,9 +8,11 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
 
-          <!-- NAVIGATION LINKS -->
-          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
-          <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
+          <!-- NAVIGATION LINKS (shown if user is currently logged in) -->
+          <% if (userData) { %> 
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls">my links</a>
+            <a class="navbar-brand nav-item nav-link nav-tinyapp-link" href="/urls/new">create</a>
+          <% } %> 
           
         </div>
         <div class="navbar-nav ml-auto">
@@ -36,3 +38,20 @@
     </div>
   </nav>
 </header>
+
+<div class="container">
+
+<!-- FLASH MESSAGES -->
+<!-- Set alert box color depending on alert type -->
+<% const alertType = alerts["warning"] ? "warning" : alerts["danger"] ? "danger" : alerts["success"] ? "success" : "" %> 
+<!-- Display alert if there is one -->
+<% if (alerts[alertType]) { %>
+  <div class="alert alert-<%= alertType %> alert-dismissible fade show" role="alert">
+    <%= alerts[alertType] %> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% } %>
+
+</div>

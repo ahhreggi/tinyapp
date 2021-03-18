@@ -4,6 +4,10 @@ const cookieSession = require("cookie-session");
 const methodOverride = require("method-override");
 const path = require("path");
 
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
+
 // Helper functions
 const {
   addHttp,
@@ -64,6 +68,21 @@ app.use(cookieSession({
 app.use(methodOverride("_method"));
 // Serve public directory
 app.use(express.static(path.join(__dirname, 'public')));
+// Session and flash configuration
+const sessionConfig = {
+  name: 'session',
+  secret: "secret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+      httpOnly: true,
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // + 7 days in milliseconds
+      maxAge: 1000 * 60 * 60 * 24 * 7
+  }
+}
+app.use(session(sessionConfig));
+app.use(flash());
+
 
 // ENDPOINTS & ROUTES //////////////////////////////
 
@@ -76,40 +95,48 @@ app.post("/login", (req, res) => {
   if (userData) {
     // Set a cookie and redirect to /urls
     req.session.userID = userData.id;
+    // Flash successful login message
+    req.flash("success", "Login successful. Welcome back!");
     res.redirect("/urls");
   } else {
-    res.status(403).send("Invalid email/password!");
+    // If the email/password is invalid, flash an error
+    req.flash("danger", "The email/password you entered is invalid.");
+    res.redirect("/login")
   }
 });
 
 // Log the user out
 app.post("/logout", (req, res) => {
   req.session.userID = null;
+  req.flash("success", "You've successfully logged out.");
   res.redirect("/");
 });
 
 // Form to login to an existing account
 app.get("/login", (req, res) => {
+  const alerts = req.flash();
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  // If the user is already logged in, redirect to /urls
+  // If the user is already logged in, flash a warning and redirect to /urls
   if (userData) {
+    req.flash("warning", "You are already logged in");
     res.redirect("/urls");
   } else {
-    const templateVars = { userData: userData };
+    const templateVars = { userData: userData, alerts };
     res.render("login", templateVars);
   }
 });
 
 // Form to register a new account
 app.get("/register", (req, res) => {
+  const alerts = req.flash();
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   // If the user is already logged in, redirect to /urls
   if (userData) {
     res.redirect("/urls");
   } else {
-    const templateVars = { userData: userData };
+    const templateVars = { userData: userData, alerts };
     res.render("register", templateVars);
   }
 });
@@ -120,12 +147,10 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If an email/password is not provided, respond with a 400 status code
-  if (!email || !password) {
-    res.status(400).send("You didn't enter an email/password!");
-    // If the email already exists, respond with an error --> add flash message
-  } else if (isExistingUser(email, users)) {
-    res.send("E-mail is already in use.");
+  // If an email/password is not provided or the email already exists, flash an error
+  if (!email || !password || isExistingUser(email, users)) {
+    req.flash("danger", "E-mail is already in use.");
+    res.redirect("/register");
   } else {
     // Add data to the database
     const id = generateRandomString(6);
@@ -144,13 +169,15 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
+  const alerts = req.flash();
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  // If the user is not logged in, redirect to the login page
   if (!userData) {
-    res.redirect("/login"); // --> add flash message
+    // If the user is not logged in, flash an error and redirect to login page
+    req.flash("warning", "You must be logged in to do that!");
+    res.redirect("/login");
   } else {
-    const templateVars = { userData: userData };
+    const templateVars = { userData: userData, alerts };
     res.render("urls_new", templateVars);
   }
 });
@@ -185,12 +212,14 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
     if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
       delete urlDatabase[shortURL];
     } else {
-      // If the user doesn't own the URL, render an error page
-      res.send("You are logged in but you can't delete that URL because you don't own it!");
+      // If the user doesn't own the URL, flash an error and redirect to home page
+      req.flash("danger", "You don't have permission to do that!");
+      res.redirect("/");
     }
   } else {
-    // If the user is not logged in, render an error page
-    res.send("You need to log in before editing a URL!");
+      // If the user is not logged in, flash an error and redirect to login page
+      req.flash("warning", "You must be logged in to do that!");
+      res.redirect("/login");
   }
   res.redirect("/urls");
 });
@@ -211,59 +240,73 @@ app.put("/urls/:shortURL", (req, res) => {
       // Redirect to index page
       res.redirect(`/urls`);
     } else {
-      // If the user doesn't own the URL, render an error page
-      res.send("You are logged in but you don't own that URL!");
+      // If the user doesn't own the URL, flash an error and redirect to home page
+      req.flash("danger", "You don't have permission to do that!");
+      res.redirect("/");
     }
   } else {
-    // If the user is not logged in, render an error page
-    res.send("You need to log in before editing a URL!");
+    // If the user is not logged in, flash an error and redirect to login page
+    req.flash("warning", "You must be logged in to do that!");
+    res.redirect("/login");
   }
 });
 
 // Display a URL from the database
 app.get("/urls/:shortURL", (req, res) => {
+  const alerts = req.flash();
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
   const targetURL = req.params.shortURL;
   // Check if the URL is in the database
-  const longURL = urlDatabase[targetURL].longURL;
-  // If the URL does not exist, render an error page
+  const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
+  // If the URL does not exist, flash an error and redirect to home page
   if (!longURL) {
-    res.send("That URL doesn't exist!");
+    req.flash("danger", "That page doesn't exist!"); // --> Convert to 404 error page, couldn't find what you were looking for
+    res.redirect("/");
   } else {
     // If the user is logged in and owns the URL, display the page
-    if (userData && urlDatabase[targetURL].userID === userData.id) {
-      const templateVars = { userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL};
+    if (userData) {
+      if (urlDatabase[targetURL].userID === userData.id) {
+      const templateVars = { userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL, alerts };
       res.render("urls_show", templateVars);
+      } else {
+      // If the user doesn't own the URL, flash an error and redirect to home page
+      req.flash("danger", "You don't have permission to do that!");
+      res.redirect("/");
+      }
     } else {
-      // Otherwise if the user is logged out or does not own the URL, render an error page
-      res.send("Either you are not logged in or that URL doesn't belong to you!");
+      // If the user is not logged in, flash an error and redirect to login page
+      req.flash("warning", "You must be logged in to do that!");
+      res.redirect("/login");
     }
   }
 });
 
 // Display all URLs in the database
 app.get("/urls", (req, res) => {
+  const alerts = req.flash();
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  // If a user is logged in, retrieve their URLs, otherwise render an error page
+  // If a user is logged in, retrieve their URLs
   let userDB = {};
   if (userData) {
     userDB = urlsForUser(userData.id, urlDatabase);
-    const templateVars = { userData: userData, urlDB: userDB };
+    const templateVars = { userData: userData, urlDB: userDB, alerts };
     res.render("urls_index", templateVars);
   } else {
-    res.redirect("/login"); // --> add flash message
+    // If the user is not logged in, flash an error and redirect to login page
+    req.flash("warning", "You must be logged in to do that!");
+    res.redirect("/login");
   }
 });
 
 // Home page
 app.get("/", (req, res) => {
+  const alerts = req.flash();
+  console.log(alerts);
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
-  // If a user is logged in, redirect to /urls, otherwise /login
-  // res.redirect(userData ? "/urls" : "/login");
-  const templateVars = { userData };
+  const templateVars = { userData, alerts };
   res.render("home", templateVars);
 });
 
