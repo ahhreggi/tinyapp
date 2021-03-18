@@ -43,7 +43,7 @@ const generateRandomString = (length) => {
  *         A boolean representing whether or not the email exists.
  */
 const isExistingEmail = (email, userDB) => {
-  // Get an array of all emails in the user database
+  // Retrieve an array of all emails in the user database
   const allEmails = Object.keys(userDB).map((id) => userDB[id].email);
   return allEmails.includes(email);
 };
@@ -58,7 +58,6 @@ const isExistingEmail = (email, userDB) => {
  *         A boolean representing whether or not the username exists.
  */
 const isExistingUsername = (username, userDB) => {
-  // Get an array of all emails in the user database
   const allUsernames = Object.keys(userDB).map((id) => userDB[id].username);
   return allUsernames.includes(username);
 };
@@ -73,9 +72,7 @@ const isExistingUsername = (username, userDB) => {
  *         An object containing a single user's credentials or false if none exist.
  */
 const getUserByEmail = (email, userDB) => {
-  // Find and return the user object in the user database that has the given email
   const userData = Object.values(userDB).find((user) => user.email === email);
-  // If an account was found, return the user data, false otherwise
   return userData ? userData : false;
 };
 
@@ -89,9 +86,7 @@ const getUserByEmail = (email, userDB) => {
  *         An object containing a single user's credentials or false if none exist.
  */
 const getUserByUsername = (username, userDB) => {
-  // Find and return the user object in the user database that has the given username
   const userData = Object.values(userDB).find((user) => user.username === username);
-  // If an account was found, return the user data, false otherwise
   return userData ? userData : false;
 };
 
@@ -110,15 +105,14 @@ const getUserByUsername = (username, userDB) => {
  */
 const authenticateUser = (email, password, userDB, useUsername = false) => {
   let userData;
-  // Retrieve user info from the database by username/email
+  // Retrieve user info from the database by username or email
   if (useUsername) {
     userData = getUserByUsername(email, userDB);
   } else {
     userData = getUserByEmail(email, userDB);
   }
-  // If a user with the username/email exists, check if the credentials are valid
+  // Check if the provided password matches the hashed password in the database
   const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
-  // If the credentials are valid, return the user data, false otherwise
   return valid ? userData : false;
 };
 
@@ -145,7 +139,6 @@ const urlsForUser = (id, urlDB) => {
   const userDB = [];
   // Filter the database for entries belonging to the user ID
   const userShortURLs = Object.keys(urlDB).filter(shortURL => urlDB[shortURL].userID === id);
-  // Populate userDB with the data of each short URL, retrieved from the URL database.
   for (const shortURL of userShortURLs) {
     const url = {
       shortURL,
@@ -192,9 +185,11 @@ const userOwnsURL = (userID, shortURL, urlDB) => {
  */
 const validateURL = (url) => {
   let valid;
+  // Attempt to construct a URL with the given string
   try {
     new URL(url);
     valid = true;
+    // If an error is thrown, the URL is invalid
   } catch (err) {
     valid = false;
   }
@@ -227,7 +222,7 @@ const getVisits = (url, urlDB) => {
     return false;
   }
   const visitorLog = urlDB[url].visitorLog;
-  // Retrieve an array of all visitor IDs then filter the unique values
+  // Retrieve an array of all visitor IDs then filter the unique values only
   let uniqueVisitors = visitorLog
     .map(visit => visit.visitorID)
     .filter((visitorID, index, allVisitors) => allVisitors.indexOf(visitorID) === index);
