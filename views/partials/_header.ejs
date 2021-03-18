@@ -42,9 +42,8 @@
 <div class="container">
 
 <!-- FLASH MESSAGES -->
-<!-- Set alert color depending on alert type -->
+<!-- Set alert color depending on alert type and display if there is one -->
 <% const alertType = alerts["warning"] ? "warning" : alerts["danger"] ? "danger" : alerts["success"] ? "success" : "" %> 
-<!-- Display alert if there is one -->
 <% if (alerts[alertType]) { %>
   <div class="alert alert-<%= alertType %> tinyapp-alert alert-dismissible fade show" role="alert">
     <%= alerts[alertType] %> 
