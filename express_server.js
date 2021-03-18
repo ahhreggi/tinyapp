@@ -51,22 +51,17 @@ const users = {
 
 // CONFIGURATIONS & MIDDLEWARE /////////////////////
 
-// Set the view engine to EJS
-app.set("view engine", "ejs");
 
-// Convert the request body from a Buffer into a readable string (req.body)
-app.use(bodyParser.urlencoded({extended: true}));
-// Parse cookies
-app.use(cookieSession({
+app.set("view engine", "ejs"); // set the view engine to EJS
+app.use(bodyParser.urlencoded({extended: true})); // parse req body
+app.use(cookieSession({ // configure cookies
   name: "session",
   keys: ["userID"],
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  maxAge: 24 * 60 * 60 * 1000
 }));
-// Override POST requests with PUT/DELETE
-app.use(methodOverride("_method"));
-// Serve public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride("_method")); //override POST requests with PUT/DELETE
+app.use(express.static(path.join(__dirname, 'public'))); // serve public directory
+
 // Session and flash configuration
 const sessionConfig = {
   name: 'session',
@@ -75,12 +70,23 @@ const sessionConfig = {
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // + 7 days in milliseconds
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
 };
 app.use(session(sessionConfig));
 app.use(flash());
+
+// Store flash messages, user data, and current path into local variables on every request
+app.use((req, res, next) => {
+  const cookieUserID = req.session.userID;
+  res.locals.vars = {
+    alerts: req.flash(),
+    userData: users[cookieUserID],
+    currentPage: req.originalUrl
+  };
+  next();
+});
 
 // ENDPOINTS & ROUTES //////////////////////////////
 
@@ -104,40 +110,38 @@ app.post("/login", (req, res) => {
 
 // Log the user out
 app.post("/logout", (req, res) => {
-  // Destroy session and flash success
-  req.session.userID = null;
-  req.flash("success", "You've successfully logged out.");
+  // Destroy session and flash success if user was previously logged in
+  if (req.session.userID) {
+    req.session.userID = null;
+    req.flash("success", "You've successfully logged out.");
+  }
   res.redirect("/");
 });
 
 // Form to login to an existing account
 app.get("/login", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
+  const { alerts, userData, currentPage } = res.locals.vars;
   // If the user is already logged in, flash a warning and redirect
   if (userData) {
     req.flash("warning", "You are already logged in");
     res.redirect("/urls");
   } else {
     // Otherwise, display login form
-    const templateVars = { alerts, userData: userData };
+    const templateVars = { alerts, userData, currentPage };
     res.render("login", templateVars);
   }
 });
 
 // Form to register a new account
 app.get("/register", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
+  const { alerts, userData, currentPage } = res.locals.vars;
   // If the user is already logged in, flash a warning and redirect
   if (userData) {
     req.flash("warning", "You are already logged in");
     res.redirect("/urls");
   } else {
     // Otherwise, display registration form
-    const templateVars = { alerts, userData: userData };
+    const templateVars = { alerts, userData, currentPage };
     res.render("register", templateVars);
   }
 });
@@ -170,15 +174,13 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
+  const { alerts, userData, currentPage } = res.locals.vars;
   // If the user is not logged in, flash an error and redirect
   if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
     res.redirect("/login");
   } else {
-    const templateVars = { alerts, userData: userData };
+    const templateVars = { alerts, userData, currentPage };
     res.render("urls_new", templateVars);
   }
 });
@@ -205,12 +207,11 @@ app.post("/urls", (req, res) => {
 
 // Delete a URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
+  const { userData } = res.locals.vars;
   const shortURL = req.params.shortURL;
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
   // If the user is logged in and owns the URL, delete it from the database
   if (userData) {
-    if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
+    if (userOwnsURL(userData.id, shortURL, urlDatabase)) {
       delete urlDatabase[shortURL];
       // Otherwise, flash an error and redirect to home page
     } else {
@@ -227,12 +228,11 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 
 // Updates a URL
 app.put("/urls/:shortURL", (req, res) => {
+  const { userData } = res.locals.vars;
   const shortURL = req.params.shortURL;
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
   // If the user is logged in and owns the URL, update the info in the database
   if (userData) {
-    if (userOwnsURL(cookieUserID, shortURL, urlDatabase)) {
+    if (userOwnsURL(userData.id, shortURL, urlDatabase)) {
       const newURL = addHttp(req.body.newURL);
       urlDatabase[shortURL].longURL = newURL;
       res.redirect(`/urls`);
@@ -250,9 +250,7 @@ app.put("/urls/:shortURL", (req, res) => {
 
 // Display a URL from the database
 app.get("/urls/:shortURL", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
+  const { alerts, userData, currentPage } = res.locals.vars;
   const targetURL = req.params.shortURL;
   // Retrieve the longURL from the database if it exists
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
@@ -264,7 +262,7 @@ app.get("/urls/:shortURL", (req, res) => {
     // If the user is logged in and owns the URL, display the page
     if (userData) {
       if (urlDatabase[targetURL].userID === userData.id) {
-        const templateVars = { alerts, userData: userData, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL };
+        const templateVars = { alerts, userData, currentPage, shortURL: targetURL, longURL: urlDatabase[targetURL].longURL };
         res.render("urls_show", templateVars);
       } else {
       // Otherwise, flash an error and redirect to home page
@@ -281,14 +279,12 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // Display all URLs in the database
 app.get("/urls", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
+  const { alerts, userData, currentPage } = res.locals.vars;
   // If a user is logged in, retrieve their URLs from the database
   let userDB = {};
   if (userData) {
     userDB = urlsForUser(userData.id, urlDatabase);
-    const templateVars = { alerts, userData: userData, urlDB: userDB };
+    const templateVars = { alerts, userData, currentPage, urlDB: userDB };
     res.render("urls_index", templateVars);
     // Otherwise, flash an error and redirect to login page
   } else {
@@ -299,10 +295,8 @@ app.get("/urls", (req, res) => {
 
 // Home page
 app.get("/", (req, res) => {
-  const alerts = req.flash();
-  const cookieUserID = req.session.userID;
-  const userData = users[cookieUserID];
-  const templateVars = { alerts, userData };
+  const { alerts, userData, currentPage } = res.locals.vars;
+  const templateVars = { alerts, userData, currentPage };
   res.render("home", templateVars);
 });
 
