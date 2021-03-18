@@ -8,7 +8,7 @@ const dayjs = require("dayjs");
 const bcrypt = require("bcrypt");
 
 const app = express();
-const PORT = 8080; // default port 8080
+const PORT = 8080;
 
 const {
   addHttp,
