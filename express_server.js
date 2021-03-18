@@ -36,7 +36,7 @@ app.use(cookieSession({ // configure cookies
   maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(methodOverride("_method")); // override POST requests
-app.use(express.static(path.join(__dirname, 'public'))); // serve public directory
+app.use(express.static(path.join(__dirname, "public"))); // serve public directory
 app.use(flash()); // enable storage of flash messages
 
 // Initialize local variables on every request
