@@ -123,7 +123,7 @@ app.get("/login", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   // If the user is already logged in, flash a warning and redirect
   if (userData) {
-    req.flash("warning", "You are already logged in");
+    req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
     // Otherwise, display login form
@@ -137,7 +137,7 @@ app.get("/register", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   // If the user is already logged in, flash a warning and redirect
   if (userData) {
-    req.flash("warning", "You are already logged in");
+    req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
     // Otherwise, display registration form
