@@ -39,7 +39,7 @@ app.use(methodOverride("_method")); // override POST requests
 app.use(express.static(path.join(__dirname, 'public'))); // serve public directory
 app.use(flash()); // enable storage of flash messages
 
-// Store flash messages, user/session data, and current path into local variables on every request
+// Initialize local variables on every request
 app.use((req, res, next) => {
   if (!req.session.visitorID) {
     req.session.visitorID = generateRandomString(8);
@@ -121,13 +121,13 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If a username/email/password is not provided, or the username/email is in use, flash an error
+  // If a username/email/password is not provided or exists, flash an error
   let errorMsg;
   const existingData = isExistingUser(username, email, userDatabase);
   if (!username || !email || !password) {
     errorMsg = "Please complete all fields.";
   } else if (existingData) {
-    errorMsg = `The ${existingData} you entered is already in use. Please try a different one.`;
+    errorMsg = `The ${existingData} you entered is already in use.`;
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
@@ -276,7 +276,14 @@ app.get("/urls/:shortURL", (req, res) => {
     if (userData) {
       if (urlDatabase[targetURL].userID === userData.id) {
         const visitData = getVisits(targetURL, urlDatabase);
-        const templateVars = { alerts, userData, currentPage, shortURL: targetURL, urlData: urlDatabase[targetURL], visitData };
+        const templateVars = {
+          alerts,
+          userData,
+          currentPage,
+          shortURL: targetURL,
+          urlData: urlDatabase[targetURL],
+          visitData
+        };
         res.render("urls_show", templateVars);
       } else {
       // Otherwise, flash an error and redirect to home page
