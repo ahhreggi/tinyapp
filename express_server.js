@@ -63,23 +63,23 @@ app.use((req, res, next) => {
 app.post("/login", (req, res) => {
   const login = req.body.email;
   const password = req.body.password;
-  // Retrieve the user account that matches the given credentials (false if none)
   let validUserData = authenticateUser(login, password, userDatabase);
-  // If a user is found, set a cookie, flash success and redirect
-  if (validUserData) {
+  // ERROR: Credentials are invalid
+  if (!validUserData) {
+    req.flash("danger", "The username/email or password you entered is invalid.");
+    res.redirect("/login");
+
+    // SUCCESS: Credentials are valid
+  } else {
     req.session.userID = validUserData.id;
     req.flash("success", `Login successful. Welcome back, ${validUserData.username}!`);
     res.redirect("/");
-    // Otherwise, flash error
-  } else {
-    req.flash("danger", "The username/email or password you entered is invalid.");
-    res.redirect("/login");
   }
 });
 
 // Log the user out
 app.post("/logout", (req, res) => {
-  // Destroy session and flash success if user was previously logged in
+  // SUCCESS: User is logged in
   if (req.session.userID) {
     req.session.userID = null;
     req.flash("success", "You've successfully logged out.");
@@ -90,12 +90,12 @@ app.post("/logout", (req, res) => {
 // Form to login to an existing account
 app.get("/login", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
-  // If the user is already logged in, flash a warning and redirect
+  // ERROR: User is already logged in
   if (userData) {
     req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
-    // Otherwise, display login form
+    // SUCCESS: User is not logged in
     const templateVars = { alerts, userData, currentPage };
     res.render("login", templateVars);
   }
@@ -104,12 +104,12 @@ app.get("/login", (req, res) => {
 // Form to register a new account
 app.get("/register", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
-  // If the user is already logged in, flash a warning and redirect
+  // ERROR User is already logged in
   if (userData) {
     req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
-    // Otherwise, display registration form
+    // SUCCESS: User is not logged in
     const templateVars = { alerts, userData, currentPage };
     res.render("register", templateVars);
   }
@@ -121,19 +121,18 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If a username/email/password is not provided or exists, flash an error and redirect
   const existingData = isExistingUser(username, email, userDatabase);
+  // ERROR: Incomplete form or existing credentials
   if (!username || !email || !password) {
     req.flash("danger", "Please complete all fields.");
     res.redirect("/register");
   } else if (existingData) {
     req.flash("danger", `The ${existingData} you entered is already in use.`);
     res.redirect("/register");
+    // SUCCESS: Complete form and nonexistent credentials
   } else {
-    // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
     userDatabase[id] = { id, username, email, password: hashedPassword };
-    // Set cookie with new user info, flash success and redirect
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
     res.redirect("/");
@@ -145,11 +144,10 @@ app.post("/register", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const urlData = urlDatabase[shortURL];
-  let targetURL;
-  // If the URL is not in the database, redirect to 404 page
+  // ERROR: URL does not exist
   if (!urlData) {
-    targetURL = "/404";
-    // Otherwise, log visitor information and redirect to longURL
+    res.redirect("/404");
+    // SUCCESS: URL exists
   } else {
     const { currentDateTime, visitorID } = res.locals.vars;
     const newVisitor = {
@@ -157,18 +155,18 @@ app.get("/u/:shortURL", (req, res) => {
       visitorID
     };
     urlDatabase[shortURL].visitorLog.push(newVisitor);
-    targetURL = urlData.longURL;
+    res.redirect(urlData.longURL);
   }
-  res.redirect(targetURL);
 });
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
-  // If the user is not logged in, flash an error and redirect
+  // ERROR: User is not logged in
   if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
     res.redirect("/login");
+    // SUCCESS: User is logged in
   } else {
     const templateVars = { alerts, userData, currentPage };
     res.render("urls_new", templateVars);
@@ -178,20 +176,19 @@ app.get("/urls/new", (req, res) => {
 // Create a new URL
 app.post("/urls", (req, res) => {
   const { currentDateTime } = res.locals.vars;
-  // Add "http://" to the URL if it doesn't already have it
   const longURL = addHttp(req.body.longURL);
-  // If the URL is invalid, flash an error
+  // ERROR: URL is possibly invalid
   if (!validateURL(longURL)) {
     req.flash("danger", "Please enter a valid URL.");
     res.redirect("/urls/new");
-    // Otherwise, add the URL to the database
+    // SUCCESS: URL is possibly valid
   } else {
     // Generate a unique shortURL to be added to the database
     let shortURL = generateRandomString(6);
     while (shortURL in urlDatabase) {
       shortURL = generateRandomString(6);
     }
-    // Retrieve the user's ID and add the new URL to the database with it
+    // Retrieve the user's ID and associate it with the new URL
     const cookieUserID = req.session.userID;
     const newURL = {
       userID: cookieUserID,
@@ -201,7 +198,6 @@ app.post("/urls", (req, res) => {
       visitorLog: []
     };
     urlDatabase[shortURL] = newURL;
-    // Flash success and redirect to the newly created URL's show page
     req.flash("success", "Link created successfully!");
     res.redirect(`/urls/${shortURL}`);
   }
@@ -211,37 +207,45 @@ app.post("/urls", (req, res) => {
 app.delete("/urls/:shortURL/delete", (req, res) => {
   const { userData } = res.locals.vars;
   const shortURL = req.params.shortURL;
-  // If the user is logged in and owns the URL, delete it from the database
-  if (userData) {
-    if (userOwnsURL(userData.id, shortURL, urlDatabase)) {
-      delete urlDatabase[shortURL];
-      // Otherwise, flash an error and redirect to home page
-    } else {
-      req.flash("danger", "You don't have permission to do that!");
-      res.redirect("/");
-    }
-    // If the user is not logged in, flash an error and redirect
-  } else {
+  // ERROR: User is not logged in
+  if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
     res.redirect("/login");
+  } else {
+    // ERROR: User is logged in but does not own the URL
+    if (!userOwnsURL(userData.id, shortURL, urlDatabase)) {
+      req.flash("danger", "You don't have permission to do that!");
+      res.redirect("/");
+      // SUCCESS: User is logged in and owns the URL
+    } else {
+      delete urlDatabase[shortURL];
+      res.redirect("/urls");
+    }
   }
-  res.redirect("/urls");
 });
 
 // Update a URL
 app.put("/urls/:shortURL", (req, res) => {
   const { userData, currentDateTime } = res.locals.vars;
   const shortURL = req.params.shortURL;
-  // If the user is logged in and owns the URL, update the info in the database
-  if (userData) {
-    if (userOwnsURL(userData.id, shortURL, urlDatabase)) {
+  // ERROR: User is not logged in
+  if (!userData) {
+    req.flash("warning", "You must be logged in to do that!");
+    res.redirect("/login");
+  } else {
+    // ERROR: User is logged in but does not own the URL
+    if (!userOwnsURL(userData.id, shortURL, urlDatabase)) {
+      req.flash("danger", "You don't have permission to do that!");
+      res.redirect("/");
+      // SUCCESS: User is logged in and owns the URL
+    } else {
       const newURL = addHttp(req.body.newURL);
-      // If the URL is invalid, flash an error
+      // ERROR: URL is possibly invalid
       if (!validateURL(newURL)) {
         req.flash("danger", "Please enter a valid URL.");
         res.redirect(`/urls/${shortURL}`);
       } else {
-        // If the URL is valid and is not the same as the original, update the URL
+        // SUCCESS: URL is possibly valid and different from the original
         if (urlDatabase[shortURL].longURL !== newURL) {
           urlDatabase[shortURL].longURL = newURL;
           urlDatabase[shortURL].lastModified = currentDateTime;
@@ -249,15 +253,7 @@ app.put("/urls/:shortURL", (req, res) => {
         }
         res.redirect("/urls/");
       }
-      // Otherwise, flash an error and redirect
-    } else {
-      req.flash("danger", "You don't have permission to do that!");
-      res.redirect("/");
     }
-  } else {
-    // If the user is not logged in, flash an error and redirect
-    req.flash("warning", "You must be logged in to do that!");
-    res.redirect("/login");
   }
 });
 
@@ -267,13 +263,21 @@ app.get("/urls/:shortURL", (req, res) => {
   const targetURL = req.params.shortURL;
   // Retrieve the longURL from the database if it exists
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
-  // If the URL does not exist, redirect to 404 page
+  // ERROR: URL does not exist
   if (!longURL) {
     res.redirect("/404");
   } else {
-    // If the user is logged in and owns the URL, display the page
-    if (userData) {
-      if (urlDatabase[targetURL].userID === userData.id) {
+    // ERROR: User is not logged in
+    if (!userData) {
+      req.flash("warning", "You must be logged in to do that!");
+      res.redirect("/login");
+    } else {
+      // ERROR: User is logged in but does not own the URL
+      if (urlDatabase[targetURL].userID !== userData.id) {
+        req.flash("danger", "You don't have permission to do that!");
+        res.redirect("/");
+        // SUCCESS: User is logged in and owns the URL
+      } else {
         const visitData = getVisits(targetURL, urlDatabase);
         const templateVars = {
           alerts,
@@ -284,15 +288,7 @@ app.get("/urls/:shortURL", (req, res) => {
           visitData
         };
         res.render("urls_show", templateVars);
-      } else {
-      // Otherwise, flash an error and redirect to home page
-        req.flash("danger", "You don't have permission to do that!");
-        res.redirect("/");
       }
-    } else {
-      // If the user is not logged in, flash an error and redirect
-      req.flash("warning", "You must be logged in to do that!");
-      res.redirect("/login");
     }
   }
 });
@@ -300,16 +296,15 @@ app.get("/urls/:shortURL", (req, res) => {
 // Display all URLs in the database
 app.get("/urls", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
-  // If a user is logged in, retrieve their URLs from the database
-  let userURLs = [];
-  if (userData) {
-    userURLs = urlsForUser(userData.id, urlDatabase);
-    const templateVars = { alerts, userData, currentPage, userURLs };
-    res.render("urls_index", templateVars);
-    // Otherwise, flash an error and redirect to login page
-  } else {
+  // ERROR: User is not logged in
+  if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
     res.redirect("/login");
+    // SUCCESS: User is logged in
+  } else {
+    const userURLs = urlsForUser(userData.id, urlDatabase);
+    const templateVars = { alerts, userData, currentPage, userURLs };
+    res.render("urls_index", templateVars);
   }
 });
 
