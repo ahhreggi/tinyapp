@@ -61,14 +61,10 @@ app.use((req, res, next) => {
 
 // Log the user in
 app.post("/login", (req, res) => {
-  const email = req.body.email;
+  const login = req.body.email;
   const password = req.body.password;
   // Retrieve the user account that matches the given credentials (false if none)
-  let validUserData = authenticateUser(email, password, userDatabase);
-  // If the email/password combination did not return a user, search by username
-  if (!validUserData) {
-    validUserData = authenticateUser(email, password, userDatabase, true);
-  }
+  let validUserData = authenticateUser(login, password, userDatabase);
   // If a user is found, set a cookie, flash success and redirect
   if (validUserData) {
     req.session.userID = validUserData.id;

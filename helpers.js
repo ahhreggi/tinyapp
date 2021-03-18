@@ -60,54 +60,32 @@ const isExistingUser = (username, email, userDB) => {
 };
 
 /**
- * Returns an object containing a user object from the user database given an email.
- * @param  {string} email
- *         A string containing a user's email.
+ * Returns an object containing a user object from the user database given a username/email.
+ * @param  {string} login
+ *         A username/email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|false}
  *         An object containing a single user's credentials or false if none exist.
  */
-const getUserByEmail = (email, userDB) => {
-  const userData = Object.values(userDB).find((user) => user.email === email);
+const getUserData = (login, userDB) => {
+  const userData = Object.values(userDB).find((user) => user.username === login || user.email === login);
   return userData ? userData : false;
 };
 
 /**
- * Returns an object containing a user object from the user database given a username.
- * @param  {string} username
- *         A string containing a user's username.
- * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
- *         An object containing user IDs and the corresponding user credentials.
- * @return {{id: string, email: string, password: string}|false}
- *         An object containing a single user's credentials or false if none exist.
- */
-const getUserByUsername = (username, userDB) => {
-  const userData = Object.values(userDB).find((user) => user.username === username);
-  return userData ? userData : false;
-};
-
-/**
- * Returns true if the given email and password combination exists in the database.
- * @param  {string} email
- *         A string containing a user's email.
+ * Returns true if the given username/email and password combination exists in the database.
+ * @param  {string} login
+ *         A username/email to look up in the database.
  * @param  {string} password
- *         A string containing a user's password.
+ *         A password to authenticate credentials with.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
- * @param  {boolean} useUsername
- *         A boolean determining whether or not to use a username instead of an email.
  * @return {{id: string, email: string, password: string}|boolean}
  *         An object containing a single user's credentials or false if none exist.
  */
-const authenticateUser = (email, password, userDB, useUsername = false) => {
-  let userData;
-  // Retrieve user info from the database by username or email
-  if (useUsername) {
-    userData = getUserByUsername(email, userDB);
-  } else {
-    userData = getUserByEmail(email, userDB);
-  }
+const authenticateUser = (login, password, userDB) => {
+  let userData = getUserData(login, userDB);
   // Check if the provided password matches the hashed password in the database
   const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
   return valid ? userData : false;
@@ -230,7 +208,7 @@ module.exports = {
   addHttp,
   generateRandomString,
   isExistingUser,
-  getUserByEmail,
+  getUserData,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
