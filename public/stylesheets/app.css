@@ -31,6 +31,11 @@ body {
   text-decoration: none;
 }
 
+.tinyapp-link {
+  font-size: 1em;
+  line-height: 2.4em;
+}
+
 hr,
 .navbar-tinyapp {
   background-color: var(--tinyapp-white) !important;

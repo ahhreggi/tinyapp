@@ -23,14 +23,15 @@
 
       <% } else { %> 
 
-        <h3>My URLs</h3>
+        <h1 class="display-4 mb-4"><%= userData.email %>'s links</h1>
+        <p class="lead">here are the links you've created so far:</p>
         <table class="table">
-          <thead>
+          <thead class="thead">
             <tr>
-              <th scope="col">Short URL</th>
-              <th scope="col">Long URL</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
+              <th scope="col">short link</th>
+              <th scope="col">reference link</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -44,12 +45,12 @@
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">
-                    <button type="button" class="btn btn-outline-primary">Edit</button>
+                    <button type="button" class="btn btn-outline-success" style="width: 100px">Edit</button>
                   </a>
                 </td>
                 <td>
                   <form method="POST" action="/urls/<%= shortURL %>/delete?_method=DELETE">
-                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    <button type="submit" class="btn btn-outline-danger" style="width: 100px">Delete</button>
                   </form>
                 </td>
               </tr>
