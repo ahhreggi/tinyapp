@@ -1,8 +1,7 @@
 :root {
   --tinyapp-primary: rgb(33, 36, 65);
   --tinyapp-secondary: rgb(64, 68, 99);
-  --tinyapp-tertiary: rgb(95, 102, 153);
-  --tinyapp-highlight: rgb(255, 255, 255);
+  --tinyapp-tertiary: rgb(112, 117, 156);
   --tinyapp-white: rgb(231, 231, 231);
 }
 
@@ -14,6 +13,20 @@ body {
 hr,
 .navbar-tinyapp {
   background-color: var(--tinyapp-white) !important;
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--tinyapp-primary) !important;
+}
+
+.btn-outline-secondary {
+  color: var(--tinyapp-tertiary) !important;
+  border-color: var(--tinyapp-tertiary) !important;
+}
+
+.btn-outline-secondary:hover {
+  color: var(--tinyapp-white) !important;
+  background-color: var(--tinyapp-tertiary) !important;
 }
 
 .card {
