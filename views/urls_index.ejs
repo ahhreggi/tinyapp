@@ -32,6 +32,7 @@
               <th scope="col">short link</th>
               <th scope="col">reference link</th>
               <th scope="col">visits</th>
+              <th scope="col">last modified</th>
               <th scope="col">edit link</th>
               <th scope="col">delete link</th>
             </tr>
@@ -51,6 +52,9 @@
                 </td>
                 <td>
                   <%= urlDB[shortURL].visits %>
+                </td>
+                <td>
+                  <%= urlDB[shortURL].lastModified %> 
                 </td>
                 <td>
                   <a href="/urls/<%= shortURL %>">

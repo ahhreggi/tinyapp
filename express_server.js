@@ -5,6 +5,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
+const dayjs = require("dayjs");
 
 const bcrypt = require("bcrypt");
 const app = express();
@@ -27,17 +28,20 @@ const urlDatabase = {
   "b2xVn2": {
     userID: "aUA4CE",
     longURL: "http://www.lighthouselabs.ca",
-    visits: 5
+    visits: 5,
+    lastModified: "2021-03-12 16:45:24"
   },
   "sgq3y6": {
     userID: "aUA4CE",
     longURL: "http://www.reddit.com",
-    visits: 2
+    visits: 2,
+    lastModified: "2021-02-26 04:11:37"
   },
   "9sm5xK": {
     userID: "ccLPCa",
     longURL: "http://www.google.com",
-    visits: 4
+    visits: 4,
+    lastModified: "2021-03-16 13:22:19"
   }
 };
 
@@ -85,11 +89,13 @@ app.use(flash());
 
 // Store flash messages, user data, and current path into local variables on every request
 app.use((req, res, next) => {
+  const currentDateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
   const cookieUserID = req.session.userID;
   res.locals.vars = {
     alerts: req.flash(),
     userData: users[cookieUserID],
-    currentPage: req.originalUrl
+    currentPage: req.originalUrl,
+    currentDateTime
   };
   next();
 });
@@ -216,6 +222,7 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
+  const { currentDateTime } = res.locals.vars;
   // Add "http://" to the URL if it doesn't already have it
   const longURL = addHttp(req.body.longURL);
   // If the URL is invalid, flash an error
@@ -234,7 +241,8 @@ app.post("/urls", (req, res) => {
     const newURL = {
       userID: cookieUserID,
       longURL: longURL,
-      visits: 0
+      visits: 0,
+      lastModified: currentDateTime
     };
     urlDatabase[shortURL] = newURL;
     // Redirect to the newly created URL's show page
@@ -265,7 +273,7 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 
 // Updates a URL
 app.put("/urls/:shortURL", (req, res) => {
-  const { userData } = res.locals.vars;
+  const { userData, currentDateTime } = res.locals.vars;
   const shortURL = req.params.shortURL;
   // If the user is logged in and owns the URL, update the info in the database
   if (userData) {
@@ -278,6 +286,7 @@ app.put("/urls/:shortURL", (req, res) => {
         // Otherwise, update the URL
       } else {
         urlDatabase[shortURL].longURL = newURL;
+        urlDatabase[shortURL].lastModified = currentDateTime;
         req.flash("success", "Link successfully updated!");
         res.redirect(`/urls`);
       }
