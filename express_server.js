@@ -19,7 +19,8 @@ const {
   authenticateUser,
   urlsForUser,
   userOwnsURL,
-  validateURL
+  validateURL,
+  getVisits
 } = require("./helpers");
 
 // IN-MEMORY DATABASES /////////////////////////////
@@ -28,9 +29,8 @@ const urlDatabase = {
   "b2xVn2": {
     userID: "aUA4CE",
     longURL: "http://www.lighthouselabs.ca",
-    visits: 1,
     lastModified: "2021-03-12 16:45:24",
-    visitsLog: [
+    visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
         visitorID: "cookie1"
@@ -44,9 +44,8 @@ const urlDatabase = {
   "sgq3y6": {
     userID: "aUA4CE",
     longURL: "http://www.reddit.com",
-    visits: 1,
     lastModified: "2021-02-26 04:11:37",
-    visitsLog: [
+    visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
         visitorID: "cookie2"
@@ -56,9 +55,8 @@ const urlDatabase = {
   "9sm5xK": {
     userID: "ccLPCa",
     longURL: "http://www.google.com",
-    visits: 1,
     lastModified: "2021-03-16 13:22:19",
-    visitsLog: [
+    visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
         visitorID: "cookie3"
@@ -221,10 +219,16 @@ app.get("/u/:shortURL", (req, res) => {
   if (!urlData) {
     req.flash("danger", "Invalid URL.");
     targetURL = "/";
-    // Otherwise, update visits counter and redirect to longURL
+    // Otherwise, log visitor information and redirect to longURL
   } else {
-    urlDatabase[shortURL].visits += 1;
+    const { currentDateTime } = res.locals.vars;
+    const newVisitor = {
+      timestamp: currentDateTime,
+      visitorID: req.session.userID
+    };
+    urlDatabase[shortURL].visitorLog.push(newVisitor);
     targetURL = urlData.longURL;
+    console.log(urlDatabase[shortURL].visitorLog);
   }
   res.redirect(targetURL);
 });

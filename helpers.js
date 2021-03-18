@@ -175,6 +175,19 @@ const validateURL = (url) => {
   return valid;
 };
 
+/**
+ * Returns an array of visits for a given URL in the database.
+ * @param  {string} url
+ *         A string containing the ID of a URL.
+ * @param  {{Object.<userID: string, longURL: string>}} urlDB
+ *         An object containing all URLs in the database.
+ * @return {Array.<{timestamp: string, visitorID: string}>}
+ *         An array containing objects with visitor information.
+ */
+const getVisits = (url, urlDB) => {
+  return urlDB[url] ? urlDB[url].visitorLog : [];
+};
+
 module.exports = {
   addHttp,
   generateRandomString,
@@ -184,5 +197,6 @@ module.exports = {
   authenticateUser,
   urlsForUser,
   userOwnsURL,
-  validateURL
+  validateURL,
+  getVisits
 };
