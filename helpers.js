@@ -42,10 +42,25 @@ const generateRandomString = (length = 6) => {
  * @return {boolean}
  *         A boolean representing whether or not the email exists.
  */
-const isExistingUser = (email, userDB) => {
+const isExistingEmail = (email, userDB) => {
   // Get an array of all emails in the user database
   const allEmails = Object.keys(userDB).map((id) => userDB[id].email);
   return allEmails.includes(email);
+};
+
+/**
+ * Returns true if a username exists in the database, false otherwise.
+ * @param  {string} username
+ *         A username to look up in the database.
+ * @param  {{Object.<id: string, username: string, password: string}} userDB
+ *         An object containing user IDs and the corresponding user credentials.
+ * @return {boolean}
+ *         A boolean representing whether or not the username exists.
+ */
+const isExistingUsername = (username, userDB) => {
+  // Get an array of all emails in the user database
+  const allUsernames = Object.keys(userDB).map((id) => userDB[id].username);
+  return allUsernames.includes(username);
 };
 
 /**
@@ -163,7 +178,8 @@ const validateURL = (url) => {
 module.exports = {
   addHttp,
   generateRandomString,
-  isExistingUser,
+  isExistingEmail,
+  isExistingUsername,
   getUserByEmail,
   authenticateUser,
   urlsForUser,

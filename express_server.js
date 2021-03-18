@@ -13,7 +13,8 @@ const PORT = 8080; // default port 8080
 const {
   addHttp,
   generateRandomString,
-  isExistingUser,
+  isExistingEmail,
+  isExistingUsername,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
@@ -155,22 +156,30 @@ app.get("/register", (req, res) => {
 
 // Create a new account, log the user in, then redirect to home page
 app.post("/register", (req, res) => {
+  const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  // If an email/password is not provided or the email already exists, flash an error
-  if (!email || !password || isExistingUser(email, users)) {
-    req.flash("danger", "E-mail is already in use.");
-    res.redirect("/register");
+  // If a username/email/password is not provided, or the username/email is in use, flash an error
+  let errorMsg;
+  if (!username || !email || !password) {
+    errorMsg = "Please complete all fields.";
+  } else if (isExistingUsername(username, users)) {
+    errorMsg = "Username already in use.";
+  } else if (isExistingEmail(email, users)) {
+    errorMsg = "Email already in use.";
   } else {
     // Otherwise, add the new user data to the database
     const id = generateRandomString(6);
-    users[id] = { id, email, password: hashedPassword };
+    users[id] = { id, username, email, password: hashedPassword };
     // Set cookie with new user info, flash success and redirect
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
     res.redirect("/urls");
+    return;
   }
+  req.flash("danger", errorMsg);
+  res.redirect("/register");
 });
 
 // Redirect valid /u/shortURL requests to its longURL
