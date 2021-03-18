@@ -6,7 +6,10 @@ const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
 
-// Helper functions
+const bcrypt = require("bcrypt");
+const app = express();
+const PORT = 8080; // default port 8080
+
 const {
   addHttp,
   generateRandomString,
@@ -16,11 +19,8 @@ const {
   userOwnsURL
 } = require("./helpers");
 
-const bcrypt = require("bcrypt");
-const app = express();
-const PORT = 8080; // default port 8080
+// IN-MEMORY DATABASES /////////////////////////////
 
-// Databases in memory --> will be stored in a real database later!
 const urlDatabase = {
   "b2xVn2": {
     userID: "aUA4CE",
@@ -35,6 +35,7 @@ const urlDatabase = {
     longURL: "http://www.google.com"
   }
 };
+
 const users = {
   "aUA4CE": {
     id: "aUA4CE",
@@ -48,10 +49,10 @@ const users = {
   }
 };
 
+// CONFIGURATIONS & MIDDLEWARE /////////////////////
+
 // Set the view engine to EJS
 app.set("view engine", "ejs");
-
-// MIDDLEWARE //////////////////////////////////////
 
 // Convert the request body from a Buffer into a readable string (req.body)
 app.use(bodyParser.urlencoded({extended: true}));
@@ -85,10 +86,9 @@ app.use(flash());
 
 // Log the user in
 app.post("/login", (req, res) => {
-  // Retrieve form data from the request body
   const email = req.body.email;
   const password = req.body.password;
-  // Retrieve the user account that matches the given credentials
+  // Retrieve the user account that matches the given credentials (false if none)
   const validUserData = authenticateUser(email, password, users);
   // If a user is found, set a cookie, flash success and redirect
   if (validUserData) {
@@ -144,7 +144,6 @@ app.get("/register", (req, res) => {
 
 // Create a new account, log the user in, then redirect to home page
 app.post("/register", (req, res) => {
-  // Retrieve form data from the request body
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -193,7 +192,7 @@ app.post("/urls", (req, res) => {
   while (shortURL in urlDatabase) {
     shortURL = generateRandomString(6);
   }
-  // Retrieve the user's ID and store the new URL under it
+  // Retrieve the user's ID and add the new URL to the database with it
   const cookieUserID = req.session.userID;
   const newURL = {
     userID: cookieUserID,
@@ -206,7 +205,6 @@ app.post("/urls", (req, res) => {
 
 // Delete a URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
-  // Retrieve form data from the request body
   const shortURL = req.params.shortURL;
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
@@ -229,7 +227,6 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 
 // Updates a URL
 app.put("/urls/:shortURL", (req, res) => {
-  // Retrieve form data from the request body
   const shortURL = req.params.shortURL;
   const cookieUserID = req.session.userID;
   const userData = users[cookieUserID];
