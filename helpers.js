@@ -181,19 +181,20 @@ const validateURL = (url) => {
  *         A string containing the ID of a URL.
  * @param  {{Object.<userID: string, longURL: string>}} urlDB
  *         An object containing all URLs in the database.
- * @return {Object.<{total: number, unique: number}>}
- *         An object containing the total and unique number of visits to the URL.
+ * @return {Object.<{total: number, unique: number}>|boolean}
+ *         An object containing the total and unique number of visits to the URL or false if it doesn't exist.
  */
 const getVisits = (url, urlDB) => {
+  if (!Object.keys(urlDB).includes(url)) {
+    return false;
+  }
   const visitorLog = urlDB[url].visitorLog;
   // Retrieve unique visitor IDs
-  let uniqueVisitors = [];
-  for (const visit of visitorLog) {
-    const visitorID = visit.visitorID;
-    if (!uniqueVisitors.includes(visitorID)) {
-      uniqueVisitors.push(visitorID)
-    }
-  }
+  const uniqueVisitors = visitorLog
+  .map(visit => visit.visitorID) // array of all visitor IDs
+  .filter((visitorID, index, allVisitors) => { // array of all unique visitor IDs
+    allVisitors.indexOf(visitorID) === index
+  });
   return { total: visitorLog.length, unique: uniqueVisitors.length }
 };
 
