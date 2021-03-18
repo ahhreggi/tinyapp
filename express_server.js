@@ -183,12 +183,11 @@ app.post("/urls", (req, res) => {
     res.redirect("/urls/new");
     // SUCCESS: URL is possibly valid
   } else {
-    // Generate a unique shortURL to be added to the database
+    // Ensure that a unique shortURL is added to the database
     let shortURL = generateRandomString(6);
     while (shortURL in urlDatabase) {
       shortURL = generateRandomString(6);
     }
-    // Retrieve the user's ID and associate it with the new URL
     const cookieUserID = req.session.userID;
     const newURL = {
       userID: cookieUserID,
@@ -261,7 +260,6 @@ app.put("/urls/:shortURL", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   const targetURL = req.params.shortURL;
-  // Retrieve the longURL from the database if it exists
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
   // ERROR: URL does not exist
   if (!longURL) {
@@ -323,7 +321,7 @@ app.get("/", (req, res) => {
 });
 
 // Wildcard route
-app.get("/*", (req, res) => {
+app.get(["/*"], (req, res) => {
   res.redirect("/404");
 });
 
