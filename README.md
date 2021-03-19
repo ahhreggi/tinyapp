@@ -45,7 +45,7 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
 
 ## ✔️ Testing
 
-1. Run tests
+1. Run Mocha & Chai tests
    ```
    npm test
    ```
