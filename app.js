@@ -29,9 +29,7 @@ const userDatabase = require("./data/userDatabase");
 // MIDDLEWARE & CONFIGURATIONS /////////////////////
 
 app.set("view engine", "ejs"); // set the view engine to EJS
-app.use(bodyParser.urlencoded({
-  extended: true
-})); // parse req body
+app.use(bodyParser.urlencoded({ extended: true })); // parse req body
 app.use(cookieSession({ // configure cookies
   name: "session",
   keys: ["userID", "visitorID"],
