@@ -1,4 +1,4 @@
-const { assert } = require('chai');
+const { assert } = require("chai");
 
 const {
   addHttp,
@@ -10,7 +10,7 @@ const {
   userOwnsURL,
   validateURL,
   getVisits
-} = require('../helpers.js');
+} = require("../helpers.js");
 
 const urlDatabase = require("../data/urlDatabase");
 const userDatabase = require("../data/userDatabase");
