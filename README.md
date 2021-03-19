@@ -52,11 +52,3 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
    ```
 
 ## 📷 Screenshots
-
-<img src="screenshots/home.png" alt="home.png">
-<img src="screenshots/register.png" alt="register.png">
-<img src="screenshots/hello.png" alt="hello.png">
-<img src="screenshots/create.png" alt="create.png">
-<img src="screenshots/mylinks.png" alt="mylinks.png">
-<img src="screenshots/edit.png" alt="edit.png">
-<img src="screenshots/404.png" alt="404.png">
