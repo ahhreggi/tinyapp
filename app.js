@@ -92,28 +92,44 @@ app.post("/logout", (req, res) => {
 
 // Form to login to an existing account
 app.get("/login", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
   // ERROR: User is already logged in
   if (userData) {
     req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
     // SUCCESS: User is not logged in
-    const templateVars = { alerts, userData, currentPage };
+    const templateVars = {
+      alerts,
+      userData,
+      currentPage
+    };
     res.render("login", templateVars);
   }
 });
 
 // Form to register a new account
 app.get("/register", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
   // ERROR User is already logged in
   if (userData) {
     req.flash("warning", "You are already logged in.");
     res.redirect("/urls");
   } else {
     // SUCCESS: User is not logged in
-    const templateVars = { alerts, userData, currentPage };
+    const templateVars = {
+      alerts,
+      userData,
+      currentPage
+    };
     res.render("register", templateVars);
   }
 });
@@ -135,7 +151,12 @@ app.post("/register", (req, res) => {
   } else {
     const id = generateRandomString(6);
     const hashedPassword = bcrypt.hashSync(password, 10);
-    userDatabase[id] = { id, username, email, password: hashedPassword };
+    userDatabase[id] = {
+      id,
+      username,
+      email,
+      password: hashedPassword
+    };
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
     res.redirect("/");
@@ -151,7 +172,10 @@ app.get("/u/:shortURL", (req, res) => {
     res.redirect("/404");
     // SUCCESS: URL exists
   } else {
-    const { currentDateTime, visitorID } = res.locals.vars;
+    const {
+      currentDateTime,
+      visitorID
+    } = res.locals.vars;
     const newVisitor = {
       timestamp: currentDateTime,
       visitorID
@@ -163,21 +187,31 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Form to create a new URL
 app.get("/urls/new", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
   // ERROR: User is not logged in
   if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
     res.redirect("/login");
     // SUCCESS: User is logged in
   } else {
-    const templateVars = { alerts, userData, currentPage };
+    const templateVars = {
+      alerts,
+      userData,
+      currentPage
+    };
     res.render("urls_new", templateVars);
   }
 });
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  const { currentDateTime } = res.locals.vars;
+  const {
+    currentDateTime
+  } = res.locals.vars;
   const url = req.body.longURL;
   const longURL = url ? addHttp(url) : "";
   // ERROR: URL is possibly invalid
@@ -207,7 +241,9 @@ app.post("/urls", (req, res) => {
 
 // Delete an existing URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
-  const { userData } = res.locals.vars;
+  const {
+    userData
+  } = res.locals.vars;
   const shortURL = req.params.shortURL;
   // ERROR: User is not logged in
   if (!userData) {
@@ -228,7 +264,10 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
 
 // Update an existing URL
 app.put("/urls/:shortURL", (req, res) => {
-  const { userData, currentDateTime } = res.locals.vars;
+  const {
+    userData,
+    currentDateTime
+  } = res.locals.vars;
   const shortURL = req.params.shortURL;
   // ERROR: User is not logged in
   if (!userData) {
@@ -261,7 +300,11 @@ app.put("/urls/:shortURL", (req, res) => {
 
 // Display an existing URL
 app.get("/urls/:shortURL", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
   const targetURL = req.params.shortURL;
   const longURL = urlDatabase[targetURL] ? urlDatabase[targetURL].longURL : false;
   // ERROR: URL does not exist
@@ -296,7 +339,11 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // Display all existing URLs
 app.get("/urls", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
   // ERROR: User is not logged in
   if (!userData) {
     req.flash("warning", "You must be logged in to do that!");
@@ -304,22 +351,43 @@ app.get("/urls", (req, res) => {
     // SUCCESS: User is logged in
   } else {
     const userURLs = urlsForUser(userData.id, urlDatabase);
-    const templateVars = { alerts, userData, currentPage, userURLs };
+    const templateVars = {
+      alerts,
+      userData,
+      currentPage,
+      userURLs
+    };
     res.render("urls_index", templateVars);
   }
 });
 
 // Error 404 page
 app.get("/404", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
-  const templateVars = { alerts, userData, currentPage };
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
+  const templateVars = {
+    alerts,
+    userData,
+    currentPage
+  };
   res.status(404).render("404", templateVars);
 });
 
 // Home page
 app.get("/", (req, res) => {
-  const { alerts, userData, currentPage } = res.locals.vars;
-  const templateVars = { alerts, userData, currentPage };
+  const {
+    alerts,
+    userData,
+    currentPage
+  } = res.locals.vars;
+  const templateVars = {
+    alerts,
+    userData,
+    currentPage
+  };
   res.render("home", templateVars);
 });
 
