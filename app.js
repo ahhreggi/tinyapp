@@ -139,7 +139,6 @@ app.post("/register", (req, res) => {
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
     res.redirect("/");
-    return;
   }
 });
 
