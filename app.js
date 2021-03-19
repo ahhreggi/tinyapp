@@ -29,7 +29,9 @@ const userDatabase = require("./data/userDatabase");
 // MIDDLEWARE & CONFIGURATIONS /////////////////////
 
 app.set("view engine", "ejs"); // set the view engine to EJS
-app.use(bodyParser.urlencoded({extended: true})); // parse req body
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // parse req body
 app.use(cookieSession({ // configure cookies
   name: "session",
   keys: ["userID", "visitorID"],
@@ -136,9 +138,11 @@ app.get("/register", (req, res) => {
 
 // Create a new account and log the user in
 app.post("/register", (req, res) => {
-  const username = req.body.username;
-  const email = req.body.email;
-  const password = req.body.password;
+  const {
+    username,
+    email,
+    password
+  } = req.body;
   const existingData = isExistingUser(username, email, userDatabase);
   // ERROR: Incomplete form or existing credentials
   if (!username || !email || !password) {
