@@ -1,4 +1,6 @@
-const { assert } = require('chai');
+const {
+  assert
+} = require('chai');
 
 const {
   addHttp,
@@ -251,19 +253,3 @@ describe("getVisits", () => {
     assert.equal(actual, expected);
   });
 });
-
-
-
-
-// describe('getUserByEmail', function() {
-//   it('should return a user with valid email', function() {
-//     const user = getUserByEmail("user@example.com", testUsers);
-//     const expectedOutput = "userRandomID";
-//     assert.equal(user.id, expectedOutput);
-//   });
-//   it('should return false with valid email', function() {
-//     const user = getUserByEmail("not_a_real_user@example.com", testUsers);
-//     assert.isFalse(user);
-//   });
-
-// });
