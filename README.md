@@ -40,3 +40,10 @@ A tiny web app for making tiny URLs
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
 
 ## 📷 Screenshots
+
+<img src="screenshots/home.png" alt="home.png">
+<img src="screenshots/register.png" alt="register.png">
+<img src="screenshots/hello.png" alt="hello.png">
+<img src="screenshots/create.png" alt="create.png">
+<img src="screenshots/mylinks.png" alt="mylinks.png">
+<img src="screenshots/edit.png" alt="edit.png">
