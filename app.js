@@ -179,7 +179,8 @@ app.get("/urls/new", (req, res) => {
 // Create a new URL
 app.post("/urls", (req, res) => {
   const { currentDateTime } = res.locals.vars;
-  const longURL = addHttp(req.body.longURL);
+  const url = req.body.longURL;
+  const longURL = url ? addHttp(url) : "";
   // ERROR: URL is possibly invalid
   if (!validateURL(longURL)) {
     req.flash("danger", "Please enter a valid URL.");

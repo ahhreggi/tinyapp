@@ -16,17 +16,17 @@ const urlDatabase = require("../data/urlDatabase");
 const userDatabase = require("../data/userDatabase");
 
 describe("addHttp", () => {
-  it("should format a url without a scheme", () => {
+  it("should format a URL without a scheme", () => {
     const actual = addHttp("google.ca");
     const expected = "http://google.ca";
     assert.equal(actual, expected);
   });
-  it("should format a url with http://", () => {
+  it("should format a URL with http://", () => {
     const actual = addHttp("http://google.ca");
     const expected = "http://google.ca";
     assert.equal(actual, expected);
   });
-  it("should format a url with https://", () => {
+  it("should format a URL with https://", () => {
     const actual = addHttp("http://google.ca");
     const expected = "http://google.ca";
     assert.equal(actual, expected);
