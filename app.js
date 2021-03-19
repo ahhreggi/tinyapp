@@ -123,7 +123,6 @@ app.post("/register", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  const hashedPassword = bcrypt.hashSync(password, 10);
   const existingData = isExistingUser(username, email, userDatabase);
   // ERROR: Incomplete form or existing credentials
   if (!username || !email || !password) {
@@ -135,6 +134,7 @@ app.post("/register", (req, res) => {
     // SUCCESS: Complete form and nonexistent credentials
   } else {
     const id = generateRandomString(6);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     userDatabase[id] = { id, username, email, password: hashedPassword };
     req.session.userID = id;
     req.flash("success", "Registration successful. Welcome to tinyapp!");
