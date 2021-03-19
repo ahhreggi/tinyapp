@@ -1,6 +1,6 @@
 <!-- TITLE -->
 <div align="center">
-<img src="public/assets/logo-circle.png" alt="tinyapp." style="width: 100px">
+<img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
 <p>
 A web app for making tiny URLs.
 </p>
