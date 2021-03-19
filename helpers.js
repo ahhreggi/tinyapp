@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 
 /**
- * Returns a url with an added scheme if it doesn't already have one.
+ * Returns a URL with an added scheme if it doesn't already have one.
  * @param  {string} url
- *         The url which may or may not include http:// or https://.
+ *         The URL which may or may not include http:// or https://.
  * @return {string}
- *         The resulting url after adding a scheme (if needed).
+ *         The resulting URL after adding a scheme (if needed).
  */
 const addHttp = (url) => {
   let result = url;
@@ -60,7 +60,7 @@ const getExistingProperty = (username, email, userDB) => {
 };
 
 /**
- * Returns an object containing a user object from the user database given a username/email.
+ * Returns an object containing a user's credentials from database given a username/email.
  * @param  {string} login
  *         The username/email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
@@ -76,7 +76,7 @@ const getUserData = (login, userDB) => {
 };
 
 /**
- * Returns true if the given username/email and password combination exists in the database.
+ * Returns true if the given username/email and password combination exists in the database, false otherwise.
  * @param  {string} login
  *         The username/email to look up in the database.
  * @param  {string} password
@@ -88,9 +88,12 @@ const getUserData = (login, userDB) => {
  */
 const authenticateUser = (login, password, userDB) => {
   let userData = getUserData(login, userDB);
-  // Check if the provided password matches the hashed password in the database
-  const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
-  return valid ? userData : false;
+  let valid = false;
+  // Given a valid login, check if the password matches the hashed password in the database
+  if (userData) {
+    valid = bcrypt.compareSync(password, userData.password);
+  }
+  return valid;
 };
 
 /**
@@ -127,7 +130,7 @@ const urlsForUser = (id, urlDB) => {
 };
 
 /**
- * Returns true if the given shortURL belongs to the specified user ID.
+ * Returns true if the given shortURL belongs to the specified user ID, false otherwise.
  * @param    {string} userID
  *           The user's ID.
  * @param    {string} shortURL
@@ -156,7 +159,7 @@ const userOwnsURL = (userID, shortURL, urlDB) => {
 };
 
 /**
- * Returns true if the given URL is possibly valid.
+ * Returns true if the given URL is possibly valid, false otherwise.
  * @param  {string} url
  *         The URL to validate.
  * @return {boolean}
