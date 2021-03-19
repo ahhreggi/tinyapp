@@ -64,8 +64,11 @@ app.post("/login", (req, res) => {
   const login = req.body.email;
   const password = req.body.password;
   let validUserData = authenticateUser(login, password, userDatabase);
-  // ERROR: Credentials are invalid
-  if (!validUserData) {
+  // ERROR: Incomplete form
+  if (!login || !password) {
+    req.flash("danger", "Please complete all fields.");
+    // ERROR: Credentials are invalid
+  } else if (!validUserData) {
     req.flash("danger", "The username/email or password you entered is invalid.");
     res.redirect("/login");
 
