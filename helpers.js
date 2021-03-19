@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 /**
  * Returns a url with an added scheme if it doesn't already have one.
  * @param  {string} url
- *         A url which may or may not include http:// or https://.
+ *         The url which may or may not include http:// or https://.
  * @return {string}
  *         The resulting url after adding a scheme (if needed).
  */
@@ -36,9 +36,9 @@ const generateRandomString = (length) => {
 /**
  * Returns true if a username or email exists in the database, false otherwise.
  * @param  {string} username
- *         A username to look up in the database.
+ *         The username to look up in the database.
  * @param  {string} email
- *         An email to look up in the database.
+ *         The email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and their associated credentials.
  * @return {string|undefined}
@@ -62,7 +62,7 @@ const isExistingUser = (username, email, userDB) => {
 /**
  * Returns an object containing a user object from the user database given a username/email.
  * @param  {string} login
- *         A username/email to look up in the database.
+ *         The username/email to look up in the database.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|undefined}
@@ -78,9 +78,9 @@ const getUserData = (login, userDB) => {
 /**
  * Returns true if the given username/email and password combination exists in the database.
  * @param  {string} login
- *         A username/email to look up in the database.
+ *         The username/email to look up in the database.
  * @param  {string} password
- *         A password to authenticate credentials with.
+ *         The password to authenticate credentials with.
  * @param  {{Object.<id: string, username: string, email: string, password: string}} userDB
  *         An object containing user IDs and the corresponding user credentials.
  * @return {{id: string, email: string, password: string}|boolean}
@@ -129,9 +129,9 @@ const urlsForUser = (id, urlDB) => {
 /**
  * Returns true if the given shortURL belongs to the specified user ID.
  * @param    {string} userID
- *           A string containing the ID of a user.
+ *           The user's ID.
  * @param    {string} shortURL
- *           A string containing the ID of a URL.
+ *           The ID of a URL.
  * @param    {Object} urlDB
  *           An object containing all URLs in the database.
  * @property {string} urlDB.userID
@@ -158,7 +158,7 @@ const userOwnsURL = (userID, shortURL, urlDB) => {
 /**
  * Returns true if the given URL is possibly valid.
  * @param  {string} url
- *         A string containing a URL.
+ *         The URL to validate.
  * @return {boolean}
  *         A boolean representing whether or not the URL is valid.
  */
@@ -178,7 +178,7 @@ const validateURL = (url) => {
 /**
  * Returns the total and unique number of visits for a given URL in the database.
  * @param    {string} url
- *           A string containing the ID of a URL.
+ *           The ID of a URL.
  * @param    {Object} urlDB
  *           An object containing all URLs in the database.
  * @property {string} urlDB.userID
@@ -204,7 +204,10 @@ const getVisits = (url, urlDB) => {
     let uniqueVisitors = visitorLog
       .map(visit => visit.visitorID)
       .filter((visitorID, index, allVisitors) => allVisitors.indexOf(visitorID) === index);
-    result = { total: visitorLog.length, unique: uniqueVisitors.length };
+    result = {
+      total: visitorLog.length,
+      unique: uniqueVisitors.length
+    };
   }
   return result;
 };
