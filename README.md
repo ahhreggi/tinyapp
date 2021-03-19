@@ -4,7 +4,7 @@
 <p>
 A tiny web app for making tiny URLs
 </p>
-<b>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a></b>
+Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>
 </div>
 
 <!-- INTRODUCTION -->
@@ -13,13 +13,17 @@ A tiny web app for making tiny URLs
 
 <b>tinyapp.</b> is a full-stack, RESTful web application that allows users to shorten URLs (similar to bit.ly). Users may login or register an account to create and edit links, as well as view their analytics.
 
+Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>. Unit tested using [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/).
+
+Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), [body-parser](https://www.npmjs.com/package/body-parser), [connect-flash](https://www.npmjs.com/package/connect-flash[), [cookie-session](https://www.npmjs.com/package/cookie-session), [dayjs](https://www.npmjs.com/package/dayjs), [EJS](https://ejs.co/), express, and [method-override](https://www.npmjs.com/package/method-override).
+
 <!-- FEATURES -->
 
 ## ⭐ Features
 
 - Create, modify, and delete generated URLs
 - View analytics (total clicks, unique clicks)
-- Client- and server-side user authentication and authorization
+- User authentication and authorization
 
 <!-- INSTALLATION -->
 
@@ -35,7 +39,7 @@ A tiny web app for making tiny URLs
    ```
 3. Launch the development web server
    ```
-   node express_server.js
+   node app.js
    ```
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
 
