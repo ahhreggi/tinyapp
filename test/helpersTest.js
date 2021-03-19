@@ -27,8 +27,8 @@ describe("addHttp", () => {
     assert.equal(actual, expected);
   });
   it("should format a URL with https://", () => {
-    const actual = addHttp("http://google.ca");
-    const expected = "http://google.ca";
+    const actual = addHttp("https://google.ca");
+    const expected = "https://google.ca";
     assert.equal(actual, expected);
   });
 });
