@@ -148,7 +148,11 @@ const urlsForUser = (id, urlDB) => {
  *           A boolean representing whether or not the URL belongs to the user.
  */
 const userOwnsURL = (userID, shortURL, urlDB) => {
-  return urlDB[shortURL].userID === userID;
+  let check = false;
+  if (Object.keys(urlDB).includes(shortURL)) {
+    check = urlDB[shortURL].userID === userID;
+  }
+  return check;
 };
 
 /**

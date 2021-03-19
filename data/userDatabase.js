@@ -10,5 +10,11 @@ module.exports = {
     username: "user2",
     email: "user2@example.com",
     password: "$2b$10$yI6TVKpNSgqGK3eaAPZDu.2YIewoUuFs82bYLiYwfCUuam6cLZIHy"
+  },
+  iWYBRD: {
+    id: "iWYBRD",
+    username: "user3",
+    email: "user3@example.com",
+    password: "$2b$10$wWogdp6jBNsFKhqiGC5gWO5CHCI4LkJvyQ7RkadmZZRjlat7vyfBu"
   }
 };

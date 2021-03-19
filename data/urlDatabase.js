@@ -4,7 +4,7 @@ module.exports = {
     longURL: "http://www.lighthouselabs.ca",
     created: "2021-03-12 16:45:24",
     lastModified: null,
-    visitorLog: [ // 2 unique visits, 4 total visits
+    visitorLog: [
       {
         timestamp: "2021-03-12 16:45:24",
         visitorID: "kS62TGva"
@@ -23,7 +23,7 @@ module.exports = {
       }
     ]
   },
-  "sgq3y6": { // 1 unique visits, 1 total visits
+  "sgq3y6": {
     userID: "aUA4CE",
     longURL: "http://www.reddit.com",
     created: "2021-02-26 02:15:12",
@@ -35,7 +35,7 @@ module.exports = {
       }
     ]
   },
-  "9sm5xK": { // 1 unique visits, 1 total visits
+  "9sm5xK": {
     userID: "ccLPCa",
     longURL: "http://www.google.com",
     created: "2021-03-16 13:22:19",
@@ -46,5 +46,12 @@ module.exports = {
         visitorID: "dJfCwPND"
       }
     ],
+  },
+  "g2hjjs": {
+    userID: "ccLPCa",
+    longURL: "http://www.reddit.com",
+    created: "2021-03-15 12:21:16",
+    lastModified: null,
+    visitorLog: [],
   }
 };
