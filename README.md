@@ -2,8 +2,9 @@
 <div align="center">
 <img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
 <p>
-A web app for making tiny URLs.
+A tiny web app for making tiny URLs.
 </p>
+<b>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>.</b>
 </div>
 
 <!-- INTRODUCTION -->
@@ -11,8 +12,6 @@ A web app for making tiny URLs.
 ## 📚 Introduction
 
 <b>tinyapp.</b> is a full-stack, RESTful web application that allows users to shorten URLs (similar to bit.ly). Users may login or register an account to create and edit links, as well as view their analytics.
-
-<b>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>.</b>
 
 <!-- FEATURES -->
 
