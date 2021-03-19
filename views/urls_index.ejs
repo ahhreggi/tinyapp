@@ -1,97 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico"/>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!-- TinyApp CSS -->
-    <link rel="stylesheet" href="/stylesheets/app.css">
-    <title>My Links • tinyapp.</title>
-  </head>
-  <body>
 
-    <%- include("partials/_header.ejs", {userData}) %>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!-- TinyApp CSS -->
+  <link rel="stylesheet" href="/stylesheets/app.css">
+  <title>My Links • tinyapp.</title>
+</head>
 
-    <main class="container">
+<body>
 
-      <!-- PAGE TITLE -->
-      <h1 class="display-4 mb-4"><%= userData.username %>'s <span class="highlight">links.</span></h1>
+  <%- include("partials/_header.ejs", {userData}) %>
 
-      <hr class="my-4">
+  <main class="container">
 
-      <!-- USER LINKS (shown only if the user has at least 1 link) -->
+    <!-- PAGE TITLE -->
+    <h1 class="display-4 mb-4"><%= userData.username %>'s <span class="highlight">links.</span></h1>
 
-      <% if (userURLs.length > 0) { %> 
+    <hr class="my-4">
 
-        <p class="lead">here are the links you've created so far:</p>
+    <!-- USER LINKS (shown only if the user has at least 1 link) -->
 
-        <table class="table table-bordered table-responsive-sm">
+    <% if (userURLs.length > 0) { %>
 
-          <!-- TABLE HEADER -->
-          <thead class="thead">
-            <tr>
-              <th scope="col"><span class="lead highlight">short link</span></th>
-              <th scope="col"><span class="lead highlight">reference link</span></th>
-              <th scope="col"><span class="lead highlight">clicks</span></th>
-              <th scope="col"><span class="lead highlight">last modified</span></th>
-              <th scope="col"><span class="lead highlight">view link</span></th>
-              <th scope="col"><span class="lead highlight">delete link</span></th>
-            </tr>
-          </thead>
+    <p class="lead">here are the links you've created so far:</p>
 
-          <!-- TABLE CONTENTS (populated using user's links from the database) -->
-          <tbody>
+    <table class="table table-bordered table-responsive-sm">
 
-            <% for(let url of userURLs) { %>
-              
-              <tr>
-                <td>
-                  <a class="tinyapp-table-link" href="/u/<%= url.shortURL %>" target="_blank"><%= url.shortURL %></a>
-                </td>
-                <td>
-                  <a class="tinyapp-table-link" href="<%= url.data.longURL %>" target="_blank"><%= url.data.longURL %></a>
-                </td>
-                <td class="tinyapp-table-text">
-                  <%= url.data.visitorLog.length %>
-                </td>
-                <td class="tinyapp-table-text">
-                  <%= url.data.lastModified ? `${url.data.lastModified}` : url.data.created  %> 
-                </td>
-                <td>
-                  <a href="/urls/<%= url.shortURL %>">
-                    <button type="button" class="btn btn-outline-secondary" style="width: 100px">view</button>
-                  </a>
-                </td>
-                <td>
-                  <form method="POST" action="/urls/<%= url.shortURL %>/delete?_method=DELETE">
-                    <button type="submit" class="btn btn-outline-danger" style="width: 100px">delete</button>
-                  </form>
-                </td>
-              </tr>
+      <!-- TABLE HEADER -->
+      <thead class="thead">
+        <tr>
+          <th scope="col"><span class="lead highlight">short link</span></th>
+          <th scope="col"><span class="lead highlight">reference link</span></th>
+          <th scope="col"><span class="lead highlight">clicks</span></th>
+          <th scope="col"><span class="lead highlight">last modified</span></th>
+          <th scope="col"><span class="lead highlight">view link</span></th>
+          <th scope="col"><span class="lead highlight">delete link</span></th>
+        </tr>
+      </thead>
 
-            <% } %>
+      <!-- TABLE CONTENTS (populated using user's links from the database) -->
+      <tbody>
 
-          </tbody>
-        </table>
-      
-        <% } else { %>
+        <% for(let url of userURLs) { %>
 
-          <p class="lead">you don't have any links yet, click the button below to get started:</p>
-          
+        <tr>
+          <td>
+            <a class="tinyapp-table-link" href="/u/<%= url.shortURL %>" target="_blank"><%= url.shortURL %></a>
+          </td>
+          <td>
+            <a class="tinyapp-table-link" href="<%= url.data.longURL %>" target="_blank"><%= url.data.longURL %></a>
+          </td>
+          <td class="tinyapp-table-text">
+            <%= url.data.visitorLog.length %>
+          </td>
+          <td class="tinyapp-table-text">
+            <%= url.data.lastModified ? `${url.data.lastModified}` : url.data.created  %>
+          </td>
+          <td>
+            <a href="/urls/<%= url.shortURL %>">
+              <button type="button" class="btn btn-outline-secondary" style="width: 100px">view</button>
+            </a>
+          </td>
+          <td>
+            <form method="POST" action="/urls/<%= url.shortURL %>/delete?_method=DELETE">
+              <button type="submit" class="btn btn-outline-danger" style="width: 100px">delete</button>
+            </form>
+          </td>
+        </tr>
+
         <% } %>
 
-      <!-- BUTTON TO CREATE A NEW LINK -->
-      <a href="/urls/new">
-        <button type="button" class="btn btn-outline-light mt-2" style="width: 200px">create a new link</button>
-      </a>
-    
-    </main>
+      </tbody>
+    </table>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+    <% } else { %>
+
+    <p class="lead">you don't have any links yet, click the button below to get started:</p>
+
+    <% } %>
+
+    <!-- BUTTON TO CREATE A NEW LINK -->
+    <a href="/urls/new">
+      <button type="button" class="btn btn-outline-light mt-2" style="width: 200px">create a new link</button>
+    </a>
+
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
 </html>

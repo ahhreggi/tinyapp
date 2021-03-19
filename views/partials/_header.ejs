@@ -9,28 +9,28 @@
         <section class="navbar-nav">
 
           <!-- NAVIGATION LINKS (shown if user is currently logged in) -->
-          <% if (userData) { %> 
-            <a class="navbar-brand nav-item nav-link <%= currentPage === "/urls" ? "active" : ""%>" href="/urls">my links</a>
-            <a class="navbar-brand nav-item nav-link <%= currentPage === "/urls/new" ? "active" : ""%>" href="/urls/new">create</a>
-          <% } %> 
-          
+          <% if (userData) { %>
+          <a class="navbar-brand nav-item nav-link <%= currentPage === "/urls" ? "active" : ""%>" href="/urls">my links</a>
+          <a class="navbar-brand nav-item nav-link <%= currentPage === "/urls/new" ? "active" : ""%>" href="/urls/new">create</a>
+          <% } %>
+
         </section>
         <section class="navbar-nav ml-auto">
 
           <% if (!userData) { %>
 
-            <!-- LOGIN/REGISTER (shown if user is currently not logged in) -->
-            <a class="navbar-brand nav-item nav-link <%= currentPage === "/login" ? "active" : ""%>" href="/login">login</a>
-            <a class="navbar-brand nav-item nav-link mr-0 <%= currentPage === "/register" ? "active" : ""%>" href="/register">sign up</a>
+          <!-- LOGIN/REGISTER (shown if user is currently not logged in) -->
+          <a class="navbar-brand nav-item nav-link <%= currentPage === "/login" ? "active" : ""%>" href="/login">login</a>
+          <a class="navbar-brand nav-item nav-link mr-0 <%= currentPage === "/register" ? "active" : ""%>" href="/register">sign up</a>
 
           <% } else { %>
-          
-            <!-- LOGOUT (shown if user is currently logged in) -->
-            <span class="navbar-brand text-muted mr-2">signed in as:</span><span class="navbar-brand bold"><%= userData.username %> (<%= userData.email %>)</span>
-            <form class="form-inline" action="/logout" method="POST">
-              <button type="submit" class="btn btn-outline-dark" style="width: 100px">logout</button>
-            </form>
-          
+
+          <!-- LOGOUT (shown if user is currently logged in) -->
+          <span class="navbar-brand text-muted mr-2">signed in as:</span><span class="navbar-brand bold"><%= userData.username %> (<%= userData.email %>)</span>
+          <form class="form-inline" action="/logout" method="POST">
+            <button type="submit" class="btn btn-outline-dark" style="width: 100px">logout</button>
+          </form>
+
           <% } %>
 
         </section>
@@ -41,16 +41,15 @@
 
 <div class="container">
 
-<!-- FLASH MESSAGES -->
-<!-- Set alert color depending on alert type and display if there is one -->
-<% const alertType = alerts["warning"] ? "warning" : alerts["danger"] ? "danger" : alerts["success"] ? "success" : "" %> 
-<% if (alerts[alertType]) { %>
+  <!-- FLASH MESSAGES (set alert color depending on alert type and display if there is one) -->
+  <% const alertType = alerts["warning"] ? "warning" : alerts["danger"] ? "danger" : alerts["success"] ? "success" : "" %>
+  <% if (alerts[alertType]) { %>
   <div class="alert alert-<%= alertType %> tinyapp-alert alert-dismissible fade show" role="alert">
-    <%= alerts[alertType] %> 
+    <%= alerts[alertType] %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-<% } %>
+  <% } %>
 
 </div>

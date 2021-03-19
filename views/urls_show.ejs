@@ -1,63 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico"/>
-    <!-- TinyApp CSS -->
-    <link rel="stylesheet" href="/stylesheets/app.css">
-    <title>My Link • tinyapp.</title>
-  </head>
-  <body>
-    
-    <%- include("partials/_header.ejs", {userData}) %>
-    
-    <main class="container">
 
-      <!-- SHORT URL & HEADER -->
-      <section class="lead">
-        <h1 class="display-4 mb-4"><a class="tinyapp-link" href="/u/<%= shortURL %>" target="_blank">/u/<%= shortURL %></a></h1>
-        <p>this tinyapp link redirects to <a class="tinyapp-link" href="<%= urlData.longURL %>" target="_blank"><%= urlData.longURL %></a></p>
-      </section>
-      
-      <hr class="mt-4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico" />
+  <!-- TinyApp CSS -->
+  <link rel="stylesheet" href="/stylesheets/app.css">
+  <title>My Link • tinyapp.</title>
+</head>
 
-      <!-- LINK STATS -->
-      <section class="lead">
-        <p class="display-4 display-sub my-3">analytics</p>
-        <p>total clicks: <%= visitData.total %></p>
-        <p>unique clicks: <%= visitData.unique %></p>
-        <p>created: <%= urlData.created %></p>
-        <% if (urlData.lastModified) { %>
-          <p class="text-muted">last modified: <%= urlData.lastModified %></p>
-        <% } %>
-      </section>
+<body>
 
-      <hr class="my-4">
+  <%- include("partials/_header.ejs", {userData}) %>
 
-      <h1 class="lead mb-4">change your mind? you can edit the reference link here:</h1>
+  <main class="container">
 
-      <!-- EDIT FORM -->
-      <form class="form-inline" action="/urls/<%= shortURL %>?_method=PUT" method="POST">
-        <div class="form-group mb-2">
-          <label class="lead mr-2" for="newURL">enter a new URL:</label>
-          <input class="form-control mr-2" type="text" name="newURL" placeholder="<%= urlData.longURL %>" style="width: 300px" required>
-          <button type="submit" class="btn btn-primary">update</button>
-        </div>
-      </form>
+    <!-- SHORT URL & HEADER -->
+    <section class="lead">
+      <h1 class="display-4 mb-4"><a class="tinyapp-link" href="/u/<%= shortURL %>" target="_blank">/u/<%= shortURL %></a></h1>
+      <p>this tinyapp link redirects to <a class="tinyapp-link" href="<%= urlData.longURL %>" target="_blank"><%= urlData.longURL %></a></p>
+    </section>
 
-      <!-- BACK BUTTON -->
-      <a href="/urls">
-        <button type="button" class="btn btn-outline-light mt-3" style="width: 200px">back to my links</button>
-      </a>
+    <hr class="mt-4">
 
-    </main>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+    <!-- LINK STATS -->
+    <section class="lead">
+      <p class="display-4 display-sub my-3">analytics</p>
+      <p>total clicks: <%= visitData.total %></p>
+      <p>unique clicks: <%= visitData.unique %></p>
+      <p>created: <%= urlData.created %></p>
+      <% if (urlData.lastModified) { %>
+      <p class="text-muted">last modified: <%= urlData.lastModified %></p>
+      <% } %>
+    </section>
+
+    <hr class="my-4">
+
+    <h1 class="lead mb-4">change your mind? you can edit the reference link here:</h1>
+
+    <!-- EDIT FORM -->
+    <form class="form-inline" action="/urls/<%= shortURL %>?_method=PUT" method="POST">
+      <div class="form-group mb-2">
+        <label class="lead mr-2" for="newURL">enter a new URL:</label>
+        <input class="form-control mr-2" type="text" name="newURL" placeholder="<%= urlData.longURL %>" style="width: 300px" required>
+        <button type="submit" class="btn btn-primary">update</button>
+      </div>
+    </form>
+
+    <!-- BACK BUTTON -->
+    <a href="/urls">
+      <button type="button" class="btn btn-outline-light mt-3" style="width: 200px">back to my links</button>
+    </a>
+
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
 </html>

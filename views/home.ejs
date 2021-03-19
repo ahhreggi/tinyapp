@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico"/>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!-- TinyApp CSS -->
-    <link rel="stylesheet" href="/stylesheets/app.css">
-    <title>tinyapp.</title>
-  </head>
-  <body>
-    
-    <%- include("partials/_header.ejs", {userData}) %>
 
-    <main class="container">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/favicon.ico" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!-- TinyApp CSS -->
+  <link rel="stylesheet" href="/stylesheets/app.css">
+  <title>tinyapp.</title>
+</head>
 
-      <!-- WELCOME PAGE (shown only if the user is not logged in) -->
-      <% if (!userData) { %>
-        
-        <h1 class="display-4 mb-4">welcome to <img src="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/logo-light.png" alt="" style="width: 200px"></h1>
-        <p class="lead">a tiny web app for making tiny URLs.</p>
-        <hr class="my-4">
-        <a class="btn btn-primary btn-lg" href="/register" role="button">Get Started</a>
-        <p class="text-muted mt-4">Already have an account? <a class="tinyapp-table-link" href="/login">Log in</a>.</p>
-     
-      <!-- DASHBOARD (shown only if the user is logged in) -->
-      <% } else { %>
+<body>
 
-        <h1 class="display-4 mb-4">hello, <span class="highlight"><%= userData.username %></span>.</h1>
-        <hr class="my-4">
-        <p class="lead">what would you like to do today?</p>
-        <a class="btn btn-dark btn-lg mr-2" href="/urls" role="button">view my links</a>
-        <a class="btn btn-dark btn-lg mr-2" href="/urls/new" role="button">create a new link</a>
-        <p class="text-muted mt-4">See project on <a class="tinyapp-table-link" href="https://github.com/ahhreggi/tinyapp" target="_blank">GitHub</a>.</p>
+  <%- include("partials/_header.ejs", {userData}) %>
 
-      <% } %> 
+  <main class="container">
 
-    </main>
+    <!-- WELCOME PAGE (shown only if the user is not logged in) -->
+    <% if (!userData) { %>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+    <h1 class="display-4 mb-4">welcome to <img src="https://raw.githubusercontent.com/ahhreggi/tinyapp/master/public/assets/logo-light.png" alt="" style="width: 200px"></h1>
+    <p class="lead">a tiny web app for making tiny URLs.</p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="/register" role="button">Get Started</a>
+    <p class="text-muted mt-4">Already have an account? <a class="tinyapp-table-link" href="/login">Log in</a>.</p>
+
+    <!-- DASHBOARD (shown only if the user is logged in) -->
+    <% } else { %>
+
+    <h1 class="display-4 mb-4">hello, <span class="highlight"><%= userData.username %></span>.</h1>
+    <hr class="my-4">
+    <p class="lead">what would you like to do today?</p>
+    <a class="btn btn-dark btn-lg mr-2" href="/urls" role="button">view my links</a>
+    <a class="btn btn-dark btn-lg mr-2" href="/urls/new" role="button">create a new link</a>
+    <p class="text-muted mt-4">See project on <a class="tinyapp-table-link" href="https://github.com/ahhreggi/tinyapp" target="_blank">GitHub</a>.</p>
+
+    <% } %>
+
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
 </html>
