@@ -76,7 +76,7 @@ const getUserData = (login, userDB) => {
 };
 
 /**
- * Returns true if the given username/email and password combination exists in the database, false otherwise.
+ * Returns the user's data if the given username/email and password combination exists in the database, false otherwise.
  * @param  {string} login
  *         The username/email to look up in the database.
  * @param  {string} password
@@ -88,12 +88,9 @@ const getUserData = (login, userDB) => {
  */
 const authenticateUser = (login, password, userDB) => {
   let userData = getUserData(login, userDB);
-  let valid = false;
-  // Given a valid login, check if the password matches the hashed password in the database
-  if (userData) {
-    valid = bcrypt.compareSync(password, userData.password);
-  }
-  return valid;
+  // Given a valid login, check if the password matches the hashed password
+  const valid = userData ? bcrypt.compareSync(password, userData.password) : false;
+  return valid ? userData : false;
 };
 
 /**
