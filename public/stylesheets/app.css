@@ -45,6 +45,10 @@ th {
   border-color: var(--tinyapp-primary-darker) !important;
 }
 
+.btn-fade {
+  opacity: 0.3;
+}
+
 .btn-outline-secondary {
   color: var(--tinyapp-tertiary) !important;
   border-color: var(--tinyapp-tertiary) !important;
