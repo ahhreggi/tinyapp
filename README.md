@@ -1,6 +1,10 @@
 <!-- TITLE -->
-
-# tinyapp.
+<div align="center">
+<img src="public/assets/logo-circle.png" alt="tinyapp." style="width: 200px">
+<p>
+A web app for making tiny URLs.
+</p>
+</div>
 
 <!-- INTRODUCTION -->
 
