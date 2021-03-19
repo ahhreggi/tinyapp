@@ -33,8 +33,9 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
    ```
    git clone https://github.com/ahhreggi/tinyapp
    ```
-2. In the project directory, install dependencies
+2. Navigate to the project directory and install dependencies
    ```
+   cd tinyapp
    npm install
    ```
 3. Launch the development web server
