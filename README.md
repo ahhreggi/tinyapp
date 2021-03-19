@@ -43,6 +43,13 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
    ```
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
 
+## ✔️ Testing
+
+1. Run tests
+   ```
+   npm test
+   ```
+
 ## 📷 Screenshots
 
 <img src="screenshots/home.png" alt="home.png">
