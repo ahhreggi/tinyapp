@@ -64,9 +64,8 @@ describe("isExistingUser", () => {
     assert.equal(actual, expected);
   });
   it("should return undefined if neither the username nor email exist in the database", () => {
-    const actual = isExistingUser("newUsername", "new@email.com", userDatabase);
-    const expected = undefined;
-    assert.equal(actual, expected);
+    const result = isExistingUser("newUsername", "new@email.com", userDatabase);
+    assert.isUndefined(result);
   });
 });
 
@@ -96,8 +95,7 @@ describe("getUserData", () => {
   it("should return undefined if the username/email does not exist", () => {
     const login = "invalid";
     const actual = getUserData(login, userDatabase);
-    const expected = undefined;
-    assert.deepEqual(actual, expected);
+    assert.isUndefined(actual);
   });
 });
 
@@ -129,16 +127,14 @@ describe("authenticateUser", () => {
   it("should return false for a valid username if the password is incorrect", () => {
     const username = "user1";
     const password = "123";
-    const actual = authenticateUser(username, password, userDatabase);
-    const expected = false;
-    assert.deepEqual(actual, expected);
+    const result = authenticateUser(username, password, userDatabase);
+    assert.isFalse(result);
   });
   it("should return false for a valid email if the password is incorrect", () => {
     const email = "user1@example.com";
     const password = "123";
-    const actual = authenticateUser(email, password, userDatabase);
-    const expected = false;
-    assert.deepEqual(actual, expected);
+    const result = authenticateUser(email, password, userDatabase);
+    assert.isFalse(result);
   });
 });
 
@@ -167,57 +163,49 @@ describe("userOwnsURL", () => {
   it("should return true if a valid userID owns a valid URL", () => {
     const userID = "aUA4CE";
     const shortURL = "b2xVn2";
-    const actual = userOwnsURL(userID, shortURL, urlDatabase);
-    const expected = true;
-    assert.equal(actual, expected);
+    const result = userOwnsURL(userID, shortURL, urlDatabase);
+    assert.isTrue(result);
   });
   it("should return false if a valid userID does not own a valid URL", () => {
     const userID = "aUA4CE";
     const shortURL = "9sm5xK";
-    const actual = userOwnsURL(userID, shortURL, urlDatabase);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = userOwnsURL(userID, shortURL, urlDatabase);
+    assert.isFalse(result);
   });
   it("should return false if the userID is invalid and the URL is valid", () => {
     const userID = "NotAUserID";
     const shortURL = "9sm5xK";
-    const actual = userOwnsURL(userID, shortURL, urlDatabase);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = userOwnsURL(userID, shortURL, urlDatabase);
+    assert.isFalse(result);
   });
   it("should return false if the userID is valid and the URL is invalid", () => {
     const userID = "aUA4CE";
     const shortURL = "NotAURL";
-    const actual = userOwnsURL(userID, shortURL, urlDatabase);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = userOwnsURL(userID, shortURL, urlDatabase);
+    assert.isFalse(result);
   });
 });
 
 describe("validateURL", () => {
   it("should return true if the URL is possibly valid", () => {
     const url = "http://google.ca";
-    const actual = validateURL(url);
-    const expected = true;
-    assert.equal(actual, expected);
+    const result = validateURL(url);
+    assert.isTrue(result);
   });
   it("should return false if the URL is 'http://'", () => {
     const url = "http://";
-    const actual = validateURL(url);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = validateURL(url);
+    assert.isFalse(result);
   });
   it("should return false if the URL has spaces", () => {
     const url = "http://www.goo gle.ca";
-    const actual = validateURL(url);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = validateURL(url);
+    assert.isFalse(result);
   });
   it("should return false if the URL is empty", () => {
     const url = "";
-    const actual = validateURL(url);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = validateURL(url);
+    assert.isFalse(result);
   });
 });
 
@@ -248,8 +236,7 @@ describe("getVisits", () => {
   });
   it("should return false if the URL does not exist", () => {
     const url = "NotAURL";
-    const actual = getVisits(url, urlDatabase);
-    const expected = false;
-    assert.equal(actual, expected);
+    const result = getVisits(url, urlDatabase);
+    assert.isFalse(result);
   });
 });
