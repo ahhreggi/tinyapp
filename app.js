@@ -396,7 +396,7 @@ app.get("/", (req, res) => {
 });
 
 // Wildcard route
-app.get(["/*"], (req, res) => {
+app.get("/*", (req, res) => {
   res.redirect("/404");
 });
 
