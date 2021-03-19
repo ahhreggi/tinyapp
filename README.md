@@ -44,9 +44,9 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
    ```
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
 
-## ✔️ Testing
+## ✔️ Testing (Mocha & Chai)
 
-1. Run Mocha & Chai tests
+1. Run tests
    ```
    npm test
    ```
