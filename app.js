@@ -2,10 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const methodOverride = require("method-override");
-const path = require("path");
 const flash = require("connect-flash");
 const dayjs = require("dayjs");
 const bcrypt = require("bcrypt");
+const path = require("path");
 
 const app = express();
 const PORT = 8080;
@@ -115,7 +115,7 @@ app.get("/register", (req, res) => {
   }
 });
 
-// Create a new account, log the user in, then redirect to home page
+// Create a new account and log the user in
 app.post("/register", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
@@ -202,7 +202,7 @@ app.post("/urls", (req, res) => {
   }
 });
 
-// Delete a URL
+// Delete an existing URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
   const { userData } = res.locals.vars;
   const shortURL = req.params.shortURL;
@@ -223,7 +223,7 @@ app.delete("/urls/:shortURL/delete", (req, res) => {
   }
 });
 
-// Update a URL
+// Update an existing URL
 app.put("/urls/:shortURL", (req, res) => {
   const { userData, currentDateTime } = res.locals.vars;
   const shortURL = req.params.shortURL;
@@ -256,7 +256,7 @@ app.put("/urls/:shortURL", (req, res) => {
   }
 });
 
-// Display a URL from the database
+// Display an existing URL
 app.get("/urls/:shortURL", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   const targetURL = req.params.shortURL;
@@ -291,7 +291,7 @@ app.get("/urls/:shortURL", (req, res) => {
   }
 });
 
-// Display all URLs in the database
+// Display all existing URLs
 app.get("/urls", (req, res) => {
   const { alerts, userData, currentPage } = res.locals.vars;
   // ERROR: User is not logged in
