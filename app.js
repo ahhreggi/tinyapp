@@ -211,9 +211,7 @@ app.get("/urls/new", (req, res) => {
 
 // Create a new URL
 app.post("/urls", (req, res) => {
-  const {
-    currentDateTime
-  } = res.locals.vars;
+  const { currentDateTime } = res.locals.vars;
   const url = req.body.longURL;
   const longURL = url ? addHttp(url) : "";
   // ERROR: URL is possibly invalid
@@ -243,9 +241,7 @@ app.post("/urls", (req, res) => {
 
 // Delete an existing URL
 app.delete("/urls/:shortURL/delete", (req, res) => {
-  const {
-    userData
-  } = res.locals.vars;
+  const { userData } = res.locals.vars;
   const shortURL = req.params.shortURL;
   // ERROR: User is not logged in
   if (!userData) {
