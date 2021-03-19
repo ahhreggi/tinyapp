@@ -34,7 +34,7 @@ const generateRandomString = (length) => {
 };
 
 /**
- * Returns true if a username or email exists in the database, false otherwise.
+ * Returns a string representing the property that exists in the database, false otherwise.
  * @param  {string} username
  *         The username to look up in the database.
  * @param  {string} email
@@ -44,7 +44,7 @@ const generateRandomString = (length) => {
  * @return {string|undefined}
  *         The existing property or undefined if none was found.
  */
-const isExistingUser = (username, email, userDB) => {
+const getExistingProperty = (username, email, userDB) => {
   let result;
   // For each user in the database
   for (const userID in userDB) {
@@ -215,7 +215,7 @@ const getVisits = (url, urlDB) => {
 module.exports = {
   addHttp,
   generateRandomString,
-  isExistingUser,
+  getExistingProperty,
   getUserData,
   authenticateUser,
   urlsForUser,

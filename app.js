@@ -13,7 +13,7 @@ const PORT = 8080;
 const {
   addHttp,
   generateRandomString,
-  isExistingUser,
+  getExistingProperty,
   authenticateUser,
   urlsForUser,
   userOwnsURL,
@@ -141,7 +141,7 @@ app.post("/register", (req, res) => {
     email,
     password
   } = req.body;
-  const existingData = isExistingUser(username, email, userDatabase);
+  const existingData = getExistingProperty(username, email, userDatabase);
   // ERROR: Incomplete form or existing credentials
   if (!username || !email || !password) {
     req.flash("danger", "Please complete all fields.");

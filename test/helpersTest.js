@@ -3,7 +3,7 @@ const { assert } = require("chai");
 const {
   addHttp,
   generateRandomString,
-  isExistingUser,
+  getExistingProperty,
   getUserData,
   authenticateUser,
   urlsForUser,
@@ -41,28 +41,28 @@ describe("generateRandomString", () => {
   });
 });
 
-describe("isExistingUser", () => {
+describe("getExistingProperty", () => {
   it("should return 'username' if only the username exists in the database", () => {
     const username = "user1";
-    const actual = isExistingUser(username, "fake@email.com", userDatabase);
+    const actual = getExistingProperty(username, "fake@email.com", userDatabase);
     const expected = "username";
     assert.equal(actual, expected);
   });
   it("should return 'email' if only the email exists in the database", () => {
     const email = "user1@example.com";
-    const actual = isExistingUser("fakeName", email, userDatabase);
+    const actual = getExistingProperty("fakeName", email, userDatabase);
     const expected = "email";
     assert.equal(actual, expected);
   });
   it("should return 'username' if both the username and email exist in the database", () => {
     const username = "user1";
     const email = "user1@example.com";
-    const actual = isExistingUser(username, email, userDatabase);
+    const actual = getExistingProperty(username, email, userDatabase);
     const expected = "username";
     assert.equal(actual, expected);
   });
   it("should return undefined if neither the username nor email exist in the database", () => {
-    const result = isExistingUser("newUsername", "new@email.com", userDatabase);
+    const result = getExistingProperty("newUsername", "new@email.com", userDatabase);
     assert.isUndefined(result);
   });
 });
