@@ -27,7 +27,8 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
 
 - Create, modify, and delete generated URLs
 - View analytics (total clicks, unique clicks)
-- User authentication and authorization
+- View timestamps of a URL's creation date and last modification
+- User authentication and authorization via username/email and password
 
 <!-- INSTALLATION -->
 
