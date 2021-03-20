@@ -229,7 +229,7 @@ app.post("/urls", (req, res) => {
     const cookieUserID = req.session.userID;
     const newURL = {
       userID: cookieUserID,
-      longURL: longURL,
+      longURL,
       created: currentDateTime,
       lastModified: null,
       visitorLog: []
