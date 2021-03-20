@@ -30,16 +30,16 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
 ## 🛠 Installation
 
 1. Clone or download this repository
-   ```js
+   ```
    git clone https://github.com/ahhreggi/tinyapp
    ```
 2. Navigate to the project directory and install dependencies
-   ```js
+   ```
    cd tinyapp
    npm install
    ```
 3. Launch the development web server
-   ```js
+   ```
    node app.js
    ```
 4. Visit <a href="http://localhost:8080/">http://localhost:8080/</a> on your browser
@@ -47,7 +47,7 @@ Other technologies used include [bcrypt](https://www.npmjs.com/package/bcrypt), 
 ## ✔️ Testing (Mocha & Chai)
 
 1. Run tests
-   ```js
+   ```
    npm test
    ```
 
