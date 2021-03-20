@@ -1,6 +1,8 @@
 <!-- TITLE -->
 <div align="center">
-<img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
+<a href="https://ahhreggi-tinyapp.herokuapp.com/" target="_blank">
+   <img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
+</a>
 <p>
 A tiny web app for making tiny URLs
 </p>
