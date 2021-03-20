@@ -67,6 +67,7 @@ app.post("/login", (req, res) => {
   // ERROR: Incomplete form
   if (!login || !password) {
     req.flash("danger", "Please complete all fields.");
+    res.redirect("/login");
     // ERROR: Credentials are invalid
   } else if (!validUserData) {
     req.flash("danger", "The username/email or password you entered is invalid.");
