@@ -1,23 +1,18 @@
 <!-- TITLE -->
 <div align="center">
-<a href="https://ahhreggi-tinyapp.herokuapp.com/" target="_blank">
-   <img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
-</a>
+<img src="public/assets/logo-circle.png" alt="tinyapp." width="150px">
 <p>
 A tiny web app for making tiny URLs
 </p>
-<p>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a>, <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>, and hosted with <a href="https://www.heroku.com/">Heroku</a></p>
+<p>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a>, <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a></p>
 
-<b><a href="https://ahhreggi-tinyapp.herokuapp.com/" target="_blank">
-   » View Live Demo «
-</a></b>
 </div>
 
 <!-- INTRODUCTION -->
 
 ## 📚 Introduction
 
-<b><a href="https://ahhreggi-tinyapp.herokuapp.com/" target="_blank">Tinyapp</a></b> is a full-stack, RESTful web application that allows users to shorten URLs (similar to [bit.ly](bit.ly)). Users may login or register an account to create and edit links, as well as view their analytics.
+<b>Tinyapp</b> is a full-stack, RESTful web application that allows users to shorten URLs (similar to [bit.ly](bit.ly)). Users may login or register an account to create and edit links, as well as view their analytics.
 
 <b>Built with <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://expressjs.com/">Express</a> and <a href="https://blog.getbootstrap.com/2018/12/21/bootstrap-4-2-1/">Bootstrap 4</a>. Unit tested using [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/).</b>
 
